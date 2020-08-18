@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment='mensagens(mensagemWrapper)' th:if="${mensagemWrapper}">
+    <div class="alert alert-dismissible animated fadeIn" th:classappend="${mensagemWrapper.tipoMensagem.alert}" role="alert">      
+		<div th:each="msg : ${mensagemWrapper.mensagens}">
+			<i class="fa  fa-exclamation-circle"></i>
+			<th:block th:text="${msg}"></th:block>
+		</div>
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>  
+    </div>
+</th:block>
+</html>

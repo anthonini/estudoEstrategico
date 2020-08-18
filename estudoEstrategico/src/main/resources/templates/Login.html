@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:an="http://www.anthonini.com.br">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" th:attr="content=#{descricao}">
+  <meta name="author" th:attr="content=#{autor}">
+
+  <title th:text="#{titulo}">Título do Sistema</title>
+
+  <link rel="icon" th:href="@{/layout/img/favicon.ico}" type="image/x-icon">
+  <link rel="stylesheet" th:href="@{/layout/vendors/fonts/fontawesome/css/fontawesome-all.min.css}">
+  <link rel="stylesheet" th:href="@{/layout/vendors/animation/css/animate.min.css}">
+  <link rel="stylesheet" th:href="@{/layout/stylesheets/style.css}">
+</head>
+
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-content">
+            <div class="card">
+            	<form th:action="@{/login}" method="POST">
+	                <div class="card-body text-center">
+	                    <div class="mb-4">
+	                        <i class="feather icon-unlock auth-icon"></i>
+	                    </div>
+	                    <h3 class="mb-4">Login</h3>
+	                    <div class="text-danger font-weight-bold mb-2" th:if="${#bools.isTrue(param.error)}">
+							Email e/ou senha não conferem
+						</div>
+	                    <div class="input-group mb-3">
+	                        <input type="email" class="form-control" placeholder="Email" name="username">
+	                    </div>
+	                    <div class="input-group mb-4">
+	                        <input type="password" class="form-control" placeholder="Senha" name="password">
+	                    </div>
+	                    
+	                    <button class="btn btn-primary shadow-2 mb-4">Login</button>
+	                    <p class="mb-2 text-muted">Esqueceu a senha? <a href="auth-reset-password.html">Recuperar</a></p>
+	                    <p class="mb-0 text-muted">Não possui uma conta? <a href="auth-signup.html">Cadastre-se</a></p>
+	                </div>
+	           </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Required Js -->
+	<script th:src="@{/layout/js/vendor-all.min.js}"></script>
+	<script th:src="@{/layout/vendors/bootstrap/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:an="http://www.anthonini.com.br">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" th:attr="content=#{descricao}">
+  <meta name="author" th:attr="content=#{autor}">
+
+  <title th:text="#{titulo}">Título do Sistema</title>
+
+  <link rel="icon" th:href="@{/layout/img/favicon.ico}" type="image/x-icon">
+  <link rel="stylesheet" th:href="@{/layout/vendors/fonts/fontawesome/css/fontawesome-all.min.css}">
+  <link rel="stylesheet" th:href="@{/layout/vendors/animation/css/animate.min.css}">
+  <link rel="stylesheet" th:href="@{/layout/stylesheets/style.css}">
+  
+  <!--/* <link rel="stylesheet" th:href="@{/layout/stylesheets/dark.css}"> */-->
+</head>
+
+<body>
+    <div class="loader-bg">
+        <div class="loader-track">
+            <div class="loader-fill"></div>
+        </div>
+    </div>
+
+	<nav th:replace="~{layout/fragments/menu/navigationMenu :: navigationMenu}"></nav>
+
+    <header th:replace="~{layout/fragments/menu/header :: header}"></header>
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+            <div class="pcoded-content">
+            	<div layout:fragment="conteudo" class="pcoded-inner-content"></div>
+            </div>
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+    <!-- Required Js -->
+	<script th:src="@{/layout/js/vendor-all.min.js}"></script>
+	<script th:src="@{/layout/vendors/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/layout/js/pcoded.min.js}"></script>
+
+	<th:block layout:fragment="extra-javascript"></th:block>
+</body>
+</html>
