@@ -35,8 +35,10 @@ public class Usuario implements Entidade {
 	@Email(message = "E-mail inválido")
 	private String email;
 	
+	@NotBlank(message = "Senha é obrigatório")
 	private String senha;
 
+	@NotBlank(message = "Confirmação da Senha é obrigatório")
 	@Transient
 	private String confirmacaoSenha;
 	
