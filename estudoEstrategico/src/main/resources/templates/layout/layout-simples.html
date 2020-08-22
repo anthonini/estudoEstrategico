@@ -1,31 +1,32 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-	
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:an="http://www.anthonini.com.br">
+
 <head>
-	<meta charset="UTF-8"/>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<meta name="description" th:attr="content=#{descricao}">
-  	<meta name="author" th:attr="content=#{autor}">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" th:attr="content=#{descricao}">
+  <meta name="author" th:attr="content=#{autor}">
 
-  	<title th:text="#{titulo}">Título do Sistema</title>
-	
-	<link rel="icon" th:href="@{/images/favicon.png}">
+  <title th:text="#{titulo}">Título do Sistema</title>
 
-	<link rel="stylesheet" type="text/css" th:href="@{/layout/vendors/bootstrap/css/bootstrap.min.css}">   
-   	<link rel="stylesheet" type="text/css" th:href="@{/layout/vendors/font-awesome/css/font-awesome.min.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/layout/stylesheets/atira.css}">
-	
+  <link rel="icon" th:href="@{/layout/img/favicon.ico}" type="image/x-icon">
+  <link rel="stylesheet" th:href="@{/layout/vendors/fonts/fontawesome/css/fontawesome-all.min.css}">
+  <link rel="stylesheet" th:href="@{/layout/vendors/animation/css/animate.min.css}">
+  <link rel="stylesheet" th:href="@{/layout/stylesheets/style.css}">
 </head>
-<body class="anthonini-layout-simples-pagina">
 
-	<div class="anthonini-layout-simples-pagina__container">
-		<th:block layout:fragment="content"/>
-	</div>
+<body>
+	<th:block layout:fragment="conteudo"></th:block>
 
-<script th:src="@{/layout/vendors/javascript/jquery-3.3.1.min.js}"></script>
-<script th:src="@{/layout/vendors/bootstrap/js/bootstrap.min.js}"></script>
+    <!-- Required Js -->
+	<script th:src="@{/layout/js/vendor-all.min.js}"></script>
+	<script th:src="@{/layout/vendors/bootstrap/js/bootstrap.min.js}"></script>
+	
+	<th:block layout:fragment="javascript-extra"></th:block>
 </body>
 </html>
