@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import br.com.anthonini.estudoEstrategico.mail.CadastroUsuarioMailer;
 import br.com.anthonini.estudoEstrategico.model.Usuario;
 import br.com.anthonini.estudoEstrategico.repository.UsuarioRepository;
 import br.com.anthonini.estudoEstrategico.service.exception.EmailUsuarioJaCadastradoException;
@@ -21,6 +22,9 @@ public class UsuarioService {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private CadastroUsuarioMailer mailer;
 	
 	@Transactional
 	public void cadastrar(Usuario usuario) {
@@ -38,5 +42,7 @@ public class UsuarioService {
 		usuario.setAtivo(true);
 		
 		repository.save(usuario);
+		
+		mailer.enviarEmailConfirmacao(usuario);
 	}
 }
