@@ -57,7 +57,7 @@ public class CadastroUsuarioMailer {
 			MimeMessage mimeMessage = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 			helper.setFrom(mailConfig.getFromEmail());
-			helper.setTo(mailConfig.getToEmail());
+			helper.setTo(usuario.getEmail());
 			helper.setSubject(String.format("Confirmação de cadastro no %s", messageSource.getMessage("nome", null, locale)));
 			helper.setText(email, true);
 			helper.addInline("seta", new ClassPathResource("static/layout/images/seta.png"));

@@ -24,13 +24,13 @@ public class TokenConfirmacaoUsuario implements Entidade {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_user")
+	@Column(name = "id_token_confirmacao_usuario")
 	private Long id;
 	
 	 private String token;
 	 
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_usuario")
+	@JoinColumn(nullable = false, name = "id_usuario")
 	private Usuario usuario;
 
 	@Column(name = "data_expiracao")

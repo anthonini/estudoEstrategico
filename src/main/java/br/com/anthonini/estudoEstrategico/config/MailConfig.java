@@ -21,9 +21,6 @@ public class MailConfig {
 	
 	@Value("${external.estudo_estrategico.from.mail:estudo_estrategico.from.mail}")
 	private String fromEmail;
-	
-	@Value("${external.estudo_estrategico.to.mail:estudo_estrategico.to.mail}")
-	private String toEmail;
 
 	@Bean
 	public JavaMailSender mailSender() {
@@ -47,9 +44,5 @@ public class MailConfig {
 
 	public String getFromEmail() {
 		return fromEmail;
-	}
-
-	public String getToEmail() {
-		return toEmail;
 	}
 }

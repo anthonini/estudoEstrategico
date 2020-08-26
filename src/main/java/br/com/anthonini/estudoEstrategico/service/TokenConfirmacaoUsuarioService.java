@@ -1,5 +1,6 @@
 package br.com.anthonini.estudoEstrategico.service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
@@ -26,5 +27,13 @@ public class TokenConfirmacaoUsuarioService {
 		repository.save(token);
 		
 		return token;
+	}
+	
+	public TokenConfirmacaoUsuario getTokenConfirmacao(String token) {
+		return repository.findByToken(token);
+	}
+	
+	public boolean tokenValido(TokenConfirmacaoUsuario tokenConfimacao) {		
+		return tokenConfimacao != null && tokenConfimacao.getDataExpiracao().isAfter(LocalDateTime.now());
 	}
 }

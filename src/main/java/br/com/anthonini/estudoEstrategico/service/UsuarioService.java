@@ -43,4 +43,12 @@ public class UsuarioService {
 		repository.save(usuario);
 		publisher.publishEvent(new CadastroUsuarioEvent(usuario));
 	}
+	
+	@Transactional
+	public void ativar(Usuario usuario) {
+		if(usuario.getAtivo() != null && !usuario.getAtivo()) {
+			usuario.setAtivo(true);
+			repository.save(usuario);
+		}
+	}
 }

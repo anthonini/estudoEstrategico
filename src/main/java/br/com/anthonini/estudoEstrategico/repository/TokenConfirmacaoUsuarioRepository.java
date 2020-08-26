@@ -8,4 +8,5 @@ import br.com.anthonini.estudoEstrategico.model.TokenConfirmacaoUsuario;
 @Repository
 public interface TokenConfirmacaoUsuarioRepository extends JpaRepository<TokenConfirmacaoUsuario, Long> {
 
+	public TokenConfirmacaoUsuario findByToken(String token);
 }
