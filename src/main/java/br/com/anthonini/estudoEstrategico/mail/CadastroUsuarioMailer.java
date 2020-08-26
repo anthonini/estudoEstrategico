@@ -44,12 +44,12 @@ public class CadastroUsuarioMailer {
 	@Autowired
 	private LocaleResolver localeResolver;
 	
-	public void enviarEmailConfirmacao(Usuario usuario) {
+	public void enviarEmailConfirmacao(Usuario usuario, String token) {
 		Locale locale = localeResolver.resolveLocale(request);
 		Context context = new Context(locale);
 		context.setVariable("usuario", usuario);
 		context.setVariable("seta", "seta");
-		context.setVariable("linkConfirmacao", getUrlServidor()+"/usuario/confirmacao");
+		context.setVariable("linkConfirmacao", getUrlServidor()+"/usuario/confirmacao?token="+token);
 		
 		try {
 			String email = thymeleaf.process("mail/confirmacao-cadastro-usuario", context);

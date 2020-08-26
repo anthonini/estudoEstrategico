@@ -54,9 +54,11 @@ public class Usuario implements Entidade {
 	}
 	
 	public Usuario() {
+		this.ativo = false;
 	}
 	
 	public Usuario(Long id) {
+		super();
 		this.id = id;
 	}
 

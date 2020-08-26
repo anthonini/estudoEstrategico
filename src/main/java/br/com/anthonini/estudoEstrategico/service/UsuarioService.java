@@ -5,13 +5,14 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import br.com.anthonini.estudoEstrategico.mail.CadastroUsuarioMailer;
 import br.com.anthonini.estudoEstrategico.model.Usuario;
 import br.com.anthonini.estudoEstrategico.repository.UsuarioRepository;
+import br.com.anthonini.estudoEstrategico.service.event.usuario.CadastroUsuarioEvent;
 import br.com.anthonini.estudoEstrategico.service.exception.EmailUsuarioJaCadastradoException;
 
 @Service
@@ -24,7 +25,7 @@ public class UsuarioService {
 	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	private CadastroUsuarioMailer mailer;
+	ApplicationEventPublisher publisher;
 	
 	@Transactional
 	public void cadastrar(Usuario usuario) {
@@ -39,10 +40,7 @@ public class UsuarioService {
 			usuario.setConfirmacaoSenha(usuario.getSenha());
 		}
 		
-		usuario.setAtivo(true);
-		
 		repository.save(usuario);
-		
-		mailer.enviarEmailConfirmacao(usuario);
+		publisher.publishEvent(new CadastroUsuarioEvent(usuario));
 	}
 }
