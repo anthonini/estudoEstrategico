@@ -31,7 +31,8 @@
 		                        <input type="password" class="form-control" placeholder="Confirmação da Senha" th:field="*{confirmacaoSenha}" an:classforerror="confirmacaoSenha">
 		                    </div>
 		                    <button class="btn btn-primary shadow-2 mb-4" type="submit">Cadastrar</button>
-		                    <p class="mb-0 text-muted">Já possui uma conta? <a th:href="@{/login}">Entrar</a></p>
+		                    <p class="mb-2 text-muted">Já possui uma conta? <a th:href="@{/login}">Entrar</a></p>
+		                    <p class="mb-0 text-muted">Reenviar e-mail de confirmação? <a th:href="@{/usuario/reenviar-email-confirmacao}">Reenviar</a></p>
 		                </div>
 	                </form>
 	            </div>
