@@ -25,6 +25,8 @@ import br.com.anthonini.estudoEstrategico.model.Usuario;
 import br.com.anthonini.estudoEstrategico.service.TokenConfirmacaoUsuarioService;
 import br.com.anthonini.estudoEstrategico.service.UsuarioService;
 import br.com.anthonini.estudoEstrategico.service.exception.EmailUsuarioJaCadastradoException;
+import br.com.anthonini.estudoEstrategico.service.exception.UsuarioJaConfirmadoException;
+import br.com.anthonini.estudoEstrategico.service.exception.UsuarioNaoEncontradoException;
 
 @Controller
 @RequestMapping("/usuario")
@@ -80,11 +82,51 @@ public class UsuarioController extends AbstractController {
 		TokenConfirmacaoUsuario tokenConfirmacao = tokenService.getTokenConfirmacao(token);
 		if(tokenService.tokenValido(tokenConfirmacao)) {
 			service.ativar(tokenConfirmacao.getUsuario());
-			addMensagemSucesso(redirectAttributes, messageSource.getMessage("autenticacao.mensagem.usuarioConfirmado", null, locale));
-		} else {
-			addMensagemErro(redirectAttributes, messageSource.getMessage("autenticacao.mensagem.tokenInvalido", null, locale));
+			addMensagemSucesso(redirectAttributes, messageSource.getMessage("confirmacao.usuario.mensagem.usuarioConfirmado", null, locale));
+		}else if(tokenConfirmacao.getUsuario().getAtivo()) {
+			addMensagemInfo(redirectAttributes, messageSource.getMessage("confirmacao.usuario.mensagem.usuarioJaConfirmado", null, locale));
+		}else {
+			addMensagemErro(model, messageSource.getMessage("confirmacao.usuario.mensagem.tokenInvalido", null, locale));
+			return reenviarEmailConfirmacao(tokenConfirmacao, model);
 		}
 	    
 	    return "redirect:/login";
+	}
+	
+	@GetMapping("/reenviar-email-confirmacao")
+	public String reenviarEmailConfirmacao(TokenConfirmacaoUsuario tokenConfirmacao, ModelMap model) {
+		if(tokenConfirmacao != null && tokenConfirmacao.getUsuario() != null) {
+			model.addAttribute("email", tokenConfirmacao.getUsuario().getEmail());
+		}
+	    
+	    return "usuario/ReenviarEmailConfirmacao";
+	}
+	
+	@PostMapping("/reenviar-email-confirmacao")
+	public String reenviarEmailConfirmacao(String email, ModelMap model, WebRequest request, RedirectAttributes redirectAttributes) {
+		if(email == null || email.isEmpty()) {
+			addMensagemErro(model, "E-mail é obrigatório");
+			return reenviarEmailConfirmacao(null, model);
+		}
+		
+		Locale locale = request.getLocale();
+		
+		try {
+			service.reenviarEmailConfirmacao(email);
+			addMensagemSucesso(redirectAttributes, messageSource.getMessage("confirmacao.usuario.mensagem.sucesso", null, locale));
+		} catch (MailSendException e) {
+			addMensagemErro(model, messageSource.getMessage("cadastro.usuario.mensagem.falhaEnvioEmail", null, locale));
+			return reenviarEmailConfirmacao(null, model);
+		} catch (MailAuthenticationException e) {
+			addMensagemErro(model, messageSource.getMessage("cadastro.usuario.mensagem.falhaAntenticarEmail", null, locale));
+			return reenviarEmailConfirmacao(null, model);
+		} catch (UsuarioNaoEncontradoException e) {
+			addMensagemErro(model, messageSource.getMessage("confirmacao.usuario.mensagem.usuarioNaoEncontrado", new Object[] {email}, locale));
+			return reenviarEmailConfirmacao(null, model);
+		}  catch (UsuarioJaConfirmadoException e) {
+			addMensagemInfo(redirectAttributes, messageSource.getMessage("confirmacao.usuario.mensagem.usuarioJaConfirmado", null, locale));
+		}
+	    
+		return "redirect:/login";
 	}
 }

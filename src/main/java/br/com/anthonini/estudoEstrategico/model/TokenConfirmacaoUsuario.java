@@ -35,6 +35,10 @@ public class TokenConfirmacaoUsuario implements Entidade {
 
 	@Column(name = "data_expiracao")
 	private LocalDateTime dataExpiracao;
+	
+	public void atualizarDataExpiracao() {
+		this.dataExpiracao = calcularDataExpiracao(TEMPO_EXPIRACAO);
+	}
 
 	private LocalDateTime calcularDataExpiracao(int tempoExpiracaoEmMinutos) {
 		LocalDateTime dataHoraAtual = LocalDateTime.now();
@@ -43,7 +47,7 @@ public class TokenConfirmacaoUsuario implements Entidade {
 	
 	@PrePersist
 	private void prePersist() {
-		this.dataExpiracao = calcularDataExpiracao(TEMPO_EXPIRACAO);
+		atualizarDataExpiracao();
 	}
 
 	public Long getId() {

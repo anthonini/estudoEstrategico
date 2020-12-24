@@ -13,7 +13,10 @@ import org.springframework.util.StringUtils;
 import br.com.anthonini.estudoEstrategico.model.Usuario;
 import br.com.anthonini.estudoEstrategico.repository.UsuarioRepository;
 import br.com.anthonini.estudoEstrategico.service.event.usuario.CadastroUsuarioEvent;
+import br.com.anthonini.estudoEstrategico.service.event.usuario.ReenvioEmailConfirmacaoEvent;
 import br.com.anthonini.estudoEstrategico.service.exception.EmailUsuarioJaCadastradoException;
+import br.com.anthonini.estudoEstrategico.service.exception.UsuarioJaConfirmadoException;
+import br.com.anthonini.estudoEstrategico.service.exception.UsuarioNaoEncontradoException;
 
 @Service
 public class UsuarioService {
@@ -49,6 +52,21 @@ public class UsuarioService {
 		if(usuario.getAtivo() != null && !usuario.getAtivo()) {
 			usuario.setAtivo(true);
 			repository.save(usuario);
+		}
+	}
+
+	public void reenviarEmailConfirmacao(String email) {
+		Optional<Usuario> usuarioExistentePorEmail = repository.findByEmail(email);
+		
+		if(usuarioExistentePorEmail.isPresent()) {
+			Usuario usuario = usuarioExistentePorEmail.get();
+			if(usuario.getAtivo()) {
+				throw new UsuarioJaConfirmadoException();
+			} else {
+				publisher.publishEvent(new ReenvioEmailConfirmacaoEvent(usuario));
+			}
+		} else {
+			throw new UsuarioNaoEncontradoException();
 		}
 	}
 }
