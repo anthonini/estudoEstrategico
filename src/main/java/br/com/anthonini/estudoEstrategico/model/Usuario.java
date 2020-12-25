@@ -1,13 +1,17 @@
 package br.com.anthonini.estudoEstrategico.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -25,11 +29,13 @@ public class Usuario implements Entidade {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_user")
+	@Column(name = "id_usuario")
 	private Long id;
 	
-	@NotBlank(message = "Nome é obrigatório")
-	private String nome;
+	@Valid
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_pessoa")
+	private Pessoa pessoa;
 	
 	@NotBlank(message = "E-mail é obrigatório")
 	@Email(message = "E-mail inválido")
@@ -70,12 +76,12 @@ public class Usuario implements Entidade {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public Pessoa getPessoa() {
+		return pessoa;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 
 	public String getEmail() {

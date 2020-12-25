@@ -55,6 +55,7 @@ public class UsuarioService {
 		}
 	}
 
+	@Transactional
 	public void reenviarEmailConfirmacao(String email) {
 		Optional<Usuario> usuarioExistentePorEmail = repository.findByEmail(email);
 		

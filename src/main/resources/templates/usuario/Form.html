@@ -19,7 +19,10 @@
 		                    </div>
 		                    <h3 class="mb-4">Cadastro</h3>
 		                    <div class="input-group mb-3">
-		                        <input type="text" class="form-control" placeholder="Nome" th:field="*{nome}" an:classforerror="nome">
+		                        <input type="text" class="form-control" placeholder="Nome" th:field="*{pessoa.nome}" an:classforerror="pessoa.nome">
+		                    </div>
+		                    <div class="input-group mb-3">
+		                        <input type="text" class="form-control js-cpf" placeholder="CPF" th:field="*{pessoa.cpf}" an:classforerror="pessoa.cpf">
 		                    </div>
 		                    <div class="input-group mb-3">
 		                        <input type="email" class="form-control" placeholder="E-mail" th:field="*{email}" an:classforerror="email">

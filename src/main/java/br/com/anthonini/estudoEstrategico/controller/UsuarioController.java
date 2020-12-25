@@ -62,10 +62,10 @@ public class UsuarioController extends AbstractController {
 			addMensagensErroValidacao(modelMap, bindingResult);
 			return cadastro(usuario, modelMap);
 		} catch (MailSendException e) {
-			addMensagemErro(modelMap, messageSource.getMessage("cadastro.usuario.mensagem.falhaEnvioEmail", null, locale));
+			addMensagemErro(modelMap, messageSource.getMessage("email.mensagem.falhaEnvioEmail", null, locale));
 			return cadastro(usuario, modelMap);
 		} catch (MailAuthenticationException e) {
-			addMensagemErro(modelMap, messageSource.getMessage("cadastro.usuario.mensagem.falhaAntenticarEmail", null, locale));
+			addMensagemErro(modelMap, messageSource.getMessage("email.mensagem.falhaAntenticarEmail", null, locale));
 			return cadastro(usuario, modelMap);
 		}
 		
@@ -83,7 +83,7 @@ public class UsuarioController extends AbstractController {
 		if(tokenService.tokenValido(tokenConfirmacao)) {
 			service.ativar(tokenConfirmacao.getUsuario());
 			addMensagemSucesso(redirectAttributes, messageSource.getMessage("confirmacao.usuario.mensagem.usuarioConfirmado", null, locale));
-		}else if(tokenConfirmacao.getUsuario().getAtivo()) {
+		}else if(tokenConfirmacao != null && tokenConfirmacao.getUsuario().getAtivo()) {
 			addMensagemInfo(redirectAttributes, messageSource.getMessage("confirmacao.usuario.mensagem.usuarioJaConfirmado", null, locale));
 		}else {
 			addMensagemErro(model, messageSource.getMessage("confirmacao.usuario.mensagem.tokenInvalido", null, locale));
@@ -115,10 +115,10 @@ public class UsuarioController extends AbstractController {
 			service.reenviarEmailConfirmacao(email);
 			addMensagemSucesso(redirectAttributes, messageSource.getMessage("confirmacao.usuario.mensagem.sucesso", null, locale));
 		} catch (MailSendException e) {
-			addMensagemErro(model, messageSource.getMessage("cadastro.usuario.mensagem.falhaEnvioEmail", null, locale));
+			addMensagemErro(model, messageSource.getMessage("email.mensagem.falhaEnvioEmail", null, locale));
 			return reenviarEmailConfirmacao(null, model);
 		} catch (MailAuthenticationException e) {
-			addMensagemErro(model, messageSource.getMessage("cadastro.usuario.mensagem.falhaAntenticarEmail", null, locale));
+			addMensagemErro(model, messageSource.getMessage("email.mensagem.falhaAntenticarEmail", null, locale));
 			return reenviarEmailConfirmacao(null, model);
 		} catch (UsuarioNaoEncontradoException e) {
 			addMensagemErro(model, messageSource.getMessage("confirmacao.usuario.mensagem.usuarioNaoEncontrado", new Object[] {email}, locale));
