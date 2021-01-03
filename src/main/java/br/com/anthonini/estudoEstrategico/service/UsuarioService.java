@@ -51,7 +51,7 @@ public class UsuarioService {
 	
 	@Transactional
 	public void ativar(Usuario usuario) {
-		if(usuario.getAtivo() != null && !usuario.getAtivo()) {
+		if(!usuario.isAtivo()) {
 			usuario.setAtivo(true);
 			repository.save(usuario);
 		}
@@ -63,7 +63,7 @@ public class UsuarioService {
 		
 		if(usuarioExistentePorEmail.isPresent()) {
 			Usuario usuario = usuarioExistentePorEmail.get();
-			if(usuario.getAtivo()) {
+			if(usuario.isAtivo()) {
 				throw new UsuarioJaConfirmadoException();
 			} else {
 				publisher.publishEvent(new ReenvioEmailConfirmacaoEvent(usuario));
@@ -79,7 +79,12 @@ public class UsuarioService {
 		
 		if(usuarioExistentePorEmail.isPresent()) {
 			Usuario usuario = usuarioExistentePorEmail.get();
-			publisher.publishEvent(new ResetarSenhaUsuarioEvent(usuario));
+			
+			if(usuario.isAtivo()) {
+				publisher.publishEvent(new ResetarSenhaUsuarioEvent(usuario));
+			} else {
+				
+			}
 		}
 	}
 

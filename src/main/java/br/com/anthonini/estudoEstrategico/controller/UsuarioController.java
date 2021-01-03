@@ -81,7 +81,7 @@ public class UsuarioController extends AbstractController {
 		if(tokenConfirmacaoUsuarioService.tokenValido(tokenConfirmacao)) {
 			service.ativar(tokenConfirmacao.getUsuario());
 			addMensagemSucesso(redirectAttributes, getMessage("confirmacao.usuario.mensagem.usuarioConfirmado"));
-		}else if(tokenConfirmacao != null && tokenConfirmacao.getUsuario().getAtivo()) {
+		}else if(tokenConfirmacao != null && tokenConfirmacao.getUsuario().isAtivo()) {
 			addMensagemInfo(redirectAttributes, getMessage("confirmacao.usuario.mensagem.usuarioJaConfirmado"));
 		}else {
 			addMensagemErro(model, getMessage("confirmacao.usuario.mensagem.tokenInvalido"));

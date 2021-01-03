@@ -48,7 +48,7 @@ public class Usuario implements Entidade {
 	@Transient
 	private String confirmacaoSenha;
 	
-	private Boolean ativo;
+	private boolean ativo = false;
 	
 	public String getStatus() {
 		return ativo ? "Ativo" : "Inativo";
@@ -60,7 +60,6 @@ public class Usuario implements Entidade {
 	}
 	
 	public Usuario() {
-		this.ativo = false;
 	}
 	
 	public Usuario(Long id) {
@@ -108,11 +107,11 @@ public class Usuario implements Entidade {
 		this.confirmacaoSenha = confirmacaoSenha;
 	}
 
-	public Boolean getAtivo() {
+	public boolean isAtivo() {
 		return ativo;
 	}
 
-	public void setAtivo(Boolean ativo) {
+	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
 

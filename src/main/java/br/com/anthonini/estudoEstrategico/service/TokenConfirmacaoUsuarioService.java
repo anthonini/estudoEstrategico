@@ -35,7 +35,7 @@ public class TokenConfirmacaoUsuarioService {
 	
 	public boolean tokenValido(TokenConfirmacaoUsuario tokenConfirmacao) {
 		return tokenConfirmacao != null && tokenConfirmacao.getDataExpiracao().isAfter(LocalDateTime.now()) 
-				&& !tokenConfirmacao.getUsuario().getAtivo();
+				&& !tokenConfirmacao.getUsuario().isAtivo();
 	}
 
 	@Transactional
