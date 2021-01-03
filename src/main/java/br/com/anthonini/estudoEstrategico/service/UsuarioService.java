@@ -10,12 +10,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import br.com.anthonini.estudoEstrategico.model.Pessoa;
 import br.com.anthonini.estudoEstrategico.model.Usuario;
 import br.com.anthonini.estudoEstrategico.repository.UsuarioRepository;
 import br.com.anthonini.estudoEstrategico.service.event.usuario.AlteracaoSenhaUsuarioEvent;
 import br.com.anthonini.estudoEstrategico.service.event.usuario.CadastroUsuarioEvent;
 import br.com.anthonini.estudoEstrategico.service.event.usuario.ReenvioEmailConfirmacaoEvent;
 import br.com.anthonini.estudoEstrategico.service.event.usuario.ResetarSenhaUsuarioEvent;
+import br.com.anthonini.estudoEstrategico.service.exception.CPFJaCadastradoException;
 import br.com.anthonini.estudoEstrategico.service.exception.EmailUsuarioJaCadastradoException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioJaConfirmadoException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioNaoEncontradoException;
@@ -34,11 +36,15 @@ public class UsuarioService {
 	
 	@Transactional
 	public void cadastrar(Usuario usuario) {
+		if(usuario.isNovo() && repository.existsByPessoaCpf(Pessoa.removerFormatoCPF(usuario.getPessoa().getCpf()))) {
+			throw new CPFJaCadastradoException();
+		}
+		
 		Optional<Usuario> usuarioExistentePorEmail = repository.findByEmail(usuario.getEmail());
 		
 		if(usuarioExistentePorEmail.isPresent() && !usuarioExistentePorEmail.get().equals(usuario)) {
 			throw new EmailUsuarioJaCadastradoException();
-		}
+		}		
 		
 		if( usuario.isNovo() || !StringUtils.isEmpty(usuario.getSenha())) {
 			usuario.setSenha(this.passwordEncoder.encode(usuario.getSenha()));

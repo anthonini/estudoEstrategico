@@ -12,4 +12,6 @@ import br.com.anthonini.estudoEstrategico.repository.helper.usuario.UsuarioRepos
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>, UsuarioRepositoryQueries {
 
 	public Optional<Usuario> findByEmail(String email);
+	
+	public boolean existsByPessoaCpf(String cpf);
 }

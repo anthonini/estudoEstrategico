@@ -24,6 +24,7 @@ import br.com.anthonini.estudoEstrategico.model.Usuario;
 import br.com.anthonini.estudoEstrategico.service.TokenConfirmacaoUsuarioService;
 import br.com.anthonini.estudoEstrategico.service.TokenResetarSenhaUsuarioService;
 import br.com.anthonini.estudoEstrategico.service.UsuarioService;
+import br.com.anthonini.estudoEstrategico.service.exception.CPFJaCadastradoException;
 import br.com.anthonini.estudoEstrategico.service.exception.EmailUsuarioJaCadastradoException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioJaConfirmadoException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioNaoEncontradoException;
@@ -59,6 +60,10 @@ public class UsuarioController extends AbstractController {
 			service.cadastrar(usuario);
 		} catch (EmailUsuarioJaCadastradoException e) {
 			bindingResult.rejectValue("email", e.getMessage(), e.getMessage());
+			addMensagensErroValidacao(modelMap, bindingResult);
+			return cadastro(usuario, modelMap);
+		} catch (CPFJaCadastradoException e) {
+			bindingResult.rejectValue("pessoa.cpf", e.getMessage(), e.getMessage());
 			addMensagensErroValidacao(modelMap, bindingResult);
 			return cadastro(usuario, modelMap);
 		} catch (MailSendException e) {
