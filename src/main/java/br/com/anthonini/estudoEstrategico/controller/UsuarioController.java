@@ -1,11 +1,8 @@
 package br.com.anthonini.estudoEstrategico.controller;
 
-import java.util.Locale;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Controller;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -45,8 +41,7 @@ public class UsuarioController extends AbstractController {
 	@Autowired
 	private TokenResetarSenhaUsuarioService tokenResetarSenhaUsuarioService;
 	
-	@Autowired
-	private MessageSource messageSource;
+	
 	
 	@GetMapping("/cadastro")
 	public ModelAndView cadastro(Usuario usuario, ModelMap model) {
@@ -54,13 +49,11 @@ public class UsuarioController extends AbstractController {
 	}
 	
 	@PostMapping("/cadastro")
-	public ModelAndView cadastro(@Valid Usuario usuario, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirect, WebRequest request) {
+	public ModelAndView cadastro(@Valid Usuario usuario, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirect) {
 		if(bindingResult.hasErrors()) {
 			addMensagensErroValidacao(modelMap, bindingResult);
 			return cadastro(usuario, modelMap);
 		}
-		
-		Locale locale = request.getLocale();
 		
 		try {
 			service.cadastrar(usuario);
@@ -69,31 +62,29 @@ public class UsuarioController extends AbstractController {
 			addMensagensErroValidacao(modelMap, bindingResult);
 			return cadastro(usuario, modelMap);
 		} catch (MailSendException e) {
-			addMensagemErro(modelMap, messageSource.getMessage("email.mensagem.falhaEnvioEmail", null, locale));
+			addMensagemErro(modelMap, getMessage("email.mensagem.falhaEnvioEmail"));
 			return cadastro(usuario, modelMap);
 		} catch (MailAuthenticationException e) {
-			addMensagemErro(modelMap, messageSource.getMessage("email.mensagem.falhaAntenticarEmail", null, locale));
+			addMensagemErro(modelMap, getMessage("email.mensagem.falhaAntenticarEmail"));
 			return cadastro(usuario, modelMap);
 		}
 		
-		addMensagemInfo(redirect, messageSource.getMessage("cadastro.usuario.mensagem.ativarConta", new Object[] {usuario.getEmail()}, locale));
-		addMensagemSucesso(redirect, messageSource.getMessage("cadastro.usuario.mensagem.sucesso", null, locale));
+		addMensagemInfo(redirect, getMessage("cadastro.usuario.mensagem.ativarConta", usuario.getEmail()));
+		addMensagemSucesso(redirect, getMessage("cadastro.usuario.mensagem.sucesso"));
 		
 		return new ModelAndView("redirect:/login");
 	}
 	
 	@GetMapping("/confirmacao")
-	public String confirmacaoCadastro(WebRequest request, @RequestParam("token") String token, ModelMap model, RedirectAttributes redirectAttributes) {
-		Locale locale = request.getLocale();
-		
+	public String confirmacaoCadastro(@RequestParam("token") String token, ModelMap model, RedirectAttributes redirectAttributes) {		
 		TokenConfirmacaoUsuario tokenConfirmacao = tokenConfirmacaoUsuarioService.getTokenConfirmacao(token);
 		if(tokenConfirmacaoUsuarioService.tokenValido(tokenConfirmacao)) {
 			service.ativar(tokenConfirmacao.getUsuario());
-			addMensagemSucesso(redirectAttributes, messageSource.getMessage("confirmacao.usuario.mensagem.usuarioConfirmado", null, locale));
+			addMensagemSucesso(redirectAttributes, getMessage("confirmacao.usuario.mensagem.usuarioConfirmado"));
 		}else if(tokenConfirmacao != null && tokenConfirmacao.getUsuario().getAtivo()) {
-			addMensagemInfo(redirectAttributes, messageSource.getMessage("confirmacao.usuario.mensagem.usuarioJaConfirmado", null, locale));
+			addMensagemInfo(redirectAttributes, getMessage("confirmacao.usuario.mensagem.usuarioJaConfirmado"));
 		}else {
-			addMensagemErro(model, messageSource.getMessage("confirmacao.usuario.mensagem.tokenInvalido", null, locale));
+			addMensagemErro(model, getMessage("confirmacao.usuario.mensagem.tokenInvalido"));
 			return reenviarEmailConfirmacao(tokenConfirmacao, model);
 		}
 	    
@@ -110,28 +101,26 @@ public class UsuarioController extends AbstractController {
 	}
 	
 	@PostMapping("/reenviar-email-confirmacao")
-	public String reenviarEmailConfirmacao(String email, ModelMap model, WebRequest request, RedirectAttributes redirectAttributes) {
+	public String reenviarEmailConfirmacao(String email, ModelMap model, RedirectAttributes redirectAttributes) {
 		if(email == null || email.isEmpty()) {
 			addMensagemErro(model, "E-mail é obrigatório");
 			return reenviarEmailConfirmacao(null, model);
 		}
 		
-		Locale locale = request.getLocale();
-		
 		try {
 			service.reenviarEmailConfirmacao(email);
-			addMensagemSucesso(redirectAttributes, messageSource.getMessage("confirmacao.usuario.mensagem.sucesso", null, locale));
+			addMensagemSucesso(redirectAttributes, getMessage("confirmacao.usuario.mensagem.sucesso"));
 		} catch (MailSendException e) {
-			addMensagemErro(model, messageSource.getMessage("email.mensagem.falhaEnvioEmail", null, locale));
+			addMensagemErro(model, getMessage("email.mensagem.falhaEnvioEmail"));
 			return reenviarEmailConfirmacao(null, model);
 		} catch (MailAuthenticationException e) {
-			addMensagemErro(model, messageSource.getMessage("email.mensagem.falhaAntenticarEmail", null, locale));
+			addMensagemErro(model, getMessage("email.mensagem.falhaAntenticarEmail"));
 			return reenviarEmailConfirmacao(null, model);
 		} catch (UsuarioNaoEncontradoException e) {
-			addMensagemErro(model, messageSource.getMessage("confirmacao.usuario.mensagem.usuarioNaoEncontrado", new Object[] {email}, locale));
+			addMensagemErro(model, getMessage("confirmacao.usuario.mensagem.usuarioNaoEncontrado", email));
 			return reenviarEmailConfirmacao(null, model);
 		}  catch (UsuarioJaConfirmadoException e) {
-			addMensagemInfo(redirectAttributes, messageSource.getMessage("confirmacao.usuario.mensagem.usuarioJaConfirmado", null, locale));
+			addMensagemInfo(redirectAttributes, getMessage("confirmacao.usuario.mensagem.usuarioJaConfirmado"));
 		}
 	    
 		return "redirect:/login";
@@ -144,7 +133,7 @@ public class UsuarioController extends AbstractController {
 	}
 	
 	@PostMapping("/recuperar-senha")
-	public ModelAndView recuperarSenha(String email, ModelMap model, WebRequest request, RedirectAttributes redirectAttributes) {	    
+	public ModelAndView recuperarSenha(String email, ModelMap model, RedirectAttributes redirectAttributes) {	    
 		if(email == null || email.isEmpty()) {
 			addMensagemErro(model, "E-mail é obrigatório");
 			return recuperarSenha(email, model);
@@ -152,54 +141,50 @@ public class UsuarioController extends AbstractController {
 		
 		try {
 			service.recuperarSenha(email);
-			addMensagemSucesso(redirectAttributes, messageSource.getMessage("recuperacao.senha.usuario.mensagem.sucesso", null, request.getLocale()));
+			addMensagemSucesso(redirectAttributes, getMessage("recuperacao.senha.usuario.mensagem.sucesso"));
 			
 			return new ModelAndView("redirect:/login");
 		} catch (MailSendException e) {
-			addMensagemErro(model, messageSource.getMessage("email.mensagem.falhaEnvioEmail", null, request.getLocale()));
+			addMensagemErro(model, getMessage("email.mensagem.falhaEnvioEmail"));
 			return recuperarSenha(email, model);
 		} catch (MailAuthenticationException e) {
-			addMensagemErro(model, messageSource.getMessage("email.mensagem.falhaAntenticarEmail", null, request.getLocale()));
+			addMensagemErro(model, getMessage("email.mensagem.falhaAntenticarEmail"));
 			return recuperarSenha(email, model);
 		}
 	}
 	
 	@GetMapping("/alterar-senha/{token}")
-	public ModelAndView iniciarAlterarSenha(WebRequest request, @PathVariable String token, PasswordDTO passwordDTO, ModelMap model) {
-		Locale locale = request.getLocale();
-		
+	public ModelAndView iniciarAlterarSenha(@PathVariable String token, PasswordDTO passwordDTO, ModelMap model) {		
 		if(tokenResetarSenhaUsuarioService.tokenValido(token)) {
 			return new ModelAndView("usuario/AlterarSenha");
 		}else {
-			addMensagemErro(model, messageSource.getMessage("resetar.senha.usuario.mensagem.tokenInvalido", null, locale));
+			addMensagemErro(model, getMessage("resetar.senha.usuario.mensagem.tokenInvalido"));
 			return recuperarSenha(null, model);
 		}
 	}
 	
 	@PostMapping("/alterar-senha/{token}")
-	public ModelAndView alterarSenha(@Valid PasswordDTO passwordDTO, BindingResult bindingResult, @PathVariable String token, ModelMap model, WebRequest request, RedirectAttributes redirectAttributes) {
+	public ModelAndView alterarSenha(@Valid PasswordDTO passwordDTO, BindingResult bindingResult, @PathVariable String token, ModelMap model, RedirectAttributes redirectAttributes) {
 		if(bindingResult.hasErrors()) {
 			addMensagensErroValidacao(model, bindingResult);
-			return iniciarAlterarSenha(request, token, passwordDTO, model);
+			return iniciarAlterarSenha(token, passwordDTO, model);
 		}
-		
-		Locale locale = request.getLocale();
 		
 		if(tokenResetarSenhaUsuarioService.tokenValido(token)) {
 			try {
 				TokenResetarSenhaUsuario tokenResetarSenha = tokenResetarSenhaUsuarioService.getToken(token);
 				service.alterarSenha(tokenResetarSenha.getUsuario(), passwordDTO.getSenha());
-				addMensagemSucesso(redirectAttributes, messageSource.getMessage("resetar.senha.usuario.mensagem.sucesso", null, request.getLocale()));
+				addMensagemSucesso(redirectAttributes, getMessage("resetar.senha.usuario.mensagem.sucesso"));
 				return new ModelAndView("redirect:/login");
 			} catch (MailSendException e) {
-				addMensagemErro(model, messageSource.getMessage("email.mensagem.falhaEnvioEmail", null, locale));
-				return iniciarAlterarSenha(request, token, passwordDTO, model);
+				addMensagemErro(model, getMessage("email.mensagem.falhaEnvioEmail"));
+				return iniciarAlterarSenha(token, passwordDTO, model);
 			} catch (MailAuthenticationException e) {
-				addMensagemErro(model, messageSource.getMessage("email.mensagem.falhaAntenticarEmail", null, locale));
-				return iniciarAlterarSenha(request, token, passwordDTO, model);
+				addMensagemErro(model, getMessage("email.mensagem.falhaAntenticarEmail"));
+				return iniciarAlterarSenha(token, passwordDTO, model);
 			} 
 		} else {
-			addMensagemErro(model, messageSource.getMessage("resetar.senha.usuario.mensagem.tokenInvalido", null, locale));
+			addMensagemErro(model, getMessage("resetar.senha.usuario.mensagem.tokenInvalido"));
 			return recuperarSenha(null, model);
 		}
 	}
