@@ -20,9 +20,9 @@ import br.com.anthonini.estudoEstrategico.config.MailConfig;
 import br.com.anthonini.estudoEstrategico.model.Usuario;
 
 @Component
-public class CadastroUsuarioMailer {
+public class RecuperarSenhaUsuarioMailer {
 	
-	private static Logger logger = LoggerFactory.getLogger(CadastroUsuarioMailer.class);
+	private static Logger logger = LoggerFactory.getLogger(RecuperarSenhaUsuarioMailer.class);
 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -39,21 +39,21 @@ public class CadastroUsuarioMailer {
 	@Autowired
 	private MailerUtil util;
 	
-	public void enviarEmailConfirmacao(Usuario usuario, String token) {
+	public void enviarEmailResetarSenha(Usuario usuario, String token) {
 		Locale locale = util.getLocale();
 		Context context = new Context(locale);
 		context.setVariable("usuario", usuario);
 		context.setVariable("seta", "seta");
-		context.setVariable("linkConfirmacao", util.getUrlServidor()+"/usuario/confirmacao?token="+token);
+		context.setVariable("linkResetarSenha", util.getUrlServidor()+"/usuario/alterar-senha/"+token);
 		
 		try {
-			String email = thymeleaf.process("mail/confirmacao-cadastro-usuario", context);
+			String email = thymeleaf.process("mail/recuperacao-senha-usuario", context);
 			
 			MimeMessage mimeMessage = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 			helper.setFrom(mailConfig.getFromEmail());
 			helper.setTo(usuario.getEmail());
-			helper.setSubject(String.format("Confirmação de cadastro no %s", messageSource.getMessage("nome", null, locale)));
+			helper.setSubject(String.format("Recuperação de senha do usuário do %s", messageSource.getMessage("nome", null, locale)));
 			helper.setText(email, true);
 			helper.addInline("seta", new ClassPathResource("static/layout/images/seta.png"));
 		

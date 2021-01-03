@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,9 +21,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.anthonini.arquitetura.controller.AbstractController;
+import br.com.anthonini.estudoEstrategico.dto.PasswordDTO;
 import br.com.anthonini.estudoEstrategico.model.TokenConfirmacaoUsuario;
+import br.com.anthonini.estudoEstrategico.model.TokenResetarSenhaUsuario;
 import br.com.anthonini.estudoEstrategico.model.Usuario;
 import br.com.anthonini.estudoEstrategico.service.TokenConfirmacaoUsuarioService;
+import br.com.anthonini.estudoEstrategico.service.TokenResetarSenhaUsuarioService;
 import br.com.anthonini.estudoEstrategico.service.UsuarioService;
 import br.com.anthonini.estudoEstrategico.service.exception.EmailUsuarioJaCadastradoException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioJaConfirmadoException;
@@ -36,7 +40,10 @@ public class UsuarioController extends AbstractController {
 	private UsuarioService service;
 	
 	@Autowired
-	private TokenConfirmacaoUsuarioService tokenService;
+	private TokenConfirmacaoUsuarioService tokenConfirmacaoUsuarioService;
+	
+	@Autowired
+	private TokenResetarSenhaUsuarioService tokenResetarSenhaUsuarioService;
 	
 	@Autowired
 	private MessageSource messageSource;
@@ -79,8 +86,8 @@ public class UsuarioController extends AbstractController {
 	public String confirmacaoCadastro(WebRequest request, @RequestParam("token") String token, ModelMap model, RedirectAttributes redirectAttributes) {
 		Locale locale = request.getLocale();
 		
-		TokenConfirmacaoUsuario tokenConfirmacao = tokenService.getTokenConfirmacao(token);
-		if(tokenService.tokenValido(tokenConfirmacao)) {
+		TokenConfirmacaoUsuario tokenConfirmacao = tokenConfirmacaoUsuarioService.getTokenConfirmacao(token);
+		if(tokenConfirmacaoUsuarioService.tokenValido(tokenConfirmacao)) {
 			service.ativar(tokenConfirmacao.getUsuario());
 			addMensagemSucesso(redirectAttributes, messageSource.getMessage("confirmacao.usuario.mensagem.usuarioConfirmado", null, locale));
 		}else if(tokenConfirmacao != null && tokenConfirmacao.getUsuario().getAtivo()) {
@@ -128,5 +135,72 @@ public class UsuarioController extends AbstractController {
 		}
 	    
 		return "redirect:/login";
+	}
+	
+	@GetMapping("/recuperar-senha")
+	public ModelAndView recuperarSenha(String email, ModelMap model) {
+		model.addAttribute("email", email);
+	    return new ModelAndView("usuario/RecuperarSenha");
+	}
+	
+	@PostMapping("/recuperar-senha")
+	public ModelAndView recuperarSenha(String email, ModelMap model, WebRequest request, RedirectAttributes redirectAttributes) {	    
+		if(email == null || email.isEmpty()) {
+			addMensagemErro(model, "E-mail é obrigatório");
+			return recuperarSenha(email, model);
+		}
+		
+		try {
+			service.recuperarSenha(email);
+			addMensagemSucesso(redirectAttributes, messageSource.getMessage("recuperacao.senha.usuario.mensagem.sucesso", null, request.getLocale()));
+			
+			return new ModelAndView("redirect:/login");
+		} catch (MailSendException e) {
+			addMensagemErro(model, messageSource.getMessage("email.mensagem.falhaEnvioEmail", null, request.getLocale()));
+			return recuperarSenha(email, model);
+		} catch (MailAuthenticationException e) {
+			addMensagemErro(model, messageSource.getMessage("email.mensagem.falhaAntenticarEmail", null, request.getLocale()));
+			return recuperarSenha(email, model);
+		}
+	}
+	
+	@GetMapping("/alterar-senha/{token}")
+	public ModelAndView iniciarAlterarSenha(WebRequest request, @PathVariable String token, PasswordDTO passwordDTO, ModelMap model) {
+		Locale locale = request.getLocale();
+		
+		if(tokenResetarSenhaUsuarioService.tokenValido(token)) {
+			return new ModelAndView("usuario/AlterarSenha");
+		}else {
+			addMensagemErro(model, messageSource.getMessage("resetar.senha.usuario.mensagem.tokenInvalido", null, locale));
+			return recuperarSenha(null, model);
+		}
+	}
+	
+	@PostMapping("/alterar-senha/{token}")
+	public ModelAndView alterarSenha(@Valid PasswordDTO passwordDTO, BindingResult bindingResult, @PathVariable String token, ModelMap model, WebRequest request, RedirectAttributes redirectAttributes) {
+		if(bindingResult.hasErrors()) {
+			addMensagensErroValidacao(model, bindingResult);
+			return iniciarAlterarSenha(request, token, passwordDTO, model);
+		}
+		
+		Locale locale = request.getLocale();
+		
+		if(tokenResetarSenhaUsuarioService.tokenValido(token)) {
+			try {
+				TokenResetarSenhaUsuario tokenResetarSenha = tokenResetarSenhaUsuarioService.getToken(token);
+				service.alterarSenha(tokenResetarSenha.getUsuario(), passwordDTO.getSenha());
+				addMensagemSucesso(redirectAttributes, messageSource.getMessage("resetar.senha.usuario.mensagem.sucesso", null, request.getLocale()));
+				return new ModelAndView("redirect:/login");
+			} catch (MailSendException e) {
+				addMensagemErro(model, messageSource.getMessage("email.mensagem.falhaEnvioEmail", null, locale));
+				return iniciarAlterarSenha(request, token, passwordDTO, model);
+			} catch (MailAuthenticationException e) {
+				addMensagemErro(model, messageSource.getMessage("email.mensagem.falhaAntenticarEmail", null, locale));
+				return iniciarAlterarSenha(request, token, passwordDTO, model);
+			} 
+		} else {
+			addMensagemErro(model, messageSource.getMessage("resetar.senha.usuario.mensagem.tokenInvalido", null, locale));
+			return recuperarSenha(null, model);
+		}
 	}
 }

@@ -1,5 +1,6 @@
 package br.com.anthonini.estudoEstrategico.mail;
 
+import java.util.Date;
 import java.util.Locale;
 
 import javax.mail.MessagingException;
@@ -8,7 +9,6 @@ import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -20,9 +20,9 @@ import br.com.anthonini.estudoEstrategico.config.MailConfig;
 import br.com.anthonini.estudoEstrategico.model.Usuario;
 
 @Component
-public class CadastroUsuarioMailer {
+public class AlteracaoSenhaUsuarioMailer {
 	
-	private static Logger logger = LoggerFactory.getLogger(CadastroUsuarioMailer.class);
+	private static Logger logger = LoggerFactory.getLogger(AlteracaoSenhaUsuarioMailer.class);
 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -31,29 +31,26 @@ public class CadastroUsuarioMailer {
 	private TemplateEngine thymeleaf;
 	
 	@Autowired
-	private MailConfig mailConfig;
-	
-	@Autowired
-	private MessageSource messageSource;
+	private MailConfig mailConfig;	
 	
 	@Autowired
 	private MailerUtil util;
 	
-	public void enviarEmailConfirmacao(Usuario usuario, String token) {
+	public void enviarEmailConfirmacaoAlteracaoSenha(Usuario usuario) {
 		Locale locale = util.getLocale();
 		Context context = new Context(locale);
 		context.setVariable("usuario", usuario);
 		context.setVariable("seta", "seta");
-		context.setVariable("linkConfirmacao", util.getUrlServidor()+"/usuario/confirmacao?token="+token);
+		context.setVariable("dataAlteracao", new Date());
 		
 		try {
-			String email = thymeleaf.process("mail/confirmacao-cadastro-usuario", context);
+			String email = thymeleaf.process("mail/confirmacao-alteracao-senha-usuario", context);
 			
 			MimeMessage mimeMessage = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 			helper.setFrom(mailConfig.getFromEmail());
 			helper.setTo(usuario.getEmail());
-			helper.setSubject(String.format("Confirmação de cadastro no %s", messageSource.getMessage("nome", null, locale)));
+			helper.setSubject("Confirmação de alteração de senha");
 			helper.setText(email, true);
 			helper.addInline("seta", new ClassPathResource("static/layout/images/seta.png"));
 		

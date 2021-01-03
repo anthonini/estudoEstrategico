@@ -33,9 +33,9 @@ public class TokenConfirmacaoUsuarioService {
 		return repository.findByToken(token);
 	}
 	
-	public boolean tokenValido(TokenConfirmacaoUsuario tokenConfimacao) {		
-		return tokenConfimacao != null && tokenConfimacao.getDataExpiracao().isAfter(LocalDateTime.now()) 
-				&& !tokenConfimacao.getUsuario().getAtivo();
+	public boolean tokenValido(TokenConfirmacaoUsuario tokenConfirmacao) {
+		return tokenConfirmacao != null && tokenConfirmacao.getDataExpiracao().isAfter(LocalDateTime.now()) 
+				&& !tokenConfirmacao.getUsuario().getAtivo();
 	}
 
 	@Transactional

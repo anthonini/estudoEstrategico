@@ -19,7 +19,7 @@ public class ReenvioEmailConfirmacaoEventListener {
 	private CadastroUsuarioMailer mailer;
 
 	@EventListener
-	public void usuarioCadastrado(ReenvioEmailConfirmacaoEvent event) {
+	public void reenviarEmailConfirmacao(ReenvioEmailConfirmacaoEvent event) {
 		Usuario usuario = event.getUsuario();
 		TokenConfirmacaoUsuario token = tokenConfirmacaoUsuarioService.atualizarToken(usuario);
 		mailer.enviarEmailConfirmacao(usuario, token.getToken());

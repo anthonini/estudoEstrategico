@@ -12,8 +12,10 @@ import org.springframework.util.StringUtils;
 
 import br.com.anthonini.estudoEstrategico.model.Usuario;
 import br.com.anthonini.estudoEstrategico.repository.UsuarioRepository;
+import br.com.anthonini.estudoEstrategico.service.event.usuario.AlteracaoSenhaUsuarioEvent;
 import br.com.anthonini.estudoEstrategico.service.event.usuario.CadastroUsuarioEvent;
 import br.com.anthonini.estudoEstrategico.service.event.usuario.ReenvioEmailConfirmacaoEvent;
+import br.com.anthonini.estudoEstrategico.service.event.usuario.ResetarSenhaUsuarioEvent;
 import br.com.anthonini.estudoEstrategico.service.exception.EmailUsuarioJaCadastradoException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioJaConfirmadoException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioNaoEncontradoException;
@@ -28,7 +30,7 @@ public class UsuarioService {
 	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	ApplicationEventPublisher publisher;
+	private ApplicationEventPublisher publisher;
 	
 	@Transactional
 	public void cadastrar(Usuario usuario) {
@@ -69,5 +71,23 @@ public class UsuarioService {
 		} else {
 			throw new UsuarioNaoEncontradoException();
 		}
+	}
+	
+	@Transactional
+	public void recuperarSenha(String email) {
+		Optional<Usuario> usuarioExistentePorEmail = repository.findByEmail(email);
+		
+		if(usuarioExistentePorEmail.isPresent()) {
+			Usuario usuario = usuarioExistentePorEmail.get();
+			publisher.publishEvent(new ResetarSenhaUsuarioEvent(usuario));
+		}
+	}
+
+	@Transactional
+	public void alterarSenha(Usuario usuario, String senha) {
+		usuario.setSenha(this.passwordEncoder.encode(senha));
+		usuario.setConfirmacaoSenha(usuario.getSenha());
+		repository.save(usuario);
+		publisher.publishEvent(new AlteracaoSenhaUsuarioEvent(usuario));
 	}
 }
