@@ -83,7 +83,7 @@ public class UsuarioService {
 			if(usuario.isAtivo()) {
 				publisher.publishEvent(new ResetarSenhaUsuarioEvent(usuario));
 			} else {
-				
+				throw new UsuarioNaoEncontradoException();
 			}
 		}
 	}

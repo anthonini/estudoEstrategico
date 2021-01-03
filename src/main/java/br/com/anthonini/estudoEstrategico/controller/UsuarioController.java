@@ -150,6 +150,9 @@ public class UsuarioController extends AbstractController {
 		} catch (MailAuthenticationException e) {
 			addMensagemErro(model, getMessage("email.mensagem.falhaAntenticarEmail"));
 			return recuperarSenha(email, model);
+		} catch (UsuarioNaoEncontradoException e) {
+			addMensagemErro(model, getMessage("usuario.mensagem.conta.nao.ativada"));
+			return recuperarSenha(email, model);
 		}
 	}
 	
