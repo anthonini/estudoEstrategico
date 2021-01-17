@@ -37,7 +37,10 @@
     <div class="pcoded-main-container">
         <div class="pcoded-wrapper">
             <div class="pcoded-content">
-            	<div layout:fragment="conteudo" class="pcoded-inner-content"></div>
+            	<div class="pcoded-inner-content">
+            		<an:message/>
+            		<div layout:fragment="conteudo" class="pcoded-inner-content"></div>
+            	</div>
             </div>
         </div>
     </div>
@@ -47,6 +50,10 @@
 	<script th:src="@{/layout/js/vendor-all.min.js}"></script>
 	<script th:src="@{/layout/vendors/bootstrap/js/bootstrap.min.js}"></script>
     <script th:src="@{/layout/js/pcoded.min.js}"></script>
+    
+    <script th:src="@{/layout/js/vendors/jquery.mask.min.js}"></script>
+
+	<script th:src="@{/layout/js/estudoEstrategico.js}"></script>
 
 	<th:block layout:fragment="javascript-extra"></th:block>
 </body>
