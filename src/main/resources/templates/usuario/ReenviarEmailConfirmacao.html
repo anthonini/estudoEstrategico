@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout-simples}"
+	xmlns:an="http://www.anthonini.com.br">
+
+<body>
+	<th:block layout:fragment="conteudo">
+		<div class="auth-wrapper">
+	        <div class="auth-content">
+	        	<an:message/>
+	            <div class="card">
+	            	<form th:action="@{/usuario/reenviar-email-confirmacao}" method="POST">
+		                <div class="card-body text-center">
+		                    <div class="mb-4">
+		                        <i class="feather icon-mail auth-icon"></i>
+		                    </div>
+		                    <h3 class="mb-4">E-mail de Confirmação</h3>
+		                    <div class="input-group mb-3">
+		                        <input type="email" class="form-control" placeholder="E-mail" name="email" th:value="${email}">
+		                    </div>
+		                    
+		                    <button class="btn btn-primary shadow-2 mb-4">Reenviar e-mail</button>
+		                    <p class="mb-2 text-muted">Não possui uma conta? <a th:href="@{/usuario/cadastro}">Cadastre-se</a></p>
+		                    <p class="mb-0 text-muted">Já possui uma conta? <a th:href="@{/login}">Entrar</a></p>
+		                </div>
+		           </form>
+	            </div>
+	        </div>
+	    </div>
+	</th:block>
+</body>
+</html>

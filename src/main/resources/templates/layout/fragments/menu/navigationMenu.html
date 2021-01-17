@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- [ navigation menu ] start -->
+<nav class="pcoded-navbar menu-light <!--/* navbar-dark brand-dark */-->" th:fragment="navigationMenu">
+    <div class="navbar-wrapper">
+        <div class="navbar-brand header-logo">
+            <a href="index.html" class="b-brand">
+                <div class="b-bg">
+                    <i class="feather icon-trending-up"></i>
+                </div>
+                <span class="b-title" th:text="#{nome}">Nome da Aplicação</span>
+            </a>
+            <a class="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a>
+        </div>
+        <div class="navbar-content scroll-div">
+            <ul class="nav pcoded-inner-navbar">
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Navegação</label>
+                </li>
+                <li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/dashboard')} ? active">
+                    <a th:href="@{/dashboard}" class="nav-link ">
+                    	<span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/ciclo-estudos')} ? active">
+                	<a th:href="@{/ciclo-estudos}" class="nav-link ">
+                		<span class="pcoded-micon"><i class="feather icon-check-circle"></i></span><span class="pcoded-mtext">Ciclo de Estudos</span>
+                	</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- [ navigation menu ] end -->
+</html>

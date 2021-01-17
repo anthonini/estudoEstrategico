@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<style type="text/css">
+		body {
+		  font-family: "Open Sans", sans-serif;
+		  font-size: 14px;
+		  color: #888;
+		  font-weight: 400;		  
+		  position: relative;
+		}
+		
+		p {
+		    margin-top: 0;
+		    margin-bottom: 1rem;
+		}
+		
+		h5:after {
+		    content: "";
+		    background-color: #04a9f5;
+		    position: absolute;
+		    left: -25px;
+		    top: 0;
+		    width: 4px;
+		    height: 20px;
+		}
+		
+		*, ::after, ::before {
+		    box-sizing: border-box;
+		}
+	</style>
+</head>
+
+<body>
+	<div style="margin-right: -15px;margin-left: -15px;">
+		<div style="position: relative;width: 100%;min-height: 1px;padding-right: 15px;padding-left: 15px;">
+			<div style="border-radius: 0;-webkit-box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);border: none;margin-bottom: 30px;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;position: relative;flex-direction: column;min-width: 0;background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125);">
+				<div style="background-color: transparent;border-bottom: 1px solid #f1f1f1;padding: 20px 25px;position: relative;border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;margin-bottom: 0;">
+					<h5 style="margin-top: 0;margin-bottom: 0;color: #000;font-size: 17px;font-weight: 400;display: inline-block;margin-right: 10px;line-height: 1.1;position: relative;" th:text="|Olá ${usuario.pessoa.nome}|">Olá Maria Silva!</h5>
+				</div>
+				<div style="color: #111;padding: 30px 25px;">
+					<p>Recebemos um pedido para alteração de senha, caso tenha solicitado clique no botão abaixo!</p>
+					
+					<a th:href="${linkResetarSenha}" style="cursor: pointer;color: #fff;background-color: #04a9f5;border-color: #04a9f5;-webkit-box-shadow: 0 10px 18px 0 rgba(62, 57, 107, 0.2);box-shadow: 0 10px 18px 0 rgba(62, 57, 107, 0.2);padding: 10px 20px;border-radius: 0.25rem;font-size: 14px;margin-right: 10px;-webkit-transition: all 0.3s ease-in-out;transition: all 0.3s ease-in-out;margin-bottom: 3rem!important;display: inline-block;font-weight: 400;text-align: center;white-space: nowrap;vertical-align: middle;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;border: 1px solid transparent;line-height: 1.5;border-radius: .25rem;text-decoration: none;text-transform: uppercase!important;">Criar Nova Senha</a>
+					
+					<p>Caso não tenha solicitado, desconsidere este email, sua senha não será alterada.</p>
+					
+					<p>Atenciosamente,</p>
+					<div>
+						<div style="background: linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%);border-radius: 10px;width: 35px;height: 35px;display: -webkit-inline-box;display: -ms-inline-flexbox;display: inline-flex;">
+							<img src="../../static/layout/images/seta.png" th:src="|cid:${seta}|" height="10" style="margin: auto;"/>
+						</div>
+				     	<span style="margin-left: 10px;font-weight: 400;color: #3f4d67;font-size: 18px;">Estudo Estratégico</span>
+				     </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout-simples}"
+	xmlns:an="http://www.anthonini.com.br">
+
+<body>
+	<th:block layout:fragment="conteudo">
+		<div class="auth-wrapper">
+	        <div class="auth-content">
+	        	<an:message/>
+	            <div class="card">
+	            	<form th:object="${usuario}" th:action="@{/usuario/cadastro}" method="POST">
+		                <div class="card-body text-center">
+		                    <div class="mb-4">
+		                        <i class="feather icon-user-plus auth-icon"></i>
+		                    </div>
+		                    <h3 class="mb-4">Cadastro</h3>
+		                    <div class="input-group mb-3">
+		                        <input type="text" class="form-control" placeholder="Nome" th:field="*{pessoa.nome}" an:classforerror="pessoa.nome">
+		                    </div>
+		                    <div class="input-group mb-3">
+		                        <input type="text" class="form-control js-cpf" placeholder="CPF" th:field="*{pessoa.cpf}" an:classforerror="pessoa.cpf">
+		                    </div>
+		                    <div class="input-group mb-3">
+		                        <input type="email" class="form-control" placeholder="E-mail" th:field="*{email}" an:classforerror="email">
+		                    </div>
+		                    <div class="input-group mb-4">
+		                        <input type="password" class="form-control" placeholder="Senha" th:field="*{senha}" an:classforerror="senha">
+		                    </div>
+		                    <div class="input-group mb-4">
+		                        <input type="password" class="form-control" placeholder="Confirmação da Senha" th:field="*{confirmacaoSenha}" an:classforerror="confirmacaoSenha">
+		                    </div>
+		                    <button class="btn btn-primary shadow-2 mb-4" type="submit">Cadastrar</button>
+		                    <p class="mb-2 text-muted">Já possui uma conta? <a th:href="@{/login}">Entrar</a></p>
+		                    <p class="mb-0 text-muted">Reenviar e-mail de confirmação? <a th:href="@{/usuario/reenviar-email-confirmacao}">Reenviar</a></p>
+		                </div>
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	</th:block>
+</body>
+</html>

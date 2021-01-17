@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout-simples}"
+	xmlns:an="http://www.anthonini.com.br">
+
+<body>
+	<th:block layout:fragment="conteudo">
+		<div class="auth-wrapper">
+	        <div class="auth-content">
+	        	<an:message/>
+	            <div class="card">
+	            	<form th:action="@{/login}" method="POST">
+		                <div class="card-body text-center">
+		                    <div class="mb-4">
+		                        <i class="feather icon-unlock auth-icon"></i>
+		                    </div>
+		                    <h3 class="mb-4">Entrar</h3>
+		                    <div class="text-danger font-weight-bold mb-2" th:if="${#bools.isTrue(param.error)}">
+								Usuário e/ou senha incorretos
+							</div>
+		                    <div class="input-group mb-3">
+		                        <input type="email" class="form-control" placeholder="E-mail" name="username">
+		                    </div>
+		                    <div class="input-group mb-4">
+		                        <input type="password" class="form-control" placeholder="Senha" name="password">
+		                    </div>
+		                    
+		                    <button class="btn btn-primary shadow-2 mb-4">Entrar</button>
+		                    <p class="mb-2 text-muted">Esqueceu a senha? <a th:href="@{/usuario/recuperar-senha}">Recuperar</a></p>
+		                    <p class="mb-0 text-muted">Não possui uma conta? <a th:href="@{/usuario/cadastro}">Cadastre-se</a></p>
+		                </div>
+		           </form>
+	            </div>
+	        </div>
+	    </div>
+	</th:block>
+</body>
+</html>
