@@ -26,6 +26,11 @@
                     	<span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span>
                     </a>
                 </li>
+                <li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/disciplina')} ? active">
+                	<a th:href="@{/disciplina}" class="nav-link ">
+                		<span class="pcoded-micon"><i class="feather icon-layers"></i></span><span class="pcoded-mtext">Disciplina</span>
+                	</a>
+                </li>
                 <li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/ciclo-estudos')} ? active">
                 	<a th:href="@{/ciclo-estudos}" class="nav-link ">
                 		<span class="pcoded-micon"><i class="feather icon-check-circle"></i></span><span class="pcoded-mtext">Ciclo de Estudos</span>

@@ -1,0 +1,67 @@
+package br.com.anthonini.estudoEstrategico.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import br.com.anthonini.arquitetura.controller.AbstractController;
+import br.com.anthonini.arquitetura.controller.page.PageWrapper;
+import br.com.anthonini.estudoEstrategico.model.Disciplina;
+import br.com.anthonini.estudoEstrategico.repository.helper.disciplina.filter.DisciplinaFilter;
+import br.com.anthonini.estudoEstrategico.security.UsuarioSistema;
+import br.com.anthonini.estudoEstrategico.service.DisciplinaService;
+import br.com.anthonini.estudoEstrategico.service.exception.NomeDisciplinaJaCadastradaException;
+
+@Controller
+@RequestMapping("/disciplina")
+public class DisciplinaController extends AbstractController {
+	
+	@Autowired
+	private DisciplinaService service;
+
+	@GetMapping("/cadastro")
+	public ModelAndView cadastro(Disciplina disciplina, ModelMap model) {
+		return new ModelAndView("disciplina/Form");
+	}
+	
+	@PostMapping("/cadastro")
+	public ModelAndView cadastro(@Valid Disciplina disciplina, BindingResult bindingResult, @AuthenticationPrincipal UsuarioSistema usuarioSistema, ModelMap modelMap, RedirectAttributes redirect) {
+		if(bindingResult.hasErrors()) {
+			addMensagensErroValidacao(modelMap, bindingResult);
+			return cadastro(disciplina, modelMap);
+		}
+		
+		try {
+			service.cadastrar(disciplina, usuarioSistema.getUsuario());
+		} catch (NomeDisciplinaJaCadastradaException e) {
+			bindingResult.rejectValue("nome", e.getMessage(), e.getMessage());
+			addMensagensErroValidacao(modelMap, bindingResult);
+			return cadastro(disciplina, modelMap);
+		}
+		
+		addMensagemSucesso(redirect, "Disciplina salva com sucesso!");
+		return new ModelAndView("redirect:/disciplina");
+	}
+	
+	@GetMapping
+	public ModelAndView listar(DisciplinaFilter disciplinaFilter, HttpServletRequest httpServletRequest, @PageableDefault(size = 3) @SortDefault(value="nome") Pageable pageable) {
+		ModelAndView mv = new ModelAndView("disciplina/List");
+		PageWrapper<Disciplina> paginaWrapper = new PageWrapper<>(service.filtrar(disciplinaFilter,pageable),httpServletRequest);
+        mv.addObject("pagina", paginaWrapper);
+		
+		return mv;
+	}
+}
