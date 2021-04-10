@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:an="http://www.anthonini.com.br"
+	xmlns:data="http://www.thymeleaf.com/extras/data">
+
+<body>
+	<th:block layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="page-block">
+				<div class="row align-items-center">
+					<div class="col-md-12">
+						<div class="page-header-title">
+							<h5 class="m-b-10">Ciclo de Estudos</h5>
+						</div>
+						<ul class="breadcrumb">
+							<li class="breadcrumb-item"><a th:href="@{/}"><i class="feather icon-home"></i></a></li>
+							<li class="breadcrumb-item"><a href="#!">Ciclo de Estudos</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="main-body">
+			<div class="page-wrapper">
+				<!-- [ Main Content ] start -->
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="card">
+							<div class="card-header ">
+								<h5>Ciclo de Estudos</h5>
+								<div class="card-header-right">
+                                	<a th:href="@{/ciclo-estudos/cadastro}" class="btn btn-sm btn-primary text-right"><i class="fas fa-plus fa-sm text-white-50"></i> Cadastrar</a>    
+                                </div>
+							</div>
+					        <div class="card-block">
+					        	<h5>Busca</h5>
+					        	<form method="GET">
+									<div class="row">
+						        		<div class="col-md-6">
+						        			<div class="form-group">
+												<label class="form-label">Nome</label>
+												<input type="text" class="form-control" placeholder="Nome" id="nome" name="nome">
+											</div>
+						        		</div>
+						        	</div>
+						        	<button class="btn btn-outline-primary" type="submit">Pesquisar</button>
+								</form>
+								
+					        	<h5 class="mt-5">Ciclos de Estudos Encontradas</h5>
+					        	<div class="table-responsive">
+						        	<table class="table table-hover">
+									  <thead>
+									    <tr>
+									      <th scope="col" class="text-center col-numero">#</th>
+									      <th scope="col">Nome</th>
+									      <th scope="col" class="table-col-acoes"></th>
+									    </tr>
+									  </thead>
+									  <tbody>
+									  	<tr th:if="${pagina.vazia}">
+			                             	<td colspan="3"><i>Nenhum ciclo de estudo encontrado.</i></td>
+			                             </tr>
+									    <tr th:each="ciclo, itr : ${pagina.conteudo}">
+									      <th scope="row" th:text="${pagina.numeroPrimeiroItemPagina + itr.index}">1</th>
+									      <td th:text="${ciclo.nome}">Concurso De Tribunal</td>
+									      <td>
+												<a class="btn btn-sm text-primary" style="padding: .20rem;"th:href="@{/ciclo-estudos/{id}(id=${ciclo.id})}" title="Alterar">
+													<i class="fa fa-edit"></i>
+												</a>
+												<a class="btn btn-sm text-danger js-exclusao-btn" style="padding: .20rem;" title="Remover" href="#"
+													data:url="@{/ciclo-estudos/{id}(id=${ciclo.id})}"
+													data:objeto="${ciclo.nome}">
+													<i class="fa fa-trash-alt"></i>
+												</a>
+										</td>
+									    </tr>
+									  </tbody>
+									</table>
+								</div>
+								
+								<an:paginacao pagina="${pagina}"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- [ Main Content ] end -->
+			</div>
+		</div>
+	</th:block>
+	<th:block layout:fragment="javascript-extra">
+		<script th:src="@{/javascript/estudo-estrategico.dialogo-exclusao.js}"></script>
+	</th:block>
+</body>
+</html>

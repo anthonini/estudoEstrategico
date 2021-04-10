@@ -1,8 +1,12 @@
 package br.com.anthonini.estudoEstrategico.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,7 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.anthonini.arquitetura.controller.AbstractController;
+import br.com.anthonini.arquitetura.controller.page.PageWrapper;
 import br.com.anthonini.estudoEstrategico.model.CicloEstudos;
+import br.com.anthonini.estudoEstrategico.repository.helper.cicloEstudos.filter.CicloEstudosFilter;
 import br.com.anthonini.estudoEstrategico.security.UsuarioSistema;
 import br.com.anthonini.estudoEstrategico.service.CicloEstudosService;
 import br.com.anthonini.estudoEstrategico.service.exception.NomeEntidadeJaCadastradaException;
@@ -53,5 +59,15 @@ public class CicloEstudosController extends AbstractController {
 		}
 		
 		return new ModelAndView("redirect:"+view);
+	}
+	
+	@GetMapping
+	public ModelAndView listar(CicloEstudosFilter filter, @AuthenticationPrincipal UsuarioSistema usuarioSistema, HttpServletRequest httpServletRequest, @PageableDefault(size = 3) @SortDefault(value="nome") Pageable pageable) {
+		ModelAndView mv = new ModelAndView("disciplina/List");
+		filter.setUsuario(usuarioSistema.getUsuario());
+		PageWrapper<CicloEstudos> paginaWrapper = new PageWrapper<>(service.filtrar(filter,pageable),httpServletRequest);
+        mv.addObject("pagina", paginaWrapper);
+		
+		return mv;
 	}
 }

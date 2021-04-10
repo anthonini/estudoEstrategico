@@ -1,4 +1,4 @@
-package br.com.anthonini.estudoEstrategico.repository.helper.disciplina;
+package br.com.anthonini.estudoEstrategico.repository.helper.cicloEstudos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,51 +18,51 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
 import br.com.anthonini.arquitetura.controller.page.PaginationUtil;
-import br.com.anthonini.estudoEstrategico.model.Disciplina;
-import br.com.anthonini.estudoEstrategico.repository.helper.disciplina.filter.DisciplinaFilter;
+import br.com.anthonini.estudoEstrategico.model.CicloEstudos;
+import br.com.anthonini.estudoEstrategico.repository.helper.cicloEstudos.filter.CicloEstudosFilter;
 
-public class DisciplinaRepositoryImpl implements DisciplinaRepositoryQueries {
+public class CicloEstudosRepositoryImpl implements CicloEstudosRepositoryQueries {
 
 	@PersistenceContext
 	EntityManager manager;
 	
 	@Autowired
-	private PaginationUtil<Disciplina> paginationUtil;
+	private PaginationUtil<CicloEstudos> paginationUtil;
 	
 	@Override
-	public Page<Disciplina> filtrar(DisciplinaFilter filter, Pageable pageable) {
+	public Page<CicloEstudos> filtrar(CicloEstudosFilter filter, Pageable pageable) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
-		CriteriaQuery<Disciplina> criteriaQuery = builder.createQuery(Disciplina.class);
-		Root<Disciplina> disciplina = criteriaQuery.from(Disciplina.class);		
+		CriteriaQuery<CicloEstudos> criteriaQuery = builder.createQuery(CicloEstudos.class);
+		Root<CicloEstudos> cicloEstudos = criteriaQuery.from(CicloEstudos.class);		
 		
-		criteriaQuery.where(getWhere(filter, builder, disciplina)).distinct(true);
+		criteriaQuery.where(getWhere(filter, builder, cicloEstudos)).distinct(true);
 		
-		TypedQuery<Disciplina> query = paginationUtil.prepare(builder, criteriaQuery, disciplina, pageable);
+		TypedQuery<CicloEstudos> query = paginationUtil.prepare(builder, criteriaQuery, cicloEstudos, pageable);
 		
 		return new PageImpl<>(query.getResultList(), pageable, total(filter));
 	}
 	
-	private Long total(DisciplinaFilter filter) {
+	private Long total(CicloEstudosFilter filter) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
-		Root<Disciplina> disciplina = criteriaQuery.from(Disciplina.class);
+		Root<CicloEstudos> feira = criteriaQuery.from(CicloEstudos.class);
 		
-		criteriaQuery.select(builder.count(disciplina)).where(getWhere(filter, builder, disciplina));
+		criteriaQuery.select(builder.count(feira)).where(getWhere(filter, builder, feira));
 		
 		return manager.createQuery(criteriaQuery).getSingleResult();
 	}
 
 
-	private Predicate[] getWhere(DisciplinaFilter filter, CriteriaBuilder builder, Root<Disciplina> disciplina) {
+	private Predicate[] getWhere(CicloEstudosFilter filter, CriteriaBuilder builder, Root<CicloEstudos> cicloEstudos) {
 		List<Predicate> where = new ArrayList<>();
 		
 		if(filter != null) {			
 			if (!StringUtils.isEmpty(filter.getNome())) {
-				where.add(builder.like(builder.upper(disciplina.get("nome")), "%"+filter.getNome().toUpperCase()+"%"));
+				where.add(builder.like(builder.upper(cicloEstudos.get("nome")), "%"+filter.getNome().toUpperCase()+"%"));
 			}
 			
 			if(filter.getUsuario() != null) {
-				where.add(builder.equal(disciplina.get("usuario"), filter.getUsuario()));
+				where.add(builder.equal(cicloEstudos.get("usuario"), filter.getUsuario()));
 			}
 		}
 		
