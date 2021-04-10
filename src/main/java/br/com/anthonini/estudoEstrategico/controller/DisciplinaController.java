@@ -63,9 +63,10 @@ public class DisciplinaController extends AbstractController {
 	}
 	
 	@GetMapping
-	public ModelAndView listar(DisciplinaFilter disciplinaFilter, HttpServletRequest httpServletRequest, @PageableDefault(size = 3) @SortDefault(value="nome") Pageable pageable) {
+	public ModelAndView listar(DisciplinaFilter filter, @AuthenticationPrincipal UsuarioSistema usuarioSistema, HttpServletRequest httpServletRequest, @PageableDefault(size = 3) @SortDefault(value="nome") Pageable pageable) {
 		ModelAndView mv = new ModelAndView("disciplina/List");
-		PageWrapper<Disciplina> paginaWrapper = new PageWrapper<>(service.filtrar(disciplinaFilter,pageable),httpServletRequest);
+		filter.setUsuario(usuarioSistema.getUsuario());
+		PageWrapper<Disciplina> paginaWrapper = new PageWrapper<>(service.filtrar(filter,pageable),httpServletRequest);
         mv.addObject("pagina", paginaWrapper);
 		
 		return mv;

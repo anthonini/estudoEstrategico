@@ -21,7 +21,7 @@ import br.com.anthonini.arquitetura.controller.page.PaginationUtil;
 import br.com.anthonini.estudoEstrategico.model.Disciplina;
 import br.com.anthonini.estudoEstrategico.repository.helper.disciplina.filter.DisciplinaFilter;
 
-public class DisciplinaRepositoryQueriesImpl implements DisciplinaRepositoryQueries {
+public class DisciplinaRepositoryImpl implements DisciplinaRepositoryQueries {
 
 	@PersistenceContext
 	EntityManager manager;
@@ -59,6 +59,10 @@ public class DisciplinaRepositoryQueriesImpl implements DisciplinaRepositoryQuer
 		if(filter != null) {			
 			if (!StringUtils.isEmpty(filter.getNome())) {
 				where.add(builder.like(builder.upper(feira.get("nome")), "%"+filter.getNome().toUpperCase()+"%"));
+			}
+			
+			if(filter.getUsuario() != null) {
+				where.add(builder.equal(feira.get("usuario"), filter.getUsuario()));
 			}
 		}
 		
