@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:an="http://www.anthonini.com.br">
+
+<body>
+	<th:block layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="page-block">
+				<div class="row align-items-center">
+					<div class="col-md-12">
+						<div class="page-header-title">
+							<h5 class="m-b-10">Ciclo de Estudos</h5>
+						</div>
+						<ul class="breadcrumb">
+							<li class="breadcrumb-item"><a th:href="@{/}"><i class="feather icon-home"></i></a></li>
+							<li class="breadcrumb-item"><a th:href="@{/ciclo-estudos}">Ciclo de Estudos</a></li>
+							<li class="breadcrumb-item" th:if="${cicloEstudos.novo}"><a href="#!">Cadastro</a></li>
+							<li class="breadcrumb-item" th:unless="${cicloEstudos.novo}"><a href="#!">Edição</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="main-body">
+			<div class="page-wrapper">
+				<!-- [ Main Content ] start -->
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="card">
+							<div class="card-header">
+								<h5>Ciclo de Estudos</h5>
+							</div>
+					        <div class="card-block">
+					        	<form th:object="${cicloEstudos}" th:action="${cicloEstudos.novo} ? @{/ciclo-estudos/cadastro} : @{/ciclo-estudos/{id}(id=${cicloEstudos.id})}" method="POST">
+						        	<div class="row">
+						        		<div class="col-md-6">
+						        			<div class="form-group">
+												<label class="form-label">Nome</label>
+												<input type="text" class="form-control" placeholder="Nome" th:field="*{nome}" an:classforerror="nome">
+											</div>
+						        		</div>
+						        	</div>
+									<input type="hidden" th:field="*{id}">
+									<button class="btn btn-primary" type="submit">Salvar</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- [ Main Content ] end -->
+			</div>
+		</div>
+	</th:block>
+</body>
+</html>

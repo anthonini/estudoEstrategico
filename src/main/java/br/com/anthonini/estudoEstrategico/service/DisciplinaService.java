@@ -15,7 +15,7 @@ import br.com.anthonini.estudoEstrategico.model.Disciplina;
 import br.com.anthonini.estudoEstrategico.model.Usuario;
 import br.com.anthonini.estudoEstrategico.repository.DisciplinaRepository;
 import br.com.anthonini.estudoEstrategico.repository.helper.disciplina.filter.DisciplinaFilter;
-import br.com.anthonini.estudoEstrategico.service.exception.NomeDisciplinaJaCadastradaException;
+import br.com.anthonini.estudoEstrategico.service.exception.NomeEntidadeJaCadastradaException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioSemPermissaoParaRealizarEssaOperacao;
 
 @Service
@@ -34,7 +34,7 @@ public class DisciplinaService {
 		Optional<Disciplina> disciplinaOptional = repository.findByNomeIgnoreCaseAndUsuario(disciplina.getNome(), usuario);
 		
 		if(disciplinaOptional.isPresent() && !disciplina.equals(disciplinaOptional.get())) {
-			throw new NomeDisciplinaJaCadastradaException();
+			throw new NomeEntidadeJaCadastradaException("Já existe uma disciplina cadastrada com esse nome.");
 		}
 		
 		if(disciplina.isNova()) {

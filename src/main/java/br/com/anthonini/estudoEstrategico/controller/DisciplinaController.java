@@ -28,7 +28,7 @@ import br.com.anthonini.estudoEstrategico.repository.helper.disciplina.filter.Di
 import br.com.anthonini.estudoEstrategico.security.UsuarioSistema;
 import br.com.anthonini.estudoEstrategico.service.DisciplinaService;
 import br.com.anthonini.estudoEstrategico.service.NaoEPossivelRemoverEntidadeException;
-import br.com.anthonini.estudoEstrategico.service.exception.NomeDisciplinaJaCadastradaException;
+import br.com.anthonini.estudoEstrategico.service.exception.NomeEntidadeJaCadastradaException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioSemPermissaoParaRealizarEssaOperacao;
 
 @Controller
@@ -55,7 +55,7 @@ public class DisciplinaController extends AbstractController {
 		try {
 			service.cadastrar(disciplina, usuarioSistema.getUsuario());
 			addMensagemSucesso(redirect, "Disciplina salva com sucesso!");
-		} catch (NomeDisciplinaJaCadastradaException e) {
+		} catch (NomeEntidadeJaCadastradaException e) {
 			bindingResult.rejectValue("nome", e.getMessage(), e.getMessage());
 			addMensagensErroValidacao(modelMap, bindingResult);
 			return cadastro(disciplina, modelMap);
