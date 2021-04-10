@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,6 +25,7 @@ import br.com.anthonini.estudoEstrategico.repository.helper.disciplina.filter.Di
 import br.com.anthonini.estudoEstrategico.security.UsuarioSistema;
 import br.com.anthonini.estudoEstrategico.service.DisciplinaService;
 import br.com.anthonini.estudoEstrategico.service.exception.NomeDisciplinaJaCadastradaException;
+import br.com.anthonini.estudoEstrategico.service.exception.UsuarioSemPermissaoParaRealizarEssaOperacao;
 
 @Controller
 @RequestMapping("/disciplina")
@@ -37,23 +39,27 @@ public class DisciplinaController extends AbstractController {
 		return new ModelAndView("disciplina/Form");
 	}
 	
-	@PostMapping("/cadastro")
+	@PostMapping({"/cadastro", "/{\\d+}"})
 	public ModelAndView cadastro(@Valid Disciplina disciplina, BindingResult bindingResult, @AuthenticationPrincipal UsuarioSistema usuarioSistema, ModelMap modelMap, RedirectAttributes redirect) {
 		if(bindingResult.hasErrors()) {
 			addMensagensErroValidacao(modelMap, bindingResult);
 			return cadastro(disciplina, modelMap);
 		}
+
+		String view = disciplina.isNova() ? "/disciplina/cadastro" : "/disciplina";
 		
 		try {
 			service.cadastrar(disciplina, usuarioSistema.getUsuario());
+			addMensagemSucesso(redirect, "Disciplina salva com sucesso!");
 		} catch (NomeDisciplinaJaCadastradaException e) {
 			bindingResult.rejectValue("nome", e.getMessage(), e.getMessage());
 			addMensagensErroValidacao(modelMap, bindingResult);
 			return cadastro(disciplina, modelMap);
+		} catch (UsuarioSemPermissaoParaRealizarEssaOperacao e) {
+			addMensagemErro(redirect, e.getMessage());
 		}
 		
-		addMensagemSucesso(redirect, "Disciplina salva com sucesso!");
-		return new ModelAndView("redirect:/disciplina");
+		return new ModelAndView("redirect:"+view);
 	}
 	
 	@GetMapping
@@ -64,4 +70,15 @@ public class DisciplinaController extends AbstractController {
 		
 		return mv;
 	}
+	
+	@GetMapping("/{id}")
+	public ModelAndView alterar(@PathVariable("id") Disciplina disciplina, @AuthenticationPrincipal UsuarioSistema usuarioSistema, ModelMap model, RedirectAttributes redirect) {
+		if (disciplina == null || !usuarioSistema.getUsuario().equals(disciplina.getUsuario())) {
+            addMensagemErro(redirect, "Disciplina não encontrada");
+            return new ModelAndView("redirect:/disciplina");
+        }
+
+		model.addAttribute("disciplina", disciplina);
+        return cadastro(disciplina, model);
+    }
 }
