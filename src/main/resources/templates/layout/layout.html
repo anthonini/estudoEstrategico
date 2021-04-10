@@ -24,6 +24,9 @@
 </head>
 
 <body>
+	<input type="hidden" name="_csrf" th:value="${_csrf.token}">
+	<input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}">
+	
     <div class="loader-bg">
         <div class="loader-track">
             <div class="loader-fill"></div>
@@ -53,6 +56,8 @@
     <script th:src="@{/layout/js/pcoded.min.js}"></script>
     
     <script th:src="@{/layout/js/vendors/jquery.mask.min.js}"></script>
+    
+    <script th:src="@{/javascript/vendors/sweetalert.min.js}"></script>
 
 	<script th:src="@{/layout/js/estudoEstrategico.js}"></script>
 

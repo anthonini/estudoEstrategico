@@ -4,7 +4,8 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/layout}"
-	xmlns:an="http://www.anthonini.com.br">
+	xmlns:an="http://www.anthonini.com.br"
+	xmlns:data="http://www.thymeleaf.com/extras/data">
 
 <body>
 	<th:block layout:fragment="conteudo">
@@ -67,9 +68,13 @@
 									      <th scope="row" th:text="${pagina.numeroPrimeiroItemPagina + itr.index}">1</th>
 									      <td th:text="${disciplina.nome}">Direito Administrativo</td>
 									      <td>
-								      			<a class="btn btn-sm text-primary" style="padding: .20rem;"
-													th:href="@{/disciplina/{id}(id=${disciplina.id})}" title="Alterar">
-														<i class="fa fa-edit"></i>
+												<a class="btn btn-sm text-primary" style="padding: .20rem;"th:href="@{/disciplina/{id}(id=${disciplina.id})}" title="Alterar">
+													<i class="fa fa-edit"></i>
+												</a>
+												<a class="btn btn-sm text-danger js-exclusao-btn" style="padding: .20rem;" title="Remover" href="#"
+													data:url="@{/disciplina/{id}(id=${disciplina.id})}"
+													data:objeto="${disciplina.nome}">
+													<i class="fa fa-trash-alt"></i>
 												</a>
 										</td>
 									    </tr>
@@ -85,6 +90,9 @@
 				<!-- [ Main Content ] end -->
 			</div>
 		</div>
+	</th:block>
+	<th:block layout:fragment="javascript-extra">
+		<script th:src="@{/javascript/estudo-estrategico.dialogo-exclusao.js}"></script>
 	</th:block>
 </body>
 </html>

@@ -2,9 +2,11 @@ package br.com.anthonini.estudoEstrategico.service;
 
 import java.util.Optional;
 
+import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -47,5 +49,15 @@ public class DisciplinaService {
 		}
 		
 		repository.save(disciplina);
+	}
+
+	@Transactional
+	public void remover(Disciplina disciplina) {
+		try {
+			repository.delete(disciplina);
+			repository.flush();
+		} catch (PersistenceException | DataIntegrityViolationException e) {
+			throw new NaoEPossivelRemoverEntidadeException("Não é possivel remover a disciplina. Disciplina já associado com algum Ciclo de Estudos.");
+		}
 	}
 }
