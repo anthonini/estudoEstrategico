@@ -48,4 +48,9 @@ public class CicloEstudosService {
 		
 		repository.save(cicloEstudos);
 	}
+	
+	@Transactional
+	public void remover(CicloEstudos cicloEstudos) {
+		repository.delete(cicloEstudos);
+	}
 }
