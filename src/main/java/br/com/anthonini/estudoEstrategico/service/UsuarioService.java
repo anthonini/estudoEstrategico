@@ -109,6 +109,12 @@ public class UsuarioService {
 		if(!this.passwordEncoder.matches(perfilDTO.getSenha(), usuario.getSenha())) {
 			throw new SenhaNaoConfirmadaException();
 		}
+		Optional<Usuario> usuarioExistentePorEmail = repository.findByEmail(perfilDTO.getEmail());
+		
+		if(usuarioExistentePorEmail.isPresent() && !usuarioExistentePorEmail.get().equals(usuario)) {
+			throw new EmailUsuarioJaCadastradoException();
+		}
+		
 		usuario.getPessoa().setNome(perfilDTO.getNome());
 		usuario.setEmail(perfilDTO.getEmail());
 		repository.save(usuario);

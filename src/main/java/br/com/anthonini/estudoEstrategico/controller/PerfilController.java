@@ -17,6 +17,7 @@ import br.com.anthonini.arquitetura.controller.AbstractController;
 import br.com.anthonini.estudoEstrategico.dto.PerfilDTO;
 import br.com.anthonini.estudoEstrategico.security.UsuarioSistema;
 import br.com.anthonini.estudoEstrategico.service.UsuarioService;
+import br.com.anthonini.estudoEstrategico.service.exception.EmailUsuarioJaCadastradoException;
 import br.com.anthonini.estudoEstrategico.service.exception.SenhaNaoConfirmadaException;
 
 @Controller
@@ -42,6 +43,10 @@ public class PerfilController extends AbstractController {
 			service.atualizarDados(usuarioSistema.getUsuario(), perfilDTO);
 		} catch (SenhaNaoConfirmadaException e) {
 			bindingResult.rejectValue("senha", e.getMessage(), e.getMessage());
+			addMensagensErroValidacao(modelMap, bindingResult);
+			return cadastro(perfilDTO, modelMap);
+		} catch (EmailUsuarioJaCadastradoException e) {
+			bindingResult.rejectValue("email", e.getMessage(), e.getMessage());
 			addMensagensErroValidacao(modelMap, bindingResult);
 			return cadastro(perfilDTO, modelMap);
 		}
