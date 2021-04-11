@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -63,11 +64,22 @@ public class CicloEstudosController extends AbstractController {
 	
 	@GetMapping
 	public ModelAndView listar(CicloEstudosFilter filter, @AuthenticationPrincipal UsuarioSistema usuarioSistema, HttpServletRequest httpServletRequest, @PageableDefault(size = 3) @SortDefault(value="nome") Pageable pageable) {
-		ModelAndView mv = new ModelAndView("disciplina/List");
+		ModelAndView mv = new ModelAndView("ciclo-estudos/List");
 		filter.setUsuario(usuarioSistema.getUsuario());
 		PageWrapper<CicloEstudos> paginaWrapper = new PageWrapper<>(service.filtrar(filter,pageable),httpServletRequest);
         mv.addObject("pagina", paginaWrapper);
 		
 		return mv;
 	}
+	
+	@GetMapping("/{id}")
+	public ModelAndView alterar(@PathVariable("id") CicloEstudos cicloEstudos, @AuthenticationPrincipal UsuarioSistema usuarioSistema, ModelMap model, RedirectAttributes redirect) {
+		if (cicloEstudos == null || !usuarioSistema.getUsuario().equals(cicloEstudos.getUsuario())) {
+            addMensagemErro(redirect, "Ciclo de Estudos não encontrado!");
+            return new ModelAndView("redirect:/ciclo-estudos");
+        }
+
+		model.addAttribute("cicloEstudos", cicloEstudos);
+        return cadastro(cicloEstudos, model);
+    }
 }
