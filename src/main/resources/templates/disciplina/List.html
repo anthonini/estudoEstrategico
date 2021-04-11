@@ -68,13 +68,13 @@
 									      <th scope="row" th:text="${pagina.numeroPrimeiroItemPagina + itr.index}">1</th>
 									      <td th:text="${disciplina.nome}">Direito Administrativo</td>
 									      <td>
-												<a class="btn btn-sm text-primary" style="padding: .20rem;"th:href="@{/disciplina/{id}(id=${disciplina.id})}" title="Alterar">
-													<i class="fa fa-edit"></i>
+												<a class="btn btn-icon btn-rounded btn-primary" th:href="@{/disciplina/{id}(id=${disciplina.id})}" title="Alterar">
+													<i class="feather icon-edit"></i>
 												</a>
-												<a class="btn btn-sm text-danger js-exclusao-btn" style="padding: .20rem;" title="Remover" href="#"
+												<a class="btn btn-icon btn-rounded btn-danger js-exclusao-btn" title="Remover" href="#"
 													data:url="@{/disciplina/{id}(id=${disciplina.id})}"
 													data:objeto="${disciplina.nome}">
-													<i class="fa fa-trash-alt"></i>
+													<i class="feather icon-trash-2"></i>
 												</a>
 										</td>
 									    </tr>
