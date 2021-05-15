@@ -141,6 +141,10 @@ strong {
   background: linear-gradient(-135deg, #899FD4 0%, #A389D4 100%);
 }
 
+.theme-bg3 {
+  background: linear-gradient(-135deg, #FF5252 0%, #A389D4 100%);
+}
+
 /* ==========  card css start  =========== */
 .anim-rotate {
   -webkit-animation: anim-rotate 1s linear infinite;
@@ -7007,7 +7011,6 @@ select.form-control-lg:not([size]):not([multiple]) {
       Radio & Checked css start
 ==========================  **/
 .checkbox {
-  padding: 10px 0;
   min-height: auto;
   position: relative;
   margin-right: 5px;
