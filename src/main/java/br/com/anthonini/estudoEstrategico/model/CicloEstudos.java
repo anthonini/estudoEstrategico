@@ -1,5 +1,8 @@
 package br.com.anthonini.estudoEstrategico.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "ciclo_estudos")
@@ -25,8 +30,17 @@ public class CicloEstudos implements Entidade {
 	private String nome;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_usuario")
+	@JoinColumn(name = "id_usuario", nullable = false)
 	private Usuario usuario;
+	
+	@Size(min = 1, message = "É obrigatório adicionar no mínimo um período")
+	//@OneToMany(mappedBy = "cicloEstudos", cascade = CascadeType.ALL)
+	//@OrderBy("ordem")
+	@Transient
+	private List<PeriodoCicloEstudos> periodosCicloEstudos = new ArrayList<>();
+	
+	@Transient
+	private String uuid;
 
 	public Long getId() {
 		return id;
@@ -50,6 +64,22 @@ public class CicloEstudos implements Entidade {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public List<PeriodoCicloEstudos> getPeriodosCicloEstudos() {
+		return periodosCicloEstudos;
+	}
+
+	public void setPeriodosCicloEstudos(List<PeriodoCicloEstudos> periodosCicloEstudos) {
+		this.periodosCicloEstudos = periodosCicloEstudos;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	@Override

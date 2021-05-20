@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,11 +25,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.com.anthonini.arquitetura.controller.AbstractController;
 import br.com.anthonini.arquitetura.controller.page.PageWrapper;
 import br.com.anthonini.estudoEstrategico.model.CicloEstudos;
+import br.com.anthonini.estudoEstrategico.model.PeriodoCicloEstudos;
 import br.com.anthonini.estudoEstrategico.repository.helper.cicloEstudos.filter.CicloEstudosFilter;
 import br.com.anthonini.estudoEstrategico.security.UsuarioSistema;
 import br.com.anthonini.estudoEstrategico.service.CicloEstudosService;
 import br.com.anthonini.estudoEstrategico.service.exception.NomeEntidadeJaCadastradaException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioSemPermissaoParaRealizarEssaOperacao;
+import br.com.anthonini.estudoEstrategico.sessao.CicloEstudosSessao;
 
 @Controller
 @RequestMapping("/ciclo-estudos")
@@ -36,17 +39,35 @@ public class CicloEstudosController extends AbstractController {
 	
 	@Autowired
 	private CicloEstudosService service;
+	
+	@Autowired
+	private CicloEstudosSessao sessao;
 
 	@GetMapping("/cadastro")
-	public ModelAndView cadastro(CicloEstudos cicloEstudos, ModelMap model) {
-		return new ModelAndView("ciclo-estudos/Form");
+	public ModelAndView cadastro(CicloEstudos cicloEstudos, ModelMap modelMap) {
+		sessao.adicionar(cicloEstudos);
+		return new ModelAndView("redirect:/ciclo-estudos/cadastro/"+cicloEstudos.getUuid());
 	}
+	
+	@GetMapping("/cadastro/{uuid}")
+    public ModelAndView cadastro(@PathVariable String uuid, ModelMap modelMap, RedirectAttributes redirect) {
+		CicloEstudos cicloEstudos = sessao.getCicloEstudos(uuid);
+        if (cicloEstudos == null) {
+        	addMensagemErro(redirect, "Ciclo de Estudos não encontrado");
+            return new ModelAndView("redirect:/ciclo-estudos");
+        }
+
+        if(!modelMap.containsValue(cicloEstudos))
+        	modelMap.addAttribute(cicloEstudos);
+        
+        return new ModelAndView("ciclo-estudos/Form");
+    }
 	
 	@PostMapping({"/cadastro", "/{\\d+}"})
 	public ModelAndView cadastro(@Valid CicloEstudos cicloEstudos, BindingResult bindingResult, @AuthenticationPrincipal UsuarioSistema usuarioSistema, ModelMap modelMap, RedirectAttributes redirect) {
 		if(bindingResult.hasErrors()) {
 			addMensagensErroValidacao(modelMap, bindingResult);
-			return cadastro(cicloEstudos, modelMap);
+			return cadastro(cicloEstudos.getUuid(),modelMap, redirect);
 		}
 
 		String view = cicloEstudos.isNovo() ? "/ciclo-estudos/cadastro" : "/ciclo-estudos";
@@ -94,5 +115,13 @@ public class CicloEstudosController extends AbstractController {
 		} else {
 			return ResponseEntity.badRequest().body("Disciplina não encontrada!");
 		}
+	}
+	
+	@PutMapping("/adicionar-periodo")
+	public String adicionarPeriodo(String uuid, ModelMap model) {
+		CicloEstudos cicloEstudos = sessao.getCicloEstudos(uuid);
+		cicloEstudos.getPeriodosCicloEstudos().add(new PeriodoCicloEstudos());
+		model.addAttribute(cicloEstudos);
+		return "ciclo-estudos/fragments/periodos";
 	}
 }

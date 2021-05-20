@@ -29,13 +29,13 @@
 			<div class="page-wrapper">
 				<!-- [ Main Content ] start -->
 				<div class="row">
-					<div class="col-sm-12">
-						<div class="card">
-							<div class="card-header">
-								<h5>Ciclo de Estudos</h5>
-							</div>
-					        <div class="card-block">
-					        	<form th:object="${cicloEstudos}" th:action="${cicloEstudos.novo} ? @{/ciclo-estudos/cadastro} : @{/ciclo-estudos/{id}(id=${cicloEstudos.id})}" method="POST">
+					<div class="col-12">
+						<form th:object="${cicloEstudos}" th:action="${cicloEstudos.novo} ? @{/ciclo-estudos/cadastro} : @{/ciclo-estudos/{id}(id=${cicloEstudos.id})}" method="POST">
+							<div class="card">
+								<div class="card-header">
+									<h5>Ciclo de Estudos</h5>
+								</div>
+						        <div class="card-block">
 						        	<div class="row">
 						        		<div class="col-md-6">
 						        			<div class="form-group">
@@ -44,11 +44,31 @@
 											</div>
 						        		</div>
 						        	</div>
-									<input type="hidden" th:field="*{id}">
+						        	
+						        	<input type="hidden" th:field="*{id}">
+						        	<input type="hidden" th:field="*{uuid}">
 									<button class="btn btn-primary" type="submit">Salvar</button>
-								</form>
+								</div>
 							</div>
-						</div>
+							
+							<div class="card">
+								<div class="card-header">
+									<h5>Períodos adicionados</h5>
+								</div>
+						        <div class="card-block">
+						        	<div class="form-group">
+							        	<button class="btn btn-sm shadow-2 btn-rounded btn-primary" type="button">
+							        		<i class="feather icon-plus"></i>
+							        		Adicionar Período
+							        	</button>
+						        	</div>
+						        	
+						        	<div id="periodos-adicionados">
+										<th:block th:replace="~{ciclo-estudos/fragments/periodos :: periodos}"></th:block>
+									</div>						        	
+								</div>
+							</div>
+						</form>
 					</div>
 				</div>
 				<!-- [ Main Content ] end -->

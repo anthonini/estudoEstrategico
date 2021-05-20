@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:data="http://www.thymeleaf.com/extras/data">
+
+<th:block th:fragment="periodos">
+	<div class="form-group">
+    	<span th:if="${#lists.isEmpty(cicloEstudos.periodosCicloEstudos)}">
+    		<i>Nenhum período adicionado</i>
+    	</span>
+	</div>
+	
+	<th:block th:unless="${#lists.isEmpty(cicloEstudos.periodosCicloEstudos)}" th:each="periodo : *{periodosCicloEstudos}">
+    	<div class="row">
+    		<div class="col-md-6">
+    			<div class="form-group">
+					<label class="form-label">Período</label>
+					<input type="text" class="form-control"> <!-- th:field="*{periodo}" an:classforerror="periodo" -->
+					<small class="text-muted">Em dias, ex: 7, 15, 30, 60... dias.</small>
+				</div>
+    		</div>
+    	</div>
+    	
+    	<div class="row">
+			<div class="col-md-6">
+				<div class="card">
+					<h5 class="card-header">Matérias primeiro dia</h5>
+					<div class="card-block">
+						
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="card">
+					<h5 class="card-header">Matérias segundo dia</h5>
+					<div class="card-block">
+					</div>
+				</div>
+			</div>						        		
+    	</div>
+    </th:block>
+</th:block>
+</html>
