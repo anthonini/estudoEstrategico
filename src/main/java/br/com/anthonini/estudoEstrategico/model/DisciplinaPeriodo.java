@@ -21,13 +21,14 @@ public class DisciplinaPeriodo implements Entidade {
 	@NotNull(message = "Duração é obrigatório")
 	private Integer duracao;
 	
-	@NotNull(message = "Dia é obrigatório")
-	private Integer dia;
-	
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "id_periodo_ciclo_estudos")
 	private PeriodoCicloEstudos periodoCicloEstudos;
+	
+	public String getDescricaoDuracao() {
+		return duracao + " minuto" + (duracao > 1 ? "s" : "");
+	}
 
 	public Long getId() {
 		return id;
@@ -51,14 +52,6 @@ public class DisciplinaPeriodo implements Entidade {
 
 	public void setDuracao(Integer duracao) {
 		this.duracao = duracao;
-	}
-
-	public Integer getDia() {
-		return dia;
-	}
-
-	public void setDia(Integer dia) {
-		this.dia = dia;
 	}
 
 	public PeriodoCicloEstudos getPeriodoCicloEstudos() {

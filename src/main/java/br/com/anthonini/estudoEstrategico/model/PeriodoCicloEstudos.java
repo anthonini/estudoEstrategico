@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -22,17 +23,17 @@ public class PeriodoCicloEstudos implements Entidade  {
 	@Column(name = "id_periodo_ciclo_estudos")*/
 	private Long id;
 	
-	@NotNull(message = "Período é obrigatório")
-	@Min(value = 1)
-	private Integer periodo;
+	@NotNull(message = "Duração é obrigatório")
+	@Min(value = 1, message = "Duração deve ser maior ou igual à 1")
+	private Integer duracao;
 	
 	@NotNull(message = "Ordem é obrigatório")
-	@Min(value = 1)
+	@Column(nullable = false)
 	private Integer ordem;
 	
-	@NotNull(message = "Ciclo de estudos é obrigatório")
+	@NotNull(message = "Ciclo de Estudos é obrigatóroio")
 	@ManyToOne
-	@JoinColumn(name = "id_ciclo_estudos")
+	@JoinColumn(name = "id_ciclo_estudos", nullable = false)
 	private CicloEstudos cicloEstudos;
 	
 	@Size(min = 1, message = "É obrigatório adicionar no mínimo uma disciplina no primeiro dia")
@@ -53,12 +54,12 @@ public class PeriodoCicloEstudos implements Entidade  {
 		this.id = id;
 	}
 
-	public Integer getPeriodo() {
-		return periodo;
+	public Integer getDuracao() {
+		return duracao;
 	}
 
-	public void setPeriodo(Integer periodo) {
-		this.periodo = periodo;
+	public void setDuracao(Integer duracao) {
+		this.duracao = duracao;
 	}
 
 	public Integer getOrdem() {

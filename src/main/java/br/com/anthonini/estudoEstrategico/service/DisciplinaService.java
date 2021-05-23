@@ -1,5 +1,6 @@
 package br.com.anthonini.estudoEstrategico.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.PersistenceException;
@@ -15,6 +16,7 @@ import br.com.anthonini.estudoEstrategico.model.Disciplina;
 import br.com.anthonini.estudoEstrategico.model.Usuario;
 import br.com.anthonini.estudoEstrategico.repository.DisciplinaRepository;
 import br.com.anthonini.estudoEstrategico.repository.helper.disciplina.filter.DisciplinaFilter;
+import br.com.anthonini.estudoEstrategico.security.UsuarioSistema;
 import br.com.anthonini.estudoEstrategico.service.exception.NomeEntidadeJaCadastradaException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioSemPermissaoParaRealizarEssaOperacao;
 
@@ -59,5 +61,9 @@ public class DisciplinaService {
 		} catch (PersistenceException | DataIntegrityViolationException e) {
 			throw new NaoEPossivelRemoverEntidadeException("Não é possivel remover a disciplina. Disciplina já associado com algum Ciclo de Estudos.");
 		}
+	}
+
+	public List<Disciplina> disciplinasUsuario(UsuarioSistema usuarioSistema) {
+		return repository.findByUsuarioOrderByNome(usuarioSistema.getUsuario());
 	}
 }
