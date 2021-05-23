@@ -37,7 +37,7 @@ public class PeriodoCicloEstudosController extends AbstractController {
 	public ModelAndView form(@PathVariable String uuid, PeriodoCicloEstudos periodoCicloEstudos, ModelMap model, RedirectAttributes redirect) {
 		CicloEstudos cicloEstudos = sessao.getCicloEstudos(uuid);
 		if (cicloEstudos == null) {
-        	addMensagemErro(redirect, getMessage("ciclo-estudos.naoEncontrado"));
+        	addMensagemErro(redirect, getMessage("ciclo-estudos.mensagem.naoEncontrado"));
             return new ModelAndView("redirect:/ciclo-estudos");
         }
 		
@@ -67,7 +67,7 @@ public class PeriodoCicloEstudosController extends AbstractController {
 		*/
 		
 		if (cicloEstudos == null) {
-        	addMensagemErro(redirect, getMessage("ciclo-estudos.naoEncontrado"));
+        	addMensagemErro(redirect, getMessage("ciclo-estudos.mensagem.naoEncontrado"));
             return new ModelAndView("redirect:/ciclo-estudos");
         }
 		
