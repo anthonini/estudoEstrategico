@@ -54,7 +54,7 @@ public class DisciplinaController extends AbstractController {
 		
 		try {
 			service.cadastrar(disciplina, usuarioSistema.getUsuario());
-			addMensagemSucesso(redirect, "Disciplina salva com sucesso!");
+			addMensagemSucesso(redirect, getMessage("disciplina.mensagem.sucesso"));
 		} catch (NomeEntidadeJaCadastradaException e) {
 			bindingResult.rejectValue("nome", e.getMessage(), e.getMessage());
 			addMensagensErroValidacao(modelMap, bindingResult);
@@ -79,7 +79,7 @@ public class DisciplinaController extends AbstractController {
 	@GetMapping("/{id}")
 	public ModelAndView alterar(@PathVariable("id") Disciplina disciplina, @AuthenticationPrincipal UsuarioSistema usuarioSistema, ModelMap model, RedirectAttributes redirect) {
 		if (disciplina == null || !usuarioSistema.getUsuario().equals(disciplina.getUsuario())) {
-            addMensagemErro(redirect, "Disciplina não encontrada");
+            addMensagemErro(redirect, getMessage("disciplina.mensagem.naoEncontrada"));
             return new ModelAndView("redirect:/disciplina");
         }
 
