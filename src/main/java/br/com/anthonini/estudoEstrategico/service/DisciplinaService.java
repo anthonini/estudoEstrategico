@@ -17,6 +17,7 @@ import br.com.anthonini.estudoEstrategico.model.Usuario;
 import br.com.anthonini.estudoEstrategico.repository.DisciplinaRepository;
 import br.com.anthonini.estudoEstrategico.repository.helper.disciplina.filter.DisciplinaFilter;
 import br.com.anthonini.estudoEstrategico.security.UsuarioSistema;
+import br.com.anthonini.estudoEstrategico.service.exception.NaoEPossivelRemoverEntidadeException;
 import br.com.anthonini.estudoEstrategico.service.exception.NomeEntidadeJaCadastradaException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioSemPermissaoParaRealizarEssaOperacao;
 

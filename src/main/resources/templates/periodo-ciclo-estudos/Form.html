@@ -41,7 +41,7 @@
 							    		<div class="col-md-6">
 							    			<div class="form-group">
 												<label class="form-label">Duração</label>
-												<input type="text" class="form-control" th:field="*{duracao}">
+												<input type="number" class="form-control" th:field="*{duracao}">
 												<small class="text-muted">Em dias. Ex: 7, 15, 30, 60... dias.</small>
 											</div>
 							    		</div>
@@ -70,7 +70,7 @@
 										<div class="card-header">
 											<h5>Disciplinas do segundo dia</h5>
 										</div>
-										<div class="card-block">
+										<div class="card-block" id="disciplinas-segundo-dia">
 											<th:block th:replace="/periodo-ciclo-estudos/fragments/disciplinas :: disciplinas(*{disciplinasPeriodoSegundoDia})"></th:block>
 										</div>
 										<div class="card-footer text-center">

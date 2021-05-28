@@ -1,4 +1,4 @@
-package br.com.anthonini.estudoEstrategico.service;
+package br.com.anthonini.estudoEstrategico.service.exception;
 
 public class NaoEPossivelRemoverEntidadeException extends RuntimeException {
 
