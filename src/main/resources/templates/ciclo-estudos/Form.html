@@ -30,7 +30,7 @@
 				<!-- [ Main Content ] start -->
 				<div class="row">
 					<div class="col-12">
-						<form th:object="${cicloEstudos}" th:action="@{/ciclo-estudos/cadastro/{uuid}(id=${cicloEstudos.uuid})}" method="POST">
+						<form th:object="${cicloEstudos}" th:action="@{/ciclo-estudos/cadastro/{uuid}(cicloUuid=${cicloEstudos.uuid})}" method="POST">
 							<div class="card User-Lists">
 								<div class="card-header">
 									<h5>Ciclo de Estudos</h5>
@@ -47,9 +47,9 @@
 						        	
 						        	<div class="form-group">
 							        	<a class="btn btn-sm shadow-2 btn-rounded btn-primary"
-							        		th:href="@{/periodo-ciclo-estudos/cadastro/{uuid}(uuid=${cicloEstudos.uuid})}">
+							        		th:href="@{/periodo-ciclo-estudos/cadastro?cicloId={uuid}(uuid=${cicloEstudos.uuid})}">
 							        		<i class="feather icon-plus"></i>
-							        		Adicionar Período
+							        		Adicionar Períodos
 							        	</a>
 						        	</div>
 						        	

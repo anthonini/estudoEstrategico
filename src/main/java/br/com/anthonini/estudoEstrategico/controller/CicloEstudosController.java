@@ -41,15 +41,15 @@ public class CicloEstudosController extends AbstractController {
 	@Autowired
 	private CicloEstudosSessao sessao;
 
-	@GetMapping("/cadastro")
+	@GetMapping("/novo")
 	public ModelAndView iniciarForm(CicloEstudos cicloEstudos, ModelMap modelMap) {
 		sessao.adicionar(cicloEstudos);
-		return new ModelAndView("redirect:/ciclo-estudos/cadastro/"+cicloEstudos.getUuid());
+		return new ModelAndView("redirect:/ciclo-estudos/cadastro?id="+cicloEstudos.getUuid());
 	}
 	
-	@GetMapping("/cadastro/{uuid}")
-    public ModelAndView form(@PathVariable String uuid, ModelMap modelMap, RedirectAttributes redirect, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
-		CicloEstudos cicloEstudos = sessao.getCicloEstudos(uuid);
+	@GetMapping("/cadastro")
+    public ModelAndView form(String id, ModelMap modelMap, RedirectAttributes redirect, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
+		CicloEstudos cicloEstudos = sessao.getCicloEstudos(id);
         if (cicloEstudos == null) {
         	addMensagemErro(redirect, getMessage("ciclo-estudos.mensagem.naoEncontrado"));
             return new ModelAndView("redirect:/ciclo-estudos");
@@ -61,11 +61,11 @@ public class CicloEstudosController extends AbstractController {
         return new ModelAndView("ciclo-estudos/Form");
     }
 	
-	@PostMapping({"/cadastro", "/{\\d+}"})
+	@PostMapping("/cadastro")
 	public ModelAndView cadastro(@Valid CicloEstudos cicloEstudos, BindingResult bindingResult, @AuthenticationPrincipal UsuarioSistema usuarioSistema, ModelMap modelMap, RedirectAttributes redirect) {
 		if(bindingResult.hasErrors()) {
 			addMensagensErroValidacao(modelMap, bindingResult);
-			return form(cicloEstudos.getUuid(),modelMap, redirect, usuarioSistema);
+			return iniciarForm(cicloEstudos,modelMap);
 		}
 
 		String view = cicloEstudos.isNovo() ? "/ciclo-estudos/cadastro" : "/ciclo-estudos";
@@ -101,7 +101,6 @@ public class CicloEstudosController extends AbstractController {
             return new ModelAndView("redirect:/ciclo-estudos");
         }
 
-		model.addAttribute("cicloEstudos", cicloEstudos);
         return iniciarForm(cicloEstudos, model);
     }
 	

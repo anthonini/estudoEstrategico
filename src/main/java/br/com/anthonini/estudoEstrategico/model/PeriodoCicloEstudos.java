@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -27,9 +28,9 @@ public class PeriodoCicloEstudos implements Entidade  {
 	@Min(value = 1, message = "Duração deve ser maior ou igual à 1")
 	private Integer duracao;
 	
-	@NotNull(message = "Ordem é obrigatório")
+	@NotNull(message = "Número é obrigatório")
 	@Column(nullable = false)
-	private Integer ordem;
+	private Integer numero;
 	
 	@NotNull(message = "Ciclo de Estudos é obrigatóroio")
 	@ManyToOne
@@ -45,6 +46,9 @@ public class PeriodoCicloEstudos implements Entidade  {
 	@OneToMany(mappedBy = "periodoCicloEstudos", cascade = CascadeType.ALL)
 	@Where(clause = "dia = 2")
 	private List<DisciplinaPeriodo> disciplinasPeriodoSegundoDia = new ArrayList<>();
+	
+	@Transient
+	private String uuid;
 
 	public Long getId() {
 		return id;
@@ -62,12 +66,12 @@ public class PeriodoCicloEstudos implements Entidade  {
 		this.duracao = duracao;
 	}
 
-	public Integer getOrdem() {
-		return ordem;
+	public Integer getNumero() {
+		return numero;
 	}
 
-	public void setOrdem(Integer ordem) {
-		this.ordem = ordem;
+	public void setNumero(Integer numero) {
+		this.numero = numero;
 	}
 
 	public CicloEstudos getCicloEstudos() {
@@ -92,6 +96,14 @@ public class PeriodoCicloEstudos implements Entidade  {
 
 	public void setDisciplinasPeriodoSegundoDia(List<DisciplinaPeriodo> disciplinasPeriodoSegundoDia) {
 		this.disciplinasPeriodoSegundoDia = disciplinasPeriodoSegundoDia;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	@Override

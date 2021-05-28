@@ -23,9 +23,9 @@
 				<tr th:each="disciplinaPeriodo, itr : ${disciplinasPeriodo}">
 					<td scope="row" class="text-center" th:text="${itr.index+1}">1</td>
 					<td th:text="${disciplinaPeriodo.disciplina.nome}">Disciplina</td>
-					<td th:text="${disciplinaPeriodo.descricaoDuracao}">60 minutos</td>
+					<td th:text="${disciplinaPeriodo.descricaoTempo}">60 minutos</td>
 					<td>
-						<a class="label theme-bg3 text-white f-12 js-exclusao-btn" title="Remover" href="#"
+						<a class="badge label label-danger text-white f-12 shadow-1" title="Remover" href="#"
 							data:url="@{/disciplina/{id}(id=${disciplinaPeriodo.disciplina.id})}"
 							data:objeto="${disciplinaPeriodo.disciplina.nome}">
 							<i class="feather icon-trash-2"></i>

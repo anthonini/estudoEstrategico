@@ -19,7 +19,7 @@
 						<ul class="breadcrumb">
 							<li class="breadcrumb-item"><a th:href="@{/}"><i class="feather icon-home"></i></a></li>
 							<li class="breadcrumb-item"><a th:href="@{/ciclo-estudos}">Ciclo de Estudos</a></li>
-							<li class="breadcrumb-item"><a th:href="@{/ciclo-estudos/cadastro/{uuid}(uuid=${uuid})}" th:text="${periodoCicloEstudos.novo} ? Cadastro : Edição">Cadastro</a></li>
+							<li class="breadcrumb-item"><a th:href="@{/ciclo-estudos/cadastro/{uuid}(uuid=${cicloUuid})}" th:text="${periodoCicloEstudos.novo} ? Cadastro : Edição">Cadastro</a></li>
 							<li class="breadcrumb-item"><a href="#">Adicionar Período</a></li>
 						</ul>
 					</div>
@@ -31,7 +31,7 @@
 				<!-- [ Main Content ] start -->
 				<div class="row">
 					<div class="col-12">
-						<form th:object="${periodoCicloEstudos}" th:action="@{/periodo-ciclo-estudos/cadastro/{uuid}(uuid=${uuid})}" method="POST">
+						<form th:object="${periodoCicloEstudos}" th:action="@{/periodo-ciclo-estudos/cadastro}" method="POST">
 							<div class="card">
 								<div class="card-header">
 									<h5>Período</h5>
@@ -55,9 +55,14 @@
 										<div class="card-header">
 											<h5>Disciplinas do primeiro dia</h5>
 										</div>
-										<div class="card-block" >
+										<div class="card-block" id="disciplinas-primeiro-dia">
 											<th:block th:replace="/periodo-ciclo-estudos/fragments/disciplinas :: disciplinas(*{disciplinasPeriodoPrimeiroDia})"></th:block>
 										</div>
+										<div class="card-footer text-center">
+                                            <a class="btn btn-success shadow-2" href="#" data-toggle="modal" data-target="#disciplinaPeriodoModal" data:dia="${primeiroDia}">
+                                            	<i class="fas fa-plus fa-sm"></i> Adicionar Disciplina
+                                            </a>
+                                        </div>
 									</div>
 								</div>
 								<div class="col-md-6">
@@ -68,15 +73,21 @@
 										<div class="card-block">
 											<th:block th:replace="/periodo-ciclo-estudos/fragments/disciplinas :: disciplinas(*{disciplinasPeriodoSegundoDia})"></th:block>
 										</div>
+										<div class="card-footer text-center">
+                                            <a class="btn btn-success shadow-2" href="#" data-toggle="modal" data-target="#disciplinaPeriodoModal" data:dia="${segundoDia}">
+                                            	<i class="fas fa-plus fa-sm"></i> Adicionar Disciplina
+                                            </a>
+                                        </div>
 									</div>
-								</div>						        		
+								</div>					        		
 					    	</div>
 					    	
 					    	<div class="card">
 						        <div class="card-block">
-						        	<input type="hidden" th:field="*{ordem}">						        	
+						        	<input type="hidden" name="cicloId" th:value="${cicloId}">
+						        	<input type="hidden" th:field="*{uuid}">
 						        	<input type="hidden" th:field="*{id}">
-									<a class="btn btn-outline-secondary" th:href="@{/ciclo-estudos/cadastro/{uuid}(uuid=${uuid})}">
+									<a class="btn btn-outline-secondary" th:href="@{/ciclo-estudos/cadastro?id={cicloId}(cicloId=${cicloId})}">
 										<i class="feather icon-chevrons-left"></i> Voltar
 									</a>
 									<button class="btn btn-primary" type="submit">Adicionar</button>
@@ -88,6 +99,20 @@
 				<!-- [ Main Content ] end -->
 			</div>
 		</div>
+		
+		<div class="modal fade" id="disciplinaPeriodoModal" role="dialog" aria-hidden="true" data:url="@{/disciplina-periodo}" tabindex="-1">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-footer">
+						<button type="button" class="btn btn-light" data-dismiss="modal">Fechar</button>
+						<button type="submit" class="btn btn-primary">Salvar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+	<th:block layout:fragment="javascript-extra">
+		<script th:src="@{/javascript/periodo-ciclo-estudos/disciplinaPeriodo.js}"></script>
 	</th:block>
 </body>
 </html>
