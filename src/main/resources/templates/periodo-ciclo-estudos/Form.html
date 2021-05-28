@@ -19,7 +19,7 @@
 						<ul class="breadcrumb">
 							<li class="breadcrumb-item"><a th:href="@{/}"><i class="feather icon-home"></i></a></li>
 							<li class="breadcrumb-item"><a th:href="@{/ciclo-estudos}">Ciclo de Estudos</a></li>
-							<li class="breadcrumb-item"><a th:href="@{/ciclo-estudos/cadastro/{uuid}(uuid=${cicloUuid})}" th:text="${periodoCicloEstudos.novo} ? Cadastro : Edição">Cadastro</a></li>
+							<li class="breadcrumb-item"><a th:href="@{/ciclo-estudos/cadastro?id={cicloId}(cicloId=${cicloEstudos.uuid})}" th:text="${cicloEstudos.novo} ? Cadastro : Edição">Cadastro</a></li>
 							<li class="breadcrumb-item"><a href="#">Adicionar Período</a></li>
 						</ul>
 					</div>
@@ -84,10 +84,10 @@
 					    	
 					    	<div class="card">
 						        <div class="card-block">
-						        	<input type="hidden" name="cicloId" th:value="${cicloId}">
+						        	<input type="hidden" name="cicloId" th:value="${cicloEstudos.uuid}">
 						        	<input type="hidden" th:field="*{uuid}">
 						        	<input type="hidden" th:field="*{id}">
-									<a class="btn btn-outline-secondary" th:href="@{/ciclo-estudos/cadastro?id={cicloId}(cicloId=${cicloId})}">
+									<a class="btn btn-outline-secondary" th:href="@{/ciclo-estudos/cadastro?id={cicloId}(cicloId=${cicloEstudos.uuid})}">
 										<i class="feather icon-chevrons-left"></i> Voltar
 									</a>
 									<button class="btn btn-primary" type="submit">Adicionar</button>

@@ -42,7 +42,7 @@ public class PeriodoCicloEstudosController extends AbstractController {
 		
 		model.addAttribute("primeiroDia", DiaPeriodoCicloEstudos.PRIMEIRO);
 		model.addAttribute("segundoDia", DiaPeriodoCicloEstudos.SEGUNDO);
-		model.addAttribute("cicloId", cicloId);
+		model.addAttribute(cicloEstudos);
 		
 		PeriodoCicloEstudos periodoCicloEstudos = sessao.getPeriodoCicloEstudos(uuid);
 		if(periodoCicloEstudos == null) {
