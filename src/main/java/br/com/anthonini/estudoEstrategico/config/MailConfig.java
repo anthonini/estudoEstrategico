@@ -13,6 +13,12 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 @PropertySource(value = { "file:./.estudo_estrategico-mail.properties" }, ignoreResourceNotFound = true)
 public class MailConfig {
 	
+	@Value("${external.estudo_estrategico.mail.host:estudo_estrategico.mail.host}")
+	private String host;
+	
+	@Value("${external.estudo_estrategico.mail.port:estudo_estrategico.mail.port}")
+	private int port;
+	
 	@Value("${external.estudo_estrategico.mail.username:estudo_estrategico.mail.username}")
 	private String username;
 	
@@ -25,8 +31,8 @@ public class MailConfig {
 	@Bean
 	public JavaMailSender mailSender() {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-		mailSender.setHost("smtp.sendgrid.net");
-		mailSender.setPort(587);
+		mailSender.setHost(host);
+		mailSender.setPort(port);
 		mailSender.setUsername(username);
 		mailSender.setPassword(password);
 		
@@ -34,7 +40,7 @@ public class MailConfig {
 		props.put("mail.transport.protocol", "smtp");
 		props.put("mail.smtp.auth", true);
 		props.put("mail.smtp.starttls.enable", true);
-		props.put("mail.debug", false);
+		props.put("mail.debug", true);
 		props.put("mail.smtp.connectiontimeout", 10000); // miliseconds
 
 		mailSender.setJavaMailProperties(props);
