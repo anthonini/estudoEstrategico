@@ -25,9 +25,10 @@
 					<td th:text="${disciplinaPeriodo.disciplina.nome}">Disciplina</td>
 					<td th:text="${disciplinaPeriodo.descricaoTempo}">60 minutos</td>
 					<td>
-						<a class="badge label label-danger text-white f-12 shadow-1" title="Remover" href="#"
-							data:url="@{/disciplina/{id}(id=${disciplinaPeriodo.disciplina.id})}"
-							data:objeto="${disciplinaPeriodo.disciplina.nome}">
+						<a class="badge label label-danger text-white f-12 shadow-1 js-remover-disciplina" title="Remover" href="#"
+							data:url="@{/disciplina-periodo/remover/{id}(id=${disciplinaPeriodo.disciplina.id})}"
+							data:disciplina="${disciplinaPeriodo.disciplina.nome}"
+							data:dia="${dia}">
 							<i class="feather icon-trash-2"></i>
 						</a>
 					</td>

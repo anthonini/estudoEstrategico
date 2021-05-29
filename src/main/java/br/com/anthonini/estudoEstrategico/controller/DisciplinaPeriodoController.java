@@ -5,19 +5,24 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.anthonini.arquitetura.controller.AbstractController;
 import br.com.anthonini.estudoEstrategico.model.DiaPeriodoCicloEstudos;
 import br.com.anthonini.estudoEstrategico.model.Disciplina;
 import br.com.anthonini.estudoEstrategico.model.DisciplinaPeriodo;
+import br.com.anthonini.estudoEstrategico.model.PeriodoCicloEstudos;
 import br.com.anthonini.estudoEstrategico.service.DisciplinaService;
 import br.com.anthonini.estudoEstrategico.sessao.PeriodoCicloEstudosSessao;
 
@@ -53,6 +58,14 @@ public class DisciplinaPeriodoController extends AbstractController {
 		}
 		
 		return modal(null, model, uuid, dia);
+	}
+	
+	@DeleteMapping("/remover/{idDisciplina}")
+	public @ResponseBody ResponseEntity<?> remover(@PathVariable Long idDisciplina, String uuid, DiaPeriodoCicloEstudos dia, ModelMap model) {
+		PeriodoCicloEstudos periodoCicloEstudos = sessao.getPeriodoCicloEstudos(uuid);
+		dia.removerDisciplina(periodoCicloEstudos, idDisciplina);
+		
+		return ResponseEntity.ok().build();
 	}
 	
 	@ModelAttribute("disciplinasUsuario")

@@ -13,6 +13,11 @@ public enum DiaPeriodoCicloEstudos {
 		public void adicionarDisciplina(PeriodoCicloEstudos periodoCicloEstudos, DisciplinaPeriodo disciplinaPeriodo) {
 			periodoCicloEstudos.getDisciplinasPeriodoPrimeiroDia().add(disciplinaPeriodo);
 		}
+
+		@Override
+		public void removerDisciplina(PeriodoCicloEstudos periodoCicloEstudos, Long idDisciplina) {
+			periodoCicloEstudos.getDisciplinasPeriodoPrimeiroDia().removeIf(d -> d.getDisciplina().getId().equals(idDisciplina));
+		}
 	},
 	SEGUNDO("Segundo") {
 		@Override
@@ -23,6 +28,11 @@ public enum DiaPeriodoCicloEstudos {
 		@Override
 		public void adicionarDisciplina(PeriodoCicloEstudos periodoCicloEstudos, DisciplinaPeriodo disciplinaPeriodo) {
 			periodoCicloEstudos.getDisciplinasPeriodoSegundoDia().add(disciplinaPeriodo);
+		}
+
+		@Override
+		public void removerDisciplina(PeriodoCicloEstudos periodoCicloEstudos, Long idDisciplina) {
+			periodoCicloEstudos.getDisciplinasPeriodoSegundoDia().removeIf(d -> d.getDisciplina().getId().equals(idDisciplina));
 		}
 	};
 	
@@ -35,6 +45,8 @@ public enum DiaPeriodoCicloEstudos {
 	public abstract List<DisciplinaPeriodo> getDisciplinas(PeriodoCicloEstudos periodoCicloEstudos);
 	
 	public abstract void adicionarDisciplina(PeriodoCicloEstudos periodoCicloEstudos, DisciplinaPeriodo disciplinaPeriodo);
+	
+	public abstract void removerDisciplina(PeriodoCicloEstudos periodoCicloEstudos, Long idDIsciplina);
 
 	public String getDescricao() {
 		return descricao;
