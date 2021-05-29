@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.anthonini.arquitetura.controller.AbstractController;
 import br.com.anthonini.arquitetura.controller.page.PageWrapper;
+import br.com.anthonini.estudoEstrategico.controller.validador.CicloEstudosValidador;
 import br.com.anthonini.estudoEstrategico.model.CicloEstudos;
 import br.com.anthonini.estudoEstrategico.repository.helper.cicloEstudos.filter.CicloEstudosFilter;
 import br.com.anthonini.estudoEstrategico.security.UsuarioSistema;
@@ -40,6 +41,9 @@ public class CicloEstudosController extends AbstractController {
 	
 	@Autowired
 	private CicloEstudosSessao sessao;
+	
+	@Autowired
+	private CicloEstudosValidador validador;
 
 	@GetMapping("/novo")
 	public ModelAndView iniciarForm(CicloEstudos cicloEstudos, ModelMap modelMap) {
@@ -63,25 +67,29 @@ public class CicloEstudosController extends AbstractController {
 	
 	@PostMapping("/cadastro")
 	public ModelAndView cadastro(@Valid CicloEstudos cicloEstudos, BindingResult bindingResult, @AuthenticationPrincipal UsuarioSistema usuarioSistema, ModelMap modelMap, RedirectAttributes redirect) {
+		String nome = cicloEstudos.getNome(); 
+		cicloEstudos = sessao.getCicloEstudos(cicloEstudos.getUuid());
+		cicloEstudos.setNome(nome);
+		
+		validador.validate(cicloEstudos, bindingResult);
 		if(bindingResult.hasErrors()) {
-			addMensagensErroValidacao(modelMap, bindingResult);
+			addMensagensErroValidacao(redirect, bindingResult);
 			return iniciarForm(cicloEstudos,modelMap);
 		}
-
-		String view = cicloEstudos.isNovo() ? "/ciclo-estudos/cadastro" : "/ciclo-estudos";
 		
 		try {
 			service.salvar(cicloEstudos, usuarioSistema.getUsuario());
-			addMensagemSucesso(redirect, getMessage("ciclo-estudos.mensage.sucesso"));
+			addMensagemSucesso(redirect, getMessage("ciclo-estudos.mensagem.sucesso"));
+			sessao.remover(cicloEstudos.getUuid());
 		} catch (NomeEntidadeJaCadastradaException e) {
 			bindingResult.rejectValue("nome", e.getMessage(), e.getMessage());
-			addMensagensErroValidacao(modelMap, bindingResult);
+			addMensagensErroValidacao(redirect, bindingResult);
 			return iniciarForm(cicloEstudos, modelMap);
 		} catch (UsuarioSemPermissaoParaRealizarEssaOperacao e) {
 			addMensagemErro(redirect, e.getMessage());
 		}
 		
-		return new ModelAndView("redirect:"+view);
+		return new ModelAndView("redirect:/ciclo-estudos");
 	}
 	
 	@GetMapping
@@ -99,7 +107,7 @@ public class CicloEstudosController extends AbstractController {
 		if (cicloEstudos == null || !usuarioSistema.getUsuario().equals(cicloEstudos.getUsuario())) {
             addMensagemErro(redirect, getMessage("ciclo-estudos.mensagem.naoEncontrado"));
             return new ModelAndView("redirect:/ciclo-estudos");
-        }
+        }		
 
         return iniciarForm(cicloEstudos, model);
     }

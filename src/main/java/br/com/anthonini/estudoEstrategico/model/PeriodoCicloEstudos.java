@@ -6,9 +6,14 @@ import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -16,13 +21,15 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Where;
 
+@Entity
+@Table(name = "periodo_ciclo_estudos")
 public class PeriodoCicloEstudos implements Entidade  {
 
 	private static final long serialVersionUID = 1L;
 	
-	/*@Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_periodo_ciclo_estudos")*/
+	@Column(name = "id_periodo_ciclo_estudos")
 	private Long id;
 	
 	@NotNull(message = "Duração é obrigatório")
@@ -40,12 +47,12 @@ public class PeriodoCicloEstudos implements Entidade  {
 	
 	@Size(min = 1, message = "É obrigatório adicionar no mínimo uma disciplina no primeiro dia")
 	@OneToMany(mappedBy = "periodoCicloEstudos", cascade = CascadeType.ALL)
-	@Where(clause = "dia = 1")
+	@Where(clause = "dia = 'PRIMEIRO'")
 	private List<DisciplinaPeriodo> disciplinasPeriodoPrimeiroDia = new ArrayList<>();
 	
 	@Size(min = 1, message = "É obrigatório adicionar no mínimo uma disciplina no segundo dia")
 	@OneToMany(mappedBy = "periodoCicloEstudos", cascade = CascadeType.ALL)
-	@Where(clause = "dia = 2")
+	@Where(clause = "dia = 'SEGUNDO'")
 	private List<DisciplinaPeriodo> disciplinasPeriodoSegundoDia = new ArrayList<>();
 	
 	public String getDescricaoDuracao() {

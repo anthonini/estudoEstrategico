@@ -29,10 +29,25 @@ EstudoEstrategico.Security = (function() {
 	return Security;
 }());
 
+EstudoEstrategico.MascaraNumeros = (function(){
+	function MascaraNumeros() {		
+		this.numero = $('.js-numero');
+	}
+	
+	MascaraNumeros.prototype.habilitar = function() {
+		this.numero.mask('#0', {reverse: true});
+	}
+	
+	return MascaraNumeros;
+})();
+
 $(function(){	
 	var mascaraCPF = new EstudoEstrategico.MascaraCPF();
 	mascaraCPF.iniciar();
 	
 	var security = new EstudoEstrategico.Security();
 	security.enable();
+	
+	var mascaraNumeros = new EstudoEstrategico.MascaraNumeros();
+	mascaraNumeros.habilitar();
 });

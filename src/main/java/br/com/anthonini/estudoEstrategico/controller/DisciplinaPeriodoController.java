@@ -50,9 +50,13 @@ public class DisciplinaPeriodoController extends AbstractController {
 		if(bindingResult.hasErrors()) {
 			addMensagensErroValidacao(model, bindingResult);
 		} else {
+			PeriodoCicloEstudos periodo = sessao.getPeriodoCicloEstudos(uuid);
+			disciplinaPeriodo.setPeriodoCicloEstudos(periodo);
+			disciplinaPeriodo.setDia(dia);
+			dia.adicionarDisciplina(periodo, disciplinaPeriodo);
+			
 			model.addAttribute("disciplinaAdicionada", true);
 			model.addAttribute("dia", dia);
-			dia.adicionarDisciplina(sessao.getPeriodoCicloEstudos(uuid), disciplinaPeriodo);
 			model.addAttribute("disciplinaPeriodo", new DisciplinaPeriodo());
 			addMensagemSucesso(model, "Disciplina adicionada com sucesso!");
 		}

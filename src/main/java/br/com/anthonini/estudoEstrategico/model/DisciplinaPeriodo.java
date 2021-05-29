@@ -1,16 +1,26 @@
 package br.com.anthonini.estudoEstrategico.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+@Entity
+@Table(name = "disciplina_periodo")
 public class DisciplinaPeriodo implements Entidade {
 	
 	private static final long serialVersionUID = 1L;
 	
-	/*@Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_disciplina_periodo")*/
+	@Column(name = "id_disciplina_periodo")
 	private Long id;
 	
 	@NotNull(message = "Disciplina é obrigatório")
@@ -20,6 +30,9 @@ public class DisciplinaPeriodo implements Entidade {
 	
 	@NotNull(message = "Tempo é obrigatório")
 	private Integer tempo;
+	
+	@Enumerated(EnumType.STRING)
+	private DiaPeriodoCicloEstudos dia;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_periodo_ciclo_estudos")
@@ -51,6 +64,14 @@ public class DisciplinaPeriodo implements Entidade {
 
 	public void setTempo(Integer tempo) {
 		this.tempo = tempo;
+	}
+
+	public DiaPeriodoCicloEstudos getDia() {
+		return dia;
+	}
+
+	public void setDia(DiaPeriodoCicloEstudos dia) {
+		this.dia = dia;
 	}
 
 	public PeriodoCicloEstudos getPeriodoCicloEstudos() {
