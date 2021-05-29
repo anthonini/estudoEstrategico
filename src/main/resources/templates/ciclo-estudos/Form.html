@@ -56,20 +56,31 @@
 						        	<h5 class="card-header">Períodos adicionados</h5>						        	
 						        	<div class="table-responsive">
 							        	<table class="table table-hover">
+							        		<thead th:unless="*{periodosCicloEstudos.empty}">
+							        			<tr>
+							        				<th>#</th>
+							        				<th>Duração</th>
+							        				<th>Primeiro Dia</th>
+							        				<th>Segundo Dia</th>
+							        				<th class="table-col-acoes"></th>
+							        			</tr>
+							        		</thead>
 										  <tbody>
 										  	<tr th:if="*{periodosCicloEstudos.empty}">
-				                             	<td colspan="3"><i>Nenhum período adicionado.</i></td>
-				                             </tr>
-										    <tr th:each="ciclo, itr : *{periodosCicloEstudos}">
+				                             	<td colspan="5"><i>Nenhum período adicionado.</i></td>
+				                            </tr>
+										    <tr th:each="periodo, itr : *{periodosCicloEstudos}">
 										      <td scope="row" class="text-center col-numero" th:text="${itr.index+1}">1</td>
-										      <td>Concurso De Tribunal</td>
-										      <td class="table-col-acoes">
-													<a class="label theme-bg text-white f-12" th:href="@{/ciclo-estudos/{id}(id=${ciclo.id})}" title="Alterar">
+										      <td th:text="${periodo.descricaoDuracao}">30 dias</td>
+										      <td th:text="${periodo.descricaoPrimeiroDia}">Disciplina</td>
+										      <td th:text="${periodo.descricaoSegundoDia}">30 dias</td>
+										      <td>
+													<a class="label theme-bg text-white f-12" th:href="@{/ciclo-estudos/{id}(id=${periodo.id})}" title="Alterar">
 														Alterar <i class="feather icon-edit"></i>
 													</a>
 													<a class="label theme-bg3 text-white f-12 js-exclusao-btn" title="Remover" href="#"
-														data:url="@{/ciclo-estudos/{id}(id=${ciclo.id})}"
-														data:objeto="${ciclo}">
+														data:url="@{/ciclo-estudos/{id}(id=${periodo.id})}"
+														data:objeto="${periodo}">
 														Remover <i class="feather icon-trash-2"></i>
 													</a>
 											  </td>

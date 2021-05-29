@@ -2,6 +2,7 @@ package br.com.anthonini.estudoEstrategico.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -46,6 +47,20 @@ public class PeriodoCicloEstudos implements Entidade  {
 	@OneToMany(mappedBy = "periodoCicloEstudos", cascade = CascadeType.ALL)
 	@Where(clause = "dia = 2")
 	private List<DisciplinaPeriodo> disciplinasPeriodoSegundoDia = new ArrayList<>();
+	
+	public String getDescricaoDuracao() {
+		return duracao + " dia" + (duracao > 1 ? "s" : "");
+	}
+	
+	public String getDescricaoPrimeiroDia() {
+		return disciplinasPeriodoPrimeiroDia.stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toList())
+		.stream().map(Disciplina::getNome).collect(Collectors.joining(", "));
+	}
+	
+	public String getDescricaoSegundoDia() {
+		return disciplinasPeriodoSegundoDia.stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toList())
+				.stream().map(Disciplina::getNome).collect(Collectors.joining(", "));
+	}
 	
 	@Transient
 	private String uuid;
