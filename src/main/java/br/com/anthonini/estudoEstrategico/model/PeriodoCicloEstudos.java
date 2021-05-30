@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,9 +18,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "periodo_ciclo_estudos")
@@ -40,32 +38,35 @@ public class PeriodoCicloEstudos implements Entidade  {
 	@Column(nullable = false)
 	private Integer numero;
 	
-	@NotNull(message = "Ciclo de Estudos é obrigatóroio")
-	@ManyToOne
+	@NotNull(message = "Ciclo de Estudos é obrigatório")
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_ciclo_estudos", nullable = false)
 	private CicloEstudos cicloEstudos;
 	
-	@Size(min = 1, message = "É obrigatório adicionar no mínimo uma disciplina no primeiro dia")
-	@OneToMany(mappedBy = "periodoCicloEstudos", cascade = CascadeType.ALL)
-	@Where(clause = "dia = 'PRIMEIRO'")
-	private List<DisciplinaPeriodo> disciplinasPeriodoPrimeiroDia = new ArrayList<>();
-	
-	@Size(min = 1, message = "É obrigatório adicionar no mínimo uma disciplina no segundo dia")
-	@OneToMany(mappedBy = "periodoCicloEstudos", cascade = CascadeType.ALL)
-	@Where(clause = "dia = 'SEGUNDO'")
-	private List<DisciplinaPeriodo> disciplinasPeriodoSegundoDia = new ArrayList<>();
+	@OneToMany(mappedBy = "periodoCicloEstudos", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	private List<DisciplinaPeriodo> disciplinas = new ArrayList<>();
 	
 	public String getDescricaoDuracao() {
 		return duracao + " dia" + (duracao > 1 ? "s" : "");
 	}
 	
+	public List<DisciplinaPeriodo> getDisciplinasPrimeiroDia() {
+		return disciplinas.stream().filter(dp -> dp.getDia().equals(DiaPeriodoCicloEstudos.PRIMEIRO)).collect(Collectors.toList());
+	}
+	
+	public List<DisciplinaPeriodo> getDisciplinasSegundoDia() {
+		return disciplinas.stream().filter(dp -> dp.getDia().equals(DiaPeriodoCicloEstudos.SEGUNDO)).collect(Collectors.toList());
+	}
+	
 	public String getDescricaoPrimeiroDia() {
-		return disciplinasPeriodoPrimeiroDia.stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toList())
-		.stream().map(Disciplina::getNome).collect(Collectors.joining(", "));
+		return getDisciplinasPrimeiroDia().stream()
+				.map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toList())
+				.stream().map(Disciplina::getNome).collect(Collectors.joining(", "));
 	}
 	
 	public String getDescricaoSegundoDia() {
-		return disciplinasPeriodoSegundoDia.stream().map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toList())
+		return getDisciplinasSegundoDia().stream()
+				.map(DisciplinaPeriodo::getDisciplina).collect(Collectors.toList())
 				.stream().map(Disciplina::getNome).collect(Collectors.joining(", "));
 	}
 	
@@ -104,20 +105,12 @@ public class PeriodoCicloEstudos implements Entidade  {
 		this.cicloEstudos = cicloEstudos;
 	}
 
-	public List<DisciplinaPeriodo> getDisciplinasPeriodoPrimeiroDia() {
-		return disciplinasPeriodoPrimeiroDia;
+	public List<DisciplinaPeriodo> getDisciplinas() {
+		return disciplinas;
 	}
 
-	public void setDisciplinasPeriodoPrimeiroDia(List<DisciplinaPeriodo> disciplinasPeriodoPrimeiroDia) {
-		this.disciplinasPeriodoPrimeiroDia = disciplinasPeriodoPrimeiroDia;
-	}
-
-	public List<DisciplinaPeriodo> getDisciplinasPeriodoSegundoDia() {
-		return disciplinasPeriodoSegundoDia;
-	}
-
-	public void setDisciplinasPeriodoSegundoDia(List<DisciplinaPeriodo> disciplinasPeriodoSegundoDia) {
-		this.disciplinasPeriodoSegundoDia = disciplinasPeriodoSegundoDia;
+	public void setDisciplinas(List<DisciplinaPeriodo> disciplinas) {
+		this.disciplinas = disciplinas;
 	}
 
 	public String getUuid() {

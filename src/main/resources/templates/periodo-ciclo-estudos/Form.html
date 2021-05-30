@@ -46,6 +46,14 @@
 											</div>
 							    		</div>
 							    	</div>
+							    	
+							    	<input type="hidden" name="cicloId" th:value="${cicloEstudos.uuid}">
+						        	<input type="hidden" th:field="*{uuid}">
+						        	<input type="hidden" th:field="*{id}">
+									<a class="btn btn-outline-secondary" th:href="@{/ciclo-estudos/cadastro?id={cicloId}(cicloId=${cicloEstudos.uuid})}">
+										<i class="feather icon-chevrons-left"></i> Voltar
+									</a>
+									<button class="btn btn-primary" type="submit">Adicionar</button>
 								</div>
 							</div>
 							
@@ -56,7 +64,7 @@
 											<h5>Disciplinas do primeiro dia</h5>
 										</div>
 										<div class="card-block" id="disciplinas-primeiro-dia">
-											<th:block th:replace="/periodo-ciclo-estudos/fragments/disciplinas :: disciplinas(*{disciplinasPeriodoPrimeiroDia})"></th:block>
+											<th:block th:replace="/periodo-ciclo-estudos/fragments/disciplinas :: disciplinas(*{disciplinasPrimeiroDia})"></th:block>
 										</div>
 										<div class="card-footer text-center">
                                             <a class="btn btn-success shadow-2" href="#" data-toggle="modal" data-target="#disciplinaPeriodoModal" data:dia="${primeiroDia}">
@@ -66,12 +74,12 @@
 									</div>
 								</div>
 								<div class="col-md-6">
-									<div class="card User-Lists">
+									<div class="card">
 										<div class="card-header">
 											<h5>Disciplinas do segundo dia</h5>
 										</div>
 										<div class="card-block" id="disciplinas-segundo-dia">
-											<th:block th:replace="/periodo-ciclo-estudos/fragments/disciplinas :: disciplinas(*{disciplinasPeriodoSegundoDia})"></th:block>
+											<th:block th:replace="/periodo-ciclo-estudos/fragments/disciplinas :: disciplinas(*{disciplinasSegundoDia})"></th:block>
 										</div>
 										<div class="card-footer text-center">
                                             <a class="btn btn-success shadow-2" href="#" data-toggle="modal" data-target="#disciplinaPeriodoModal" data:dia="${segundoDia}">
@@ -79,20 +87,8 @@
                                             </a>
                                         </div>
 									</div>
-								</div>					        		
-					    	</div>
-					    	
-					    	<div class="card">
-						        <div class="card-block">
-						        	<input type="hidden" name="cicloId" th:value="${cicloEstudos.uuid}">
-						        	<input type="hidden" th:field="*{uuid}">
-						        	<input type="hidden" th:field="*{id}">
-									<a class="btn btn-outline-secondary" th:href="@{/ciclo-estudos/cadastro?id={cicloId}(cicloId=${cicloEstudos.uuid})}">
-										<i class="feather icon-chevrons-left"></i> Voltar
-									</a>
-									<button class="btn btn-primary" type="submit">Adicionar</button>
 								</div>
-							</div>
+					    	</div>
 						</form>
 					</div>
 				</div>
@@ -100,7 +96,7 @@
 			</div>
 		</div>
 		
-		<div class="modal fade" id="disciplinaPeriodoModal" role="dialog" aria-hidden="true" data:url="@{/disciplina-periodo}" tabindex="-1">
+		<div class="modal fade" id="disciplinaPeriodoModal" role="dialog" aria-hidden="true" data:url="@{/disciplina-periodo}">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-footer">

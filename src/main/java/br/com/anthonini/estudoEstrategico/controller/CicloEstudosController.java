@@ -103,11 +103,12 @@ public class CicloEstudosController extends AbstractController {
 	}
 	
 	@GetMapping("/{id}")
-	public ModelAndView alterar(@PathVariable("id") CicloEstudos cicloEstudos, @AuthenticationPrincipal UsuarioSistema usuarioSistema, ModelMap model, RedirectAttributes redirect) {
+	public ModelAndView alterar(@PathVariable("id") Long id, @AuthenticationPrincipal UsuarioSistema usuarioSistema, ModelMap model, RedirectAttributes redirect) {
+		CicloEstudos cicloEstudos = service.findCicloEstudos(id);
 		if (cicloEstudos == null || !usuarioSistema.getUsuario().equals(cicloEstudos.getUsuario())) {
             addMensagemErro(redirect, getMessage("ciclo-estudos.mensagem.naoEncontrado"));
             return new ModelAndView("redirect:/ciclo-estudos");
-        }		
+        }
 
         return iniciarForm(cicloEstudos, model);
     }

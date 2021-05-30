@@ -46,14 +46,18 @@
 						        	</div>
 						        					        	
 						        	<div class="card-header">
-						        		<h5>Períodos adicionados</h5>
-						        		<div class="card-header-right">
-							        		<a class="btn btn-sm shadow-2 btn-primary"
-								        		th:href="@{/periodo-ciclo-estudos/cadastro?cicloId={uuid}(uuid=${cicloEstudos.uuid})}">
-								        		<i class="feather icon-plus"></i>
-								        		Adicionar Período
-								        	</a>
-							        	</div>
+						        		<div class="row">
+											<div class="col-6">
+												<h5>Períodos adicionados</h5>
+											</div>
+											<div class="col-6 card-header-right-fixed">
+								        		<a class="btn btn-sm shadow-2 btn-primary float-sm-right"
+									        		th:href="@{/periodo-ciclo-estudos/novo?cicloId={uuid}(uuid=${cicloEstudos.uuid})}">
+									        		<i class="feather icon-plus"></i>
+									        		Adicionar
+									        	</a>
+											</div>
+										</div>					        		
 						        	</div>
 						        	<div class="table-responsive">
 							        	<table class="table table-hover">

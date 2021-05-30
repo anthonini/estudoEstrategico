@@ -32,6 +32,21 @@ public class PeriodoCicloEstudosController extends AbstractController {
 	@Autowired
 	private PeriodoCicloEstudosService service;
 	
+	@GetMapping("/novo")
+	public ModelAndView iniciarForm(String cicloId, ModelMap model, RedirectAttributes redirect) {
+		CicloEstudos cicloEstudos = cicloEstudosSessao.getCicloEstudos(cicloId);
+		if (cicloEstudos == null) {
+        	addMensagemErro(redirect, getMessage("ciclo-estudos.mensagem.naoEncontrado"));
+            return new ModelAndView("redirect:/ciclo-estudos");
+        }
+		
+		PeriodoCicloEstudos periodoCicloEstudos = new PeriodoCicloEstudos();
+		periodoCicloEstudos.setCicloEstudos(cicloEstudos);
+		sessao.adicionar(periodoCicloEstudos);
+		
+		return new ModelAndView("redirect:/periodo-ciclo-estudos/cadastro?cicloId="+cicloEstudos.getUuid()+"&uuid="+periodoCicloEstudos.getUuid());
+	}
+	
 	@GetMapping("/cadastro")
 	public ModelAndView form(String cicloId, String uuid, ModelMap model, RedirectAttributes redirect) {
 		CicloEstudos cicloEstudos = cicloEstudosSessao.getCicloEstudos(cicloId);
@@ -40,18 +55,17 @@ public class PeriodoCicloEstudosController extends AbstractController {
             return new ModelAndView("redirect:/ciclo-estudos");
         }
 		
+		PeriodoCicloEstudos periodoCicloEstudos = sessao.getPeriodoCicloEstudos(uuid);
+		if (periodoCicloEstudos == null) {
+        	addMensagemErro(redirect, getMessage("periodo-ciclo-estudos.mensagem.sucesso"));
+            return new ModelAndView("/ciclo-estudos/cadastro?id="+cicloId);
+        }
+		
 		model.addAttribute("primeiroDia", DiaPeriodoCicloEstudos.PRIMEIRO);
 		model.addAttribute("segundoDia", DiaPeriodoCicloEstudos.SEGUNDO);
-		model.addAttribute(cicloEstudos);
-		
-		PeriodoCicloEstudos periodoCicloEstudos = sessao.getPeriodoCicloEstudos(uuid);
-		if(periodoCicloEstudos == null) {
-			periodoCicloEstudos = new PeriodoCicloEstudos();
-			periodoCicloEstudos.setCicloEstudos(cicloEstudos);
-		}
-		
-		sessao.adicionar(periodoCicloEstudos);
+		model.addAttribute(cicloEstudos);		
 		model.addAttribute(periodoCicloEstudos);
+		
 		return new ModelAndView("periodo-ciclo-estudos/Form");
 	}
 	
@@ -75,7 +89,7 @@ public class PeriodoCicloEstudosController extends AbstractController {
 			sessao.remover(uuid);
 			addMensagemSucesso(redirect, getMessage("periodo-ciclo-estudos.mensagem.sucesso"));
 			
-			return new ModelAndView("redirect:/periodo-ciclo-estudos/cadastro?cicloId="+cicloId);
+			return new ModelAndView("redirect:/periodo-ciclo-estudos/novo?cicloId="+cicloId);
 		} catch (ErrosValidacaoException e) {
 			addMensagensErroValidacao(redirect, bindingResult);
 			return new ModelAndView("redirect:/periodo-ciclo-estudos/cadastro?cicloId="+cicloId+"&uuid="+periodoCicloEstudos.getUuid());

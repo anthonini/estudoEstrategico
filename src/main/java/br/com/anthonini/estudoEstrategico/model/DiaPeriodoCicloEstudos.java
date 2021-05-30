@@ -6,33 +6,25 @@ public enum DiaPeriodoCicloEstudos {
 	PRIMEIRO("Primeiro") {
 		@Override
 		public List<DisciplinaPeriodo> getDisciplinas(PeriodoCicloEstudos periodoCicloEstudos) {
-			return periodoCicloEstudos.getDisciplinasPeriodoPrimeiroDia();
+			return periodoCicloEstudos.getDisciplinasPrimeiroDia();
 		}
 
 		@Override
-		public void adicionarDisciplina(PeriodoCicloEstudos periodoCicloEstudos, DisciplinaPeriodo disciplinaPeriodo) {
-			periodoCicloEstudos.getDisciplinasPeriodoPrimeiroDia().add(disciplinaPeriodo);
-		}
-
-		@Override
-		public void removerDisciplina(PeriodoCicloEstudos periodoCicloEstudos, Long idDisciplina) {
-			periodoCicloEstudos.getDisciplinasPeriodoPrimeiroDia().removeIf(d -> d.getDisciplina().getId().equals(idDisciplina));
+		public void removerDisciplina(PeriodoCicloEstudos periodoCicloEstudos, Integer index) {
+			DisciplinaPeriodo disciplina = periodoCicloEstudos.getDisciplinasPrimeiroDia().get(index);
+			periodoCicloEstudos.getDisciplinas().removeIf(d -> d == disciplina);
 		}
 	},
 	SEGUNDO("Segundo") {
 		@Override
 		public List<DisciplinaPeriodo> getDisciplinas(PeriodoCicloEstudos periodoCicloEstudos) {
-			return periodoCicloEstudos.getDisciplinasPeriodoSegundoDia();
+			return periodoCicloEstudos.getDisciplinasSegundoDia();
 		}
 
 		@Override
-		public void adicionarDisciplina(PeriodoCicloEstudos periodoCicloEstudos, DisciplinaPeriodo disciplinaPeriodo) {
-			periodoCicloEstudos.getDisciplinasPeriodoSegundoDia().add(disciplinaPeriodo);
-		}
-
-		@Override
-		public void removerDisciplina(PeriodoCicloEstudos periodoCicloEstudos, Long idDisciplina) {
-			periodoCicloEstudos.getDisciplinasPeriodoSegundoDia().removeIf(d -> d.getDisciplina().getId().equals(idDisciplina));
+		public void removerDisciplina(PeriodoCicloEstudos periodoCicloEstudos, Integer index) {
+			DisciplinaPeriodo disciplina = periodoCicloEstudos.getDisciplinasSegundoDia().get(index);
+			periodoCicloEstudos.getDisciplinas().removeIf(d -> d == disciplina);
 		}
 	};
 	
@@ -44,9 +36,7 @@ public enum DiaPeriodoCicloEstudos {
 	
 	public abstract List<DisciplinaPeriodo> getDisciplinas(PeriodoCicloEstudos periodoCicloEstudos);
 	
-	public abstract void adicionarDisciplina(PeriodoCicloEstudos periodoCicloEstudos, DisciplinaPeriodo disciplinaPeriodo);
-	
-	public abstract void removerDisciplina(PeriodoCicloEstudos periodoCicloEstudos, Long idDIsciplina);
+	public abstract void removerDisciplina(PeriodoCicloEstudos periodoCicloEstudos, Integer index);
 
 	public String getDescricao() {
 		return descricao;

@@ -26,6 +26,11 @@ public class CicloEstudosService {
 		return repository.filtrar(filter, pageable);
 	}
 	
+	public CicloEstudos findCicloEstudos(Long id) {
+		CicloEstudos cicloEstudos = repository.findCicloEstudos(id);		
+		return cicloEstudos;
+	}
+	
 	@Transactional
 	public void salvar(CicloEstudos cicloEstudos, Usuario usuario) {
 		cicloEstudos.setNome(cicloEstudos.getNome().trim());
@@ -38,9 +43,6 @@ public class CicloEstudosService {
 		if(cicloEstudos.isNovo()) {
 			cicloEstudos.setUsuario(usuario);
 		} else {
-			CicloEstudos cicloEstudosBD = repository.getOne(cicloEstudos.getId());
-			cicloEstudos.setUsuario(cicloEstudosBD.getUsuario());
-			
 			if(!usuario.equals(cicloEstudos.getUsuario())) {
 				throw new UsuarioSemPermissaoParaRealizarEssaOperacao();
 			}

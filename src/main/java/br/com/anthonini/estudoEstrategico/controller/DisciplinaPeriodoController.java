@@ -52,8 +52,7 @@ public class DisciplinaPeriodoController extends AbstractController {
 		} else {
 			PeriodoCicloEstudos periodo = sessao.getPeriodoCicloEstudos(uuid);
 			disciplinaPeriodo.setPeriodoCicloEstudos(periodo);
-			disciplinaPeriodo.setDia(dia);
-			dia.adicionarDisciplina(periodo, disciplinaPeriodo);
+			periodo.getDisciplinas().add(disciplinaPeriodo);
 			
 			model.addAttribute("disciplinaAdicionada", true);
 			model.addAttribute("dia", dia);
@@ -64,10 +63,10 @@ public class DisciplinaPeriodoController extends AbstractController {
 		return modal(null, model, uuid, dia);
 	}
 	
-	@DeleteMapping("/remover/{idDisciplina}")
-	public @ResponseBody ResponseEntity<?> remover(@PathVariable Long idDisciplina, String uuid, DiaPeriodoCicloEstudos dia, ModelMap model) {
+	@DeleteMapping("/remover/{index}")
+	public @ResponseBody ResponseEntity<?> remover(@PathVariable Integer index, String uuid, DiaPeriodoCicloEstudos dia, ModelMap model) {
 		PeriodoCicloEstudos periodoCicloEstudos = sessao.getPeriodoCicloEstudos(uuid);
-		dia.removerDisciplina(periodoCicloEstudos, idDisciplina);
+		dia.removerDisciplina(periodoCicloEstudos, index);
 		
 		return ResponseEntity.ok().build();
 	}
