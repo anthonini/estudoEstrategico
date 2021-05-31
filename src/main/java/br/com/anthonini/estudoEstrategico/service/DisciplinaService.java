@@ -60,7 +60,7 @@ public class DisciplinaService {
 			repository.delete(disciplina);
 			repository.flush();
 		} catch (PersistenceException | DataIntegrityViolationException e) {
-			throw new NaoEPossivelRemoverEntidadeException("Não é possivel remover a disciplina. Disciplina já associado com algum Ciclo de Estudos.");
+			throw new NaoEPossivelRemoverEntidadeException("Não é possivel remover a disciplina. Disciplina já associada com algum Ciclo de Estudos.");
 		}
 	}
 
