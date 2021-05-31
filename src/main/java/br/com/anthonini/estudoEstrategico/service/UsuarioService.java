@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import br.com.anthonini.estudoEstrategico.dto.PerfilDTO;
 import br.com.anthonini.estudoEstrategico.model.Pessoa;
+import br.com.anthonini.estudoEstrategico.model.Tema;
 import br.com.anthonini.estudoEstrategico.model.Usuario;
 import br.com.anthonini.estudoEstrategico.repository.UsuarioRepository;
 import br.com.anthonini.estudoEstrategico.service.event.usuario.AlteracaoSenhaUsuarioEvent;
@@ -117,6 +118,17 @@ public class UsuarioService {
 		
 		usuario.getPessoa().setNome(perfilDTO.getNome());
 		usuario.setEmail(perfilDTO.getEmail());
+		repository.save(usuario);
+	}
+	
+	@Transactional
+	public void alterarTema(Usuario usuario, boolean modoEscuro) {
+		if(modoEscuro) {
+			usuario.setTema(Tema.ESCURO);
+		} else {
+			usuario.setTema(Tema.CLARO);
+		}
+			
 		repository.save(usuario);
 	}
 }

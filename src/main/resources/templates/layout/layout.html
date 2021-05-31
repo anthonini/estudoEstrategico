@@ -20,7 +20,7 @@
   <link rel="stylesheet" th:href="@{/layout/stylesheets/style.css}">
   <link rel="stylesheet" th:href="@{/layout/stylesheets/estudo-estrategico.css}">
   
-  <!--/* <link rel="stylesheet" th:href="@{/layout/stylesheets/dark.css}"> */-->
+  <link rel="stylesheet" th:href="@{/layout/stylesheets/dark.css}" th:disabled="${!#authentication.principal.usuario.modoEscuro}" id="modoEscuroStyleSheet">
 </head>
 
 <body>

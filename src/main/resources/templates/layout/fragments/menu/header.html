@@ -36,6 +36,17 @@
                         </div>
                         <ul class="pro-body">
                             <li><a th:href="@{/perfil}" class="dropdown-item"><i class="feather icon-user"></i> Perfil</a></li>
+                            <li>
+                            	<a href="#" class="dropdown-item keep-open">
+                            		<label><i class="feather icon-sun"></i>Utilizar Modo Escuro</label>
+                                    <span class="switch d-inline m-r-10 switch-primary">
+                                        <input type="checkbox" id="modo-escuro" th:checked="${#authentication.principal.usuario.modoEscuro}"
+                                        	th:value="${#authentication.principal.usuario.tema}"
+                                        	data:url="@{/perfil/alterar-tema}">
+                                        <label for="modo-escuro" class="cr"></label>
+                                    </span>
+                            	</a>
+                            </li>
                         </ul>
                     </div>
                 </div>

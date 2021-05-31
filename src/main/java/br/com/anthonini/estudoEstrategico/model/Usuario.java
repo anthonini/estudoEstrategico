@@ -3,6 +3,8 @@ package br.com.anthonini.estudoEstrategico.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,8 +52,15 @@ public class Usuario implements Entidade {
 	
 	private boolean ativo = false;
 	
+	@Enumerated(EnumType.STRING)
+	private Tema tema = Tema.CLARO;
+	
 	public String getStatus() {
 		return ativo ? "Ativo" : "Inativo";
+	}
+	
+	public boolean isModoEscuro() {
+		return Tema.ESCURO.equals(tema);
 	}
 	
 	@PreUpdate
@@ -113,6 +122,14 @@ public class Usuario implements Entidade {
 
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
+	}
+
+	public Tema getTema() {
+		return tema;
+	}
+
+	public void setTema(Tema tema) {
+		this.tema = tema;
 	}
 
 	@Override

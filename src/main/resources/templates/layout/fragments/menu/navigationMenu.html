@@ -5,7 +5,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <!-- [ navigation menu ] start -->
-<nav class="pcoded-navbar menu-light <!--/* navbar-dark brand-dark */-->" th:fragment="navigationMenu">
+<nav th:class="${#authentication.principal.usuario.tema.navbarClass}" th:fragment="navigationMenu">
     <div class="navbar-wrapper">
         <div class="navbar-brand header-logo">
             <a th:href="@{/}" class="b-brand">
