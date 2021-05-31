@@ -98,7 +98,7 @@ public class CicloEstudosController extends AbstractController {
 	}
 	
 	@GetMapping
-	public ModelAndView listar(CicloEstudosFilter filter, @AuthenticationPrincipal UsuarioSistema usuarioSistema, HttpServletRequest httpServletRequest, @PageableDefault(size = 3) @SortDefault(value="nome") Pageable pageable) {
+	public ModelAndView listar(CicloEstudosFilter filter, @AuthenticationPrincipal UsuarioSistema usuarioSistema, HttpServletRequest httpServletRequest, @PageableDefault(size = 10) @SortDefault(value="nome") Pageable pageable) {
 		ModelAndView mv = new ModelAndView("ciclo-estudos/List");
 		filter.setUsuario(usuarioSistema.getUsuario());
 		PageWrapper<CicloEstudos> paginaWrapper = new PageWrapper<>(service.filtrar(filter,pageable),httpServletRequest);
