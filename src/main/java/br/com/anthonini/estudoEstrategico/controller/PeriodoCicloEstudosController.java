@@ -1,12 +1,15 @@
 package br.com.anthonini.estudoEstrategico.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -33,7 +36,7 @@ public class PeriodoCicloEstudosController extends AbstractController {
 	private PeriodoCicloEstudosService service;
 	
 	@GetMapping("/novo")
-	public ModelAndView iniciarForm(String cicloId, ModelMap model, RedirectAttributes redirect) {
+	public ModelAndView iniciarForm(String cicloId, RedirectAttributes redirect) {
 		CicloEstudos cicloEstudos = cicloEstudosSessao.getCicloEstudos(cicloId);
 		if (cicloEstudos == null) {
         	addMensagemErro(redirect, getMessage("ciclo-estudos.mensagem.naoEncontrado"));
@@ -63,14 +66,14 @@ public class PeriodoCicloEstudosController extends AbstractController {
 		
 		model.addAttribute("primeiroDia", DiaPeriodoCicloEstudos.PRIMEIRO);
 		model.addAttribute("segundoDia", DiaPeriodoCicloEstudos.SEGUNDO);
-		model.addAttribute(cicloEstudos);		
+		model.addAttribute(cicloEstudos);
 		model.addAttribute(periodoCicloEstudos);
 		
 		return new ModelAndView("periodo-ciclo-estudos/Form");
 	}
 	
 	@PostMapping("/cadastro")
-	public ModelAndView cadastro(String cicloId, String uuid, Integer duracao, PeriodoCicloEstudos periodoCicloEstudos, BindingResult bindingResult, RedirectAttributes redirect) {		
+	public ModelAndView cadastro(String cicloId, String uuid, PeriodoCicloEstudos periodoCicloEstudos, BindingResult bindingResult, RedirectAttributes redirect) {		
 		CicloEstudos cicloEstudos = cicloEstudosSessao.getCicloEstudos(cicloId);
 		if (cicloEstudos == null) {
         	addMensagemErro(redirect, getMessage("ciclo-estudos.mensagem.naoEncontrado"));
@@ -79,21 +82,52 @@ public class PeriodoCicloEstudosController extends AbstractController {
 		
 		periodoCicloEstudos = sessao.getPeriodoCicloEstudos(uuid);
 		if (periodoCicloEstudos == null) {
-        	addMensagemErro(redirect, getMessage("periodo-ciclo-estudos.mensagem.sucesso"));
+        	addMensagemErro(redirect, getMessage("periodo-ciclo-estudos.mensagem.naoEncontrado"));
             return new ModelAndView("/ciclo-estudos/cadastro?id="+cicloId);
         }
 		
 		try {
-			periodoCicloEstudos.setDuracao(duracao);
 			service.adicionar(cicloEstudos, periodoCicloEstudos, bindingResult);
 			sessao.remover(uuid);
 			addMensagemSucesso(redirect, getMessage("periodo-ciclo-estudos.mensagem.sucesso"));
 			
-			return new ModelAndView("redirect:/periodo-ciclo-estudos/novo?cicloId="+cicloId);
+			return iniciarForm(cicloId, redirect);
 		} catch (ErrosValidacaoException e) {
 			addMensagensErroValidacao(redirect, bindingResult);
 			return new ModelAndView("redirect:/periodo-ciclo-estudos/cadastro?cicloId="+cicloId+"&uuid="+periodoCicloEstudos.getUuid());
 		}
+	}
+	
+	@GetMapping("/alterar")
+	public ModelAndView alterar(String cicloId, Integer index, ModelMap model, RedirectAttributes redirect) {
+		CicloEstudos cicloEstudos = cicloEstudosSessao.getCicloEstudos(cicloId);
+		if (cicloEstudos == null) {
+        	addMensagemErro(redirect, getMessage("ciclo-estudos.mensagem.naoEncontrado"));
+            return new ModelAndView("redirect:/ciclo-estudos");
+        }
+		
+		PeriodoCicloEstudos periodoCicloEstudos = null;
+		if(index >= 0 && index < cicloEstudos.getPeriodosCicloEstudos().size())
+			periodoCicloEstudos = cicloEstudos.getPeriodosCicloEstudos().get(index);
+		
+		if (periodoCicloEstudos == null) {
+        	addMensagemErro(redirect, getMessage("periodo-ciclo-estudos.mensagem.naoEncontrado"));
+            return new ModelAndView("/ciclo-estudos/cadastro?id="+cicloId);
+        }
+		
+		model.addAttribute("alteracaoPeriodo", true);
+		sessao.adicionar(periodoCicloEstudos);
+		
+		return form(cicloId, periodoCicloEstudos.getUuid(), model, redirect);
+	}
+	
+	@PutMapping("/atualizar-duracao")
+	public @ResponseBody ResponseEntity<?> remover(String uuid, Integer duracao, ModelMap model) {
+		PeriodoCicloEstudos periodoCicloEstudos = sessao.getPeriodoCicloEstudos(uuid);
+		if(periodoCicloEstudos != null && duracao != null)
+			periodoCicloEstudos.setDuracao(duracao);
+		
+		return ResponseEntity.ok().build();
 	}
 	
 	@GetMapping("/disciplinas-periodo")

@@ -66,7 +66,9 @@ public class DisciplinaPeriodoController extends AbstractController {
 	@DeleteMapping("/remover/{index}")
 	public @ResponseBody ResponseEntity<?> remover(@PathVariable Integer index, String uuid, DiaPeriodoCicloEstudos dia, ModelMap model) {
 		PeriodoCicloEstudos periodoCicloEstudos = sessao.getPeriodoCicloEstudos(uuid);
-		dia.removerDisciplina(periodoCicloEstudos, index);
+		
+		if(index >= 0 && index < periodoCicloEstudos.getDisciplinas().size())
+			dia.removerDisciplina(periodoCicloEstudos, index);
 		
 		return ResponseEntity.ok().build();
 	}

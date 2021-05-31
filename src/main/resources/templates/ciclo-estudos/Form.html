@@ -80,7 +80,7 @@
 										      <td th:text="${periodo.descricaoPrimeiroDia}">Disciplina</td>
 										      <td th:text="${periodo.descricaoSegundoDia}">30 dias</td>
 										      <td>
-													<a class="label theme-bg text-white f-12" th:href="@{/ciclo-estudos/{id}(id=${periodo.id})}" title="Alterar">
+													<a class="label theme-bg text-white f-12" th:href="@{/periodo-ciclo-estudos/alterar?cicloId={uuid}&index={index}(uuid=${cicloEstudos.uuid}, index=${itr.index})}" title="Alterar">
 														Alterar <i class="feather icon-edit"></i>
 													</a>
 													<a class="label theme-bg3 text-white f-12 js-exclusao-btn" title="Remover" href="#"

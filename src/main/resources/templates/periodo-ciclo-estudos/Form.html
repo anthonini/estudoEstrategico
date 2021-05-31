@@ -20,7 +20,7 @@
 							<li class="breadcrumb-item"><a th:href="@{/}"><i class="feather icon-home"></i></a></li>
 							<li class="breadcrumb-item"><a th:href="@{/ciclo-estudos}">Ciclo de Estudos</a></li>
 							<li class="breadcrumb-item"><a th:href="@{/ciclo-estudos/cadastro?id={cicloId}(cicloId=${cicloEstudos.uuid})}" th:text="${cicloEstudos.novo} ? Cadastro : Edição">Cadastro</a></li>
-							<li class="breadcrumb-item"><a href="#">Adicionar Período</a></li>
+							<li class="breadcrumb-item"><a href="#" th:text="${alteracaoPeriodo} ? 'Alterar Período' : 'Adicionar Período'">Adicionar Período</a></li>
 						</ul>
 					</div>
 				</div>
@@ -49,11 +49,12 @@
 							    	
 							    	<input type="hidden" name="cicloId" th:value="${cicloEstudos.uuid}">
 						        	<input type="hidden" th:field="*{uuid}">
-						        	<input type="hidden" th:field="*{id}">
-									<a class="btn btn-outline-secondary" th:href="@{/ciclo-estudos/cadastro?id={cicloId}(cicloId=${cicloEstudos.uuid})}">
+						        	<a class="btn btn-outline-secondary" th:href="@{/ciclo-estudos/cadastro?id={cicloId}(cicloId=${cicloEstudos.uuid})}">
 										<i class="feather icon-chevrons-left"></i> Voltar
 									</a>
-									<button class="btn btn-primary" type="submit">Adicionar</button>
+									<th:block th:unless="${alteracaoPeriodo}">
+										<button class="btn btn-primary" type="submit">Adicionar</button>
+									</th:block>
 								</div>
 							</div>
 							
@@ -108,6 +109,7 @@
 		</div>
 	</th:block>
 	<th:block layout:fragment="javascript-extra">
+		<script th:src="@{/javascript/periodo-ciclo-estudos/periodoCicloEstudos.js}"></script>
 		<script th:src="@{/javascript/periodo-ciclo-estudos/disciplinaPeriodo.js}"></script>
 	</th:block>
 </body>
