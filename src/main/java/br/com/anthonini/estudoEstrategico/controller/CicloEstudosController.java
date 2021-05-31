@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -67,8 +68,12 @@ public class CicloEstudosController extends AbstractController {
 	
 	@PostMapping("/cadastro")
 	public ModelAndView cadastro(@Valid CicloEstudos cicloEstudos, BindingResult bindingResult, @AuthenticationPrincipal UsuarioSistema usuarioSistema, ModelMap modelMap, RedirectAttributes redirect) {
-		String nome = cicloEstudos.getNome(); 
+		String nome = cicloEstudos.getNome();
 		cicloEstudos = sessao.getCicloEstudos(cicloEstudos.getUuid());
+		if (cicloEstudos == null) {
+        	addMensagemErro(redirect, getMessage("ciclo-estudos.mensagem.naoEncontrado"));
+            return new ModelAndView("redirect:/ciclo-estudos");
+        }
 		cicloEstudos.setNome(nome);
 		
 		validador.validate(cicloEstudos, bindingResult);
@@ -121,5 +126,14 @@ public class CicloEstudosController extends AbstractController {
 		} else {
 			return ResponseEntity.badRequest().body("Disciplina não encontrada!");
 		}
+	}
+	
+	@PutMapping("/atualizar-nome")
+	public @ResponseBody ResponseEntity<?> remover(String uuid, String nome, ModelMap model) {
+		CicloEstudos cicloEstudos = sessao.getCicloEstudos(uuid);
+		if(cicloEstudos != null && nome != null)
+			cicloEstudos.setNome(nome);
+		
+		return ResponseEntity.ok().build();
 	}
 }

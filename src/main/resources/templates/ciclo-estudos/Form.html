@@ -94,7 +94,6 @@
 										</table>
 									</div>
 						        	
-						        	<input type="hidden" th:field="*{id}">
 						        	<input type="hidden" th:field="*{uuid}">
 									<button class="btn btn-primary" type="submit">Salvar</button>
 								</div>
@@ -105,6 +104,9 @@
 				<!-- [ Main Content ] end -->
 			</div>
 		</div>
+	</th:block>
+	<th:block layout:fragment="javascript-extra">
+		<script th:src="@{/javascript/ciclo-estudos/cicloEstudos.js}"></script>
 	</th:block>
 </body>
 </html>
