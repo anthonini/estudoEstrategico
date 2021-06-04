@@ -1,6 +1,8 @@
 package br.com.anthonini.estudoEstrategico.model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public enum DiaPeriodoCicloEstudos {
 	PRIMEIRO("Primeiro") {
@@ -12,7 +14,7 @@ public enum DiaPeriodoCicloEstudos {
 		@Override
 		public void removerDisciplina(PeriodoCicloEstudos periodoCicloEstudos, Integer index) {
 			DisciplinaPeriodo disciplina = periodoCicloEstudos.getDisciplinasPrimeiroDia().get(index);
-			periodoCicloEstudos.getDisciplinas().removeIf(d -> d == disciplina);
+			removerDisciplina(periodoCicloEstudos.getDisciplinas(), disciplina);
 		}
 	},
 	SEGUNDO("Segundo") {
@@ -24,7 +26,7 @@ public enum DiaPeriodoCicloEstudos {
 		@Override
 		public void removerDisciplina(PeriodoCicloEstudos periodoCicloEstudos, Integer index) {
 			DisciplinaPeriodo disciplina = periodoCicloEstudos.getDisciplinasSegundoDia().get(index);
-			periodoCicloEstudos.getDisciplinas().removeIf(d -> d == disciplina);
+			removerDisciplina(periodoCicloEstudos.getDisciplinas(), disciplina);
 		}
 	};
 	
@@ -32,6 +34,24 @@ public enum DiaPeriodoCicloEstudos {
 	
 	private DiaPeriodoCicloEstudos(String descricao) {
 		this.descricao = descricao;
+	}
+	
+	private static void removerDisciplina(List<DisciplinaPeriodo> disciplinas, DisciplinaPeriodo disciplina) {
+		disciplinas.removeIf(d -> d == disciplina);
+		reorganizarOrdem(disciplinas);
+	}
+	
+	private static void reorganizarOrdem(List<DisciplinaPeriodo> disciplinas) {
+		Map<DiaPeriodoCicloEstudos, Integer> diaOrdem = new HashMap<>();
+		for(DiaPeriodoCicloEstudos dia : DiaPeriodoCicloEstudos.values()) {
+			diaOrdem.put(dia, 0);
+		}
+		
+		for(DisciplinaPeriodo disciplina : disciplinas) {
+			Integer ordem = diaOrdem.get(disciplina.getDia())+1;
+			diaOrdem.put(disciplina.getDia(), ordem);
+			disciplina.setOrdem(ordem);
+		}
 	}
 	
 	public abstract List<DisciplinaPeriodo> getDisciplinas(PeriodoCicloEstudos periodoCicloEstudos);

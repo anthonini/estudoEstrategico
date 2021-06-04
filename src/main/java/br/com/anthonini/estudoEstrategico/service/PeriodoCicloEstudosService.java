@@ -17,9 +17,9 @@ public class PeriodoCicloEstudosService {
 	private PeriodoCicloEstudosValidador validador;	
 	
 	public void adicionar(CicloEstudos cicloEstudos, PeriodoCicloEstudos periodoCicloEstudos, BindingResult bindingResult) {
-		periodoCicloEstudos.setNumero(cicloEstudos.getPeriodosCicloEstudos().size()+1);		
+		periodoCicloEstudos.setNumero(cicloEstudos.getPeriodosCicloEstudos().size()+1);
 		validar(periodoCicloEstudos, bindingResult);		
-		cicloEstudos.adicionarPeriodo(periodoCicloEstudos);
+		cicloEstudos.getPeriodosCicloEstudos().add(periodoCicloEstudos);
 	}
 
 	@Validated
@@ -27,5 +27,15 @@ public class PeriodoCicloEstudosService {
 		validador.validate(periodoCicloEstudos, bindingResult);
 		if(bindingResult.hasErrors())
 			throw new ErrosValidacaoException();
+	}
+	
+	public void removerPeriodo(CicloEstudos cicloEstudos, int index) {
+		if(index >= 0 && index < cicloEstudos.getPeriodosCicloEstudos().size()) {
+			cicloEstudos.getPeriodosCicloEstudos().remove(index);
+			for(int i = 0; i < cicloEstudos.getPeriodosCicloEstudos().size(); i++) {
+				PeriodoCicloEstudos periodoCicloEstudos = cicloEstudos.getPeriodosCicloEstudos().get(i);
+				periodoCicloEstudos.setNumero(i+1);
+			}
+		}
 	}
 }

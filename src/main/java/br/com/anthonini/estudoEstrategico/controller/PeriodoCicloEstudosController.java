@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -135,5 +137,13 @@ public class PeriodoCicloEstudosController extends AbstractController {
 		model.addAttribute("disciplinasPeriodo", dia.getDisciplinas(sessao.getPeriodoCicloEstudos(uuid)));
 		model.addAttribute("dia",dia);
 		return "/periodo-ciclo-estudos/fragments/disciplinas";
+	}
+	
+	@DeleteMapping("/remover/{index}")
+	public @ResponseBody ResponseEntity<?> remover(@PathVariable Integer index, String cicloId, ModelMap model) {
+		CicloEstudos cicloEstudos = cicloEstudosSessao.getCicloEstudos(cicloId);
+		service.removerPeriodo(cicloEstudos, index);
+		
+		return ResponseEntity.ok().build();
 	}
 }

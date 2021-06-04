@@ -84,8 +84,8 @@
 														Alterar <i class="feather icon-edit"></i>
 													</a>
 													<a class="label theme-bg3 text-white f-12 js-exclusao-btn" title="Remover" href="#"
-														data:url="@{/ciclo-estudos/{id}(id=${periodo.id})}"
-														data:objeto="${periodo}">
+														data:url="@{/periodo-ciclo-estudos/remover/{idx}?cicloId={uuid}(idx=${itr.index}, uuid=${cicloEstudos.uuid})}"
+														data:objeto="|${itr.index+1}º período|">
 														Remover <i class="feather icon-trash-2"></i>
 													</a>
 											  </td>
@@ -107,6 +107,7 @@
 	</th:block>
 	<th:block layout:fragment="javascript-extra">
 		<script th:src="@{/javascript/ciclo-estudos/cicloEstudos.js}"></script>
+		<script th:src="@{/javascript/estudo-estrategico.dialogo-exclusao.js}"></script>
 	</th:block>
 </body>
 </html>

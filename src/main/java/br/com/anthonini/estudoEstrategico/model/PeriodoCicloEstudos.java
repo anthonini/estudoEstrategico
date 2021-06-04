@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
@@ -44,6 +45,7 @@ public class PeriodoCicloEstudos implements Entidade  {
 	private CicloEstudos cicloEstudos;
 	
 	@OneToMany(mappedBy = "periodoCicloEstudos", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OrderBy("ordem")
 	private List<DisciplinaPeriodo> disciplinas = new ArrayList<>();
 	
 	public String getDescricaoDuracao() {

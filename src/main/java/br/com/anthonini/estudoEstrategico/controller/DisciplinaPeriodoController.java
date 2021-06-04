@@ -52,6 +52,7 @@ public class DisciplinaPeriodoController extends AbstractController {
 		} else {
 			PeriodoCicloEstudos periodo = sessao.getPeriodoCicloEstudos(uuid);
 			disciplinaPeriodo.setPeriodoCicloEstudos(periodo);
+			disciplinaPeriodo.setOrdem(dia.getDisciplinas(periodo).size()+1);
 			periodo.getDisciplinas().add(disciplinaPeriodo);
 			
 			model.addAttribute("disciplinaAdicionada", true);

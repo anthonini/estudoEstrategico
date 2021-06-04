@@ -35,6 +35,8 @@ public class DisciplinaPeriodo implements Entidade {
 	@Enumerated(EnumType.STRING)
 	private DiaPeriodoCicloEstudos dia;
 	
+	private Integer ordem;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_periodo_ciclo_estudos")
 	private PeriodoCicloEstudos periodoCicloEstudos;
@@ -73,6 +75,14 @@ public class DisciplinaPeriodo implements Entidade {
 
 	public void setDia(DiaPeriodoCicloEstudos dia) {
 		this.dia = dia;
+	}
+
+	public Integer getOrdem() {
+		return ordem;
+	}
+
+	public void setOrdem(Integer ordem) {
+		this.ordem = ordem;
 	}
 
 	public PeriodoCicloEstudos getPeriodoCicloEstudos() {

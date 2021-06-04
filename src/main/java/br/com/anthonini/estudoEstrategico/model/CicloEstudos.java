@@ -41,10 +41,6 @@ public class CicloEstudos implements Entidade {
 	
 	@Transient
 	private String uuid;
-	
-	public void adicionarPeriodo(PeriodoCicloEstudos periodoCicloEstudos) {
-		periodosCicloEstudos.add(periodoCicloEstudos);
-	}
 
 	public Long getId() {
 		return id;
