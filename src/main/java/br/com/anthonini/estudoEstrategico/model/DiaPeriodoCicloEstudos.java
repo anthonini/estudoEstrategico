@@ -3,45 +3,53 @@ package br.com.anthonini.estudoEstrategico.model;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public enum DiaPeriodoCicloEstudos {
-	PRIMEIRO("Primeiro") {
-		@Override
-		public List<DisciplinaPeriodo> getDisciplinas(PeriodoCicloEstudos periodoCicloEstudos) {
-			return periodoCicloEstudos.getDisciplinasPrimeiroDia();
-		}
-
-		@Override
-		public void removerDisciplina(PeriodoCicloEstudos periodoCicloEstudos, Integer index) {
-			DisciplinaPeriodo disciplina = periodoCicloEstudos.getDisciplinasPrimeiroDia().get(index);
-			removerDisciplina(periodoCicloEstudos.getDisciplinas(), disciplina);
-		}
-	},
-	SEGUNDO("Segundo") {
-		@Override
-		public List<DisciplinaPeriodo> getDisciplinas(PeriodoCicloEstudos periodoCicloEstudos) {
-			return periodoCicloEstudos.getDisciplinasSegundoDia();
-		}
-
-		@Override
-		public void removerDisciplina(PeriodoCicloEstudos periodoCicloEstudos, Integer index) {
-			DisciplinaPeriodo disciplina = periodoCicloEstudos.getDisciplinasSegundoDia().get(index);
-			removerDisciplina(periodoCicloEstudos.getDisciplinas(), disciplina);
-		}
-	};
+	PRIMEIRO(1, "Primeiro"),
+	SEGUNDO(2, "Segundo");
 	
+	private Integer dia;
 	private String descricao;
 	
-	private DiaPeriodoCicloEstudos(String descricao) {
+	private DiaPeriodoCicloEstudos(Integer dia, String descricao) {
+		this.dia = dia;
 		this.descricao = descricao;
 	}
 	
-	private static void removerDisciplina(List<DisciplinaPeriodo> disciplinas, DisciplinaPeriodo disciplina) {
-		disciplinas.removeIf(d -> d == disciplina);
-		reorganizarOrdem(disciplinas);
+	public List<DisciplinaPeriodo> getDisciplinas(PeriodoCicloEstudos periodoCicloEstudos) {
+		return periodoCicloEstudos.getDisciplinas().stream()
+				.filter(dp -> dp.getDia().equals(this))
+				.collect(Collectors.toList());
 	}
 	
-	private static void reorganizarOrdem(List<DisciplinaPeriodo> disciplinas) {
+	public void removerDisciplina(PeriodoCicloEstudos periodoCicloEstudos, Integer index) {
+		DisciplinaPeriodo disciplina = getDisciplinas(periodoCicloEstudos).get(index);
+		periodoCicloEstudos.getDisciplinas().removeIf(d -> d == disciplina);
+		reorganizarOrdemDisciplinas(periodoCicloEstudos.getDisciplinas());
+	}
+	
+	public static DiaPeriodoCicloEstudos getDiaPeriodo(Integer dia) {
+		int quantidadeDias = DiaPeriodoCicloEstudos.values().length;
+		dia = dia > 0 && dia % quantidadeDias == 0 ? quantidadeDias : dia % quantidadeDias;
+		
+		for(DiaPeriodoCicloEstudos diaPeriodoCicloEstudos : DiaPeriodoCicloEstudos.values()) {
+			if(diaPeriodoCicloEstudos.getDia().equals(dia))
+				return diaPeriodoCicloEstudos;
+		}
+		
+		return null;
+	}
+
+	public Integer getDia() {
+		return dia;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+	
+	private void reorganizarOrdemDisciplinas(List<DisciplinaPeriodo> disciplinas) {
 		Map<DiaPeriodoCicloEstudos, Integer> diaOrdem = new HashMap<>();
 		for(DiaPeriodoCicloEstudos dia : DiaPeriodoCicloEstudos.values()) {
 			diaOrdem.put(dia, 0);
@@ -52,17 +60,5 @@ public enum DiaPeriodoCicloEstudos {
 			diaOrdem.put(disciplina.getDia(), ordem);
 			disciplina.setOrdem(ordem);
 		}
-	}
-	
-	public abstract List<DisciplinaPeriodo> getDisciplinas(PeriodoCicloEstudos periodoCicloEstudos);
-	
-	public abstract void removerDisciplina(PeriodoCicloEstudos periodoCicloEstudos, Integer index);
-
-	public String getDescricao() {
-		return descricao;
-	}
-	
-	public String getMetodo() {
-		return descricao.toLowerCase();
 	}
 }

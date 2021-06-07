@@ -23,7 +23,7 @@
 				<tr th:each="disciplinaPeriodo, itr : ${disciplinasPeriodo}">
 					<td scope="row" class="text-center" th:text="${itr.index+1}">1</td>
 					<td th:text="${disciplinaPeriodo.disciplina.nome}">Disciplina</td>
-					<td th:text="${disciplinaPeriodo.descricaoTempo}">60 minutos</td>
+					<td th:text="${disciplinaPeriodo.descricaoCargaHoraria}">60 minutos</td>
 					<td>
 						<a class="badge label label-danger text-white f-12 shadow-1 js-remover-disciplina" title="Remover" href="#"
 							data:url="@{/disciplina-periodo/remover/{idx}(idx=${itr.index})}"

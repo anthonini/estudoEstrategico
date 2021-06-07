@@ -29,8 +29,9 @@ public class DisciplinaPeriodo implements Entidade {
 	@JoinColumn(name = "id_disciplina")
 	private Disciplina disciplina;
 	
-	@NotNull(message = "Tempo é obrigatório")
-	private Integer tempo;
+	@Column(name = "carga_horaria")
+	@NotNull(message = "Carga Horária é obrigatório")
+	private Integer cargaHoraria;
 	
 	@Enumerated(EnumType.STRING)
 	private DiaPeriodoCicloEstudos dia;
@@ -41,8 +42,8 @@ public class DisciplinaPeriodo implements Entidade {
 	@JoinColumn(name = "id_periodo_ciclo_estudos")
 	private PeriodoCicloEstudos periodoCicloEstudos;
 	
-	public String getDescricaoTempo() {
-		return tempo + " minuto" + (tempo > 1 ? "s" : "");
+	public String getDescricaoCargaHoraria() {
+		return cargaHoraria + " minuto" + (cargaHoraria > 1 ? "s" : "");
 	}
 
 	public Long getId() {
@@ -61,12 +62,12 @@ public class DisciplinaPeriodo implements Entidade {
 		this.disciplina = disciplina;
 	}
 
-	public Integer getTempo() {
-		return tempo;
+	public Integer getCargaHoraria() {
+		return cargaHoraria;
 	}
 
-	public void setTempo(Integer tempo) {
-		this.tempo = tempo;
+	public void setCargaHoraria(Integer cargaHoraria) {
+		this.cargaHoraria = cargaHoraria;
 	}
 
 	public DiaPeriodoCicloEstudos getDia() {
