@@ -31,7 +31,7 @@
 				<!-- [ Main Content ] start -->
 				<div class="row">
 					<div class="col-12">
-						<form th:object="${periodoCicloEstudos}" th:action="@{/periodo-ciclo-estudos/cadastro}" method="POST">
+						<form th:object="${periodoCicloEstudos}" th:action="${alteracaoPeriodo} ? @{/periodo-ciclo-estudos/alterar} : @{/periodo-ciclo-estudos/cadastro}" method="POST">
 							<div class="card">
 								<div class="card-header">
 									<h5>Período</h5>
@@ -52,9 +52,7 @@
 						        	<a class="btn btn-outline-secondary" th:href="@{/ciclo-estudos/cadastro?id={cicloId}(cicloId=${cicloEstudos.uuid})}">
 										<i class="feather icon-chevrons-left"></i> Voltar
 									</a>
-									<th:block th:unless="${alteracaoPeriodo}">
-										<button class="btn btn-primary" type="submit">Adicionar</button>
-									</th:block>
+									<button class="btn btn-primary" type="submit" th:text="${alteracaoPeriodo} ? 'Alterar' : 'Adicionar'">Adicionar</button>
 								</div>
 							</div>
 							

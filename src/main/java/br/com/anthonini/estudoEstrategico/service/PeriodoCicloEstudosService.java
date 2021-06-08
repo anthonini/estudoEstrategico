@@ -21,6 +21,12 @@ public class PeriodoCicloEstudosService {
 		validar(periodoCicloEstudos, bindingResult);		
 		cicloEstudos.getPeriodosCicloEstudos().add(periodoCicloEstudos);
 	}
+	
+	public void alterar(CicloEstudos cicloEstudos, PeriodoCicloEstudos periodoCicloEstudos, BindingResult bindingResult) {
+		validar(periodoCicloEstudos, bindingResult);
+		Integer index = cicloEstudos.getPeriodoIndex(periodoCicloEstudos);
+		cicloEstudos.getPeriodosCicloEstudos().set(index, periodoCicloEstudos);
+	}
 
 	@Validated
 	public void validar(PeriodoCicloEstudos periodoCicloEstudos, BindingResult bindingResult) {
@@ -29,13 +35,16 @@ public class PeriodoCicloEstudosService {
 			throw new ErrosValidacaoException();
 	}
 	
-	public void removerPeriodo(CicloEstudos cicloEstudos, int index) {
+	public PeriodoCicloEstudos removerPeriodo(CicloEstudos cicloEstudos, int index) {
 		if(index >= 0 && index < cicloEstudos.getPeriodosCicloEstudos().size()) {
-			cicloEstudos.getPeriodosCicloEstudos().remove(index);
+			PeriodoCicloEstudos periodoRemovido = cicloEstudos.getPeriodosCicloEstudos().remove(index);
 			for(int i = 0; i < cicloEstudos.getPeriodosCicloEstudos().size(); i++) {
 				PeriodoCicloEstudos periodoCicloEstudos = cicloEstudos.getPeriodosCicloEstudos().get(i);
 				periodoCicloEstudos.setNumero(i+1);
 			}
+			return periodoRemovido;
 		}
+		
+		return null;
 	}
 }

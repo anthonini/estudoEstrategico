@@ -41,6 +41,17 @@ public class CicloEstudos implements Entidade {
 	
 	@Transient
 	private String uuid;
+	
+	public Integer getPeriodoIndex(PeriodoCicloEstudos periodo) {
+		for(int i = 0; i < this.getPeriodosCicloEstudos().size(); i++) {
+			PeriodoCicloEstudos periodoBuscado = this.getPeriodosCicloEstudos().get(i);
+			if(periodoBuscado.getUuid().equals(periodo.getUuid())) {
+				return i;
+			}
+		}
+		
+		return null;
+	}
 
 	public Long getId() {
 		return id;

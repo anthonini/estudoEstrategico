@@ -1,5 +1,8 @@
 package br.com.anthonini.estudoEstrategico.controller;
 
+import java.util.UUID;
+
+import org.apache.commons.lang.SerializationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -100,8 +103,8 @@ public class PeriodoCicloEstudosController extends AbstractController {
 		}
 	}
 	
-	@GetMapping("/alterar")
-	public ModelAndView alterar(String cicloId, Integer index, ModelMap model, RedirectAttributes redirect) {
+	@GetMapping("/alterar/{index}")
+	public ModelAndView alterar(String cicloId, @PathVariable Integer index, ModelMap model, RedirectAttributes redirect) {
 		CicloEstudos cicloEstudos = cicloEstudosSessao.getCicloEstudos(cicloId);
 		if (cicloEstudos == null) {
         	addMensagemErro(redirect, getMessage("ciclo-estudos.mensagem.naoEncontrado"));
@@ -109,18 +112,51 @@ public class PeriodoCicloEstudosController extends AbstractController {
         }
 		
 		PeriodoCicloEstudos periodoCicloEstudos = null;
-		if(index >= 0 && index < cicloEstudos.getPeriodosCicloEstudos().size())
+		if(index != null && index >= 0 && index < cicloEstudos.getPeriodosCicloEstudos().size())
 			periodoCicloEstudos = cicloEstudos.getPeriodosCicloEstudos().get(index);
 		
+		if (periodoCicloEstudos == null) {
+        	addMensagemErro(redirect, getMessage("periodo-ciclo-estudos.mensagem.naoEncontrado"));
+            return new ModelAndView("redirect:/ciclo-estudos/cadastro?id="+cicloId);
+        }
+		
+		periodoCicloEstudos.setUuid(UUID.randomUUID().toString());
+		periodoCicloEstudos = (PeriodoCicloEstudos) SerializationUtils.clone(periodoCicloEstudos);
+		sessao.adicionar(periodoCicloEstudos);
+		
+		return new ModelAndView("redirect:/periodo-ciclo-estudos/alterar?cicloId="+cicloId+"&uuid="+periodoCicloEstudos.getUuid());
+	}
+	
+	@GetMapping("/alterar")
+	public ModelAndView alterar(String cicloId, String uuid, ModelMap model, RedirectAttributes redirect) {
+		model.addAttribute("alteracaoPeriodo", true);
+		return form(cicloId, uuid, model, redirect);
+	}
+	
+	@PostMapping("/alterar")
+	public ModelAndView alterar(String cicloId, String uuid, PeriodoCicloEstudos periodoCicloEstudos, BindingResult bindingResult, RedirectAttributes redirect) {		
+		CicloEstudos cicloEstudos = cicloEstudosSessao.getCicloEstudos(cicloId);
+		if (cicloEstudos == null) {
+        	addMensagemErro(redirect, getMessage("ciclo-estudos.mensagem.naoEncontrado"));
+            return new ModelAndView("redirect:/ciclo-estudos");
+        }
+		
+		periodoCicloEstudos = sessao.getPeriodoCicloEstudos(uuid);
 		if (periodoCicloEstudos == null) {
         	addMensagemErro(redirect, getMessage("periodo-ciclo-estudos.mensagem.naoEncontrado"));
             return new ModelAndView("/ciclo-estudos/cadastro?id="+cicloId);
         }
 		
-		model.addAttribute("alteracaoPeriodo", true);
-		sessao.adicionar(periodoCicloEstudos);
-		
-		return form(cicloId, periodoCicloEstudos.getUuid(), model, redirect);
+		try {
+			service.alterar(cicloEstudos, periodoCicloEstudos, bindingResult);
+			sessao.remover(uuid);
+			addMensagemSucesso(redirect, getMessage("periodo-ciclo-estudos.mensagem.sucesso"));
+			
+			return new ModelAndView("redirect:/ciclo-estudos/cadastro?id="+cicloId);
+		} catch (ErrosValidacaoException e) {
+			addMensagensErroValidacao(redirect, bindingResult);
+			return new ModelAndView("redirect:/periodo-ciclo-estudos/alterar?cicloId="+cicloId+"&uuid="+uuid);
+		}
 	}
 	
 	@PutMapping("/atualizar-duracao")
@@ -142,7 +178,10 @@ public class PeriodoCicloEstudosController extends AbstractController {
 	@DeleteMapping("/remover/{index}")
 	public @ResponseBody ResponseEntity<?> remover(@PathVariable Integer index, String cicloId, ModelMap model) {
 		CicloEstudos cicloEstudos = cicloEstudosSessao.getCicloEstudos(cicloId);
-		service.removerPeriodo(cicloEstudos, index);
+		PeriodoCicloEstudos periodoRemovido = service.removerPeriodo(cicloEstudos, index);
+		if(periodoRemovido != null) {
+			sessao.remover(periodoRemovido.getUuid());
+		}
 		
 		return ResponseEntity.ok().build();
 	}
