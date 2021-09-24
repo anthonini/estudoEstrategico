@@ -39,13 +39,17 @@ public class CicloEstudos implements Entidade {
 	@OrderBy("numero")
 	private List<PeriodoCicloEstudos> periodosCicloEstudos = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "cicloEstudos", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderBy("dia")
+	private List<DiaEstudo> diasEstudo = new ArrayList<>();
+	
 	@Transient
 	private String uuid;
 	
 	public Integer getPeriodoIndex(PeriodoCicloEstudos periodo) {
 		for(int i = 0; i < this.getPeriodosCicloEstudos().size(); i++) {
 			PeriodoCicloEstudos periodoBuscado = this.getPeriodosCicloEstudos().get(i);
-			if(periodoBuscado.getUuid().equals(periodo.getUuid())) {
+			if(periodoBuscado.getUuid() != null && periodoBuscado.getUuid().equals(periodo.getUuid())) {
 				return i;
 			}
 		}
@@ -83,6 +87,14 @@ public class CicloEstudos implements Entidade {
 
 	public void setPeriodosCicloEstudos(List<PeriodoCicloEstudos> periodosCicloEstudos) {
 		this.periodosCicloEstudos = periodosCicloEstudos;
+	}
+
+	public List<DiaEstudo> getDiasEstudo() {
+		return diasEstudo;
+	}
+
+	public void setDiasEstudo(List<DiaEstudo> diasEstudo) {
+		this.diasEstudo = diasEstudo;
 	}
 
 	public String getUuid() {

@@ -62,6 +62,7 @@ EstudoEstrategico.Tema = (function(){
 		this.modoEscuro = $('#modo-escuro');
 		this.url = this.modoEscuro.data('url');
 		this.modoEscuroStyleSheet = $('#modoEscuroStyleSheet');
+		this.estudoEstrategicoModoEscuroStyleSheet = $('#estudoEstrategicoModoEscuroStyleSheet');
 		this.pcodedNavbar = $('.pcoded-navbar');
 	}
 	
@@ -80,6 +81,7 @@ EstudoEstrategico.Tema = (function(){
 	
 	function onTemaAlteradoComSucesso(navbarClass) {
 		this.modoEscuroStyleSheet.prop("disabled", !this.modoEscuro.is(':checked'));
+		this.estudoEstrategicoModoEscuroStyleSheet.prop("disabled", !this.modoEscuro.is(':checked'));
 		this.pcodedNavbar.removeClass().addClass(navbarClass);
 		
 	}
