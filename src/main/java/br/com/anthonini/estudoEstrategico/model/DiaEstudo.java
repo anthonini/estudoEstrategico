@@ -38,7 +38,7 @@ public class DiaEstudo implements Serializable {
 	@OrderBy("ordem")
 	private List<DisciplinaDiaEstudo> disciplinas = new ArrayList<>();
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "diaEstudo")
+	@OneToMany(mappedBy = "diaEstudo", cascade = CascadeType.ALL)	
 	private List<Revisao> revisoes = new ArrayList<>();
 	
 	public int getQuantidadeItens() {

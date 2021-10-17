@@ -58,7 +58,7 @@ public class Revisao implements Entidade {
 	}
 	
 	public boolean isEstudoIniciado() {
-		return cargaHoraria != null || cargaHorariaLiquida != null || quantidadeQuestoesResolvidas != null || quantidadeQuestoesResolvidasCorretas != null || observacao != null;
+		return cargaHorariaLiquida != null || quantidadeQuestoesResolvidas != null || quantidadeQuestoesResolvidasCorretas != null || observacao != null;
 	}
 
 	public Long getId() {

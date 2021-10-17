@@ -37,7 +37,10 @@ public class CicloEstudosService {
 	
 	public CicloEstudos findCicloEstudos(Long id) {
 		CicloEstudos cicloEstudos = repository.findCicloEstudos(id);
-		cicloEstudos.getDiasEstudo().iterator();
+		for(DiaEstudo diaEstudo : cicloEstudos.getDiasEstudo()) {
+			diaEstudo.getRevisoes().iterator();
+			diaEstudo.getDisciplinas().iterator();
+		}
 		return cicloEstudos;
 	}
 	

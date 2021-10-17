@@ -35,7 +35,7 @@ public class CicloEstudos implements Entidade {
 	@JoinColumn(name = "id_usuario", nullable = false)
 	private Usuario usuario;
 	
-	@OneToMany(mappedBy = "cicloEstudos", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "cicloEstudos", cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy("numero")
 	private List<PeriodoCicloEstudos> periodosCicloEstudos = new ArrayList<>();
 	
