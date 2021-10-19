@@ -5,21 +5,28 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.anthonini.arquitetura.controller.AbstractController;
 import br.com.anthonini.arquitetura.controller.page.PageWrapper;
+import br.com.anthonini.estudoEstrategico.dto.DisciplinaDiaEstudoDTO;
+import br.com.anthonini.estudoEstrategico.dto.RevisaoDTO;
 import br.com.anthonini.estudoEstrategico.model.CicloEstudos;
 import br.com.anthonini.estudoEstrategico.repository.helper.cicloEstudos.filter.CicloEstudosFilter;
 import br.com.anthonini.estudoEstrategico.security.UsuarioSistema;
 import br.com.anthonini.estudoEstrategico.service.CicloEstudosService;
+import br.com.anthonini.estudoEstrategico.service.EstudosService;
+import br.com.anthonini.estudoEstrategico.service.exception.UsuarioSemPermissaoParaRealizarEssaOperacao;
 
 @Controller
 @RequestMapping("/estudos")
@@ -27,7 +34,10 @@ public class EstudosController  extends AbstractController {
 	
 	private final CicloEstudosService cicloEstudosService;
 	
-	public EstudosController(CicloEstudosService cicloEsudosService) {
+	private final EstudosService service;
+	
+	public EstudosController(EstudosService service, CicloEstudosService cicloEsudosService) {
+		this.service = service;
 		this.cicloEstudosService = cicloEsudosService;
 	}
 
@@ -52,5 +62,25 @@ public class EstudosController  extends AbstractController {
 		model.addAttribute("diasEstudo", cicloEstudos.getDiasEstudo());
         return new ModelAndView("estudo/View");
     }
+	
+	@PutMapping("/atualizar-estudos-disciplina")
+	public @ResponseBody ResponseEntity<?> atualizarDisciplina(DisciplinaDiaEstudoDTO dto, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
+		try {
+			this.service.atualizarEstudoDiaDisciplina(dto, usuarioSistema.getUsuario());
+			return ResponseEntity.ok().build();
+		} catch (UsuarioSemPermissaoParaRealizarEssaOperacao e) {
+			return ResponseEntity.badRequest().build();
+		}
+	}
+	
+	@PutMapping("/atualizar-estudos-revisao")
+	public @ResponseBody ResponseEntity<?> atualizarRevisao(RevisaoDTO dto, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
+		try {
+			this.service.atualizarRevisao(dto, usuarioSistema.getUsuario());
+			return ResponseEntity.ok().build();
+		} catch (UsuarioSemPermissaoParaRealizarEssaOperacao e) {
+			return ResponseEntity.badRequest().build();
+		}
+	}
 }
 

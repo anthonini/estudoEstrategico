@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import br.com.anthonini.estudoEstrategico.util.PorcentagemUtil;
+
 @Entity
 @Table(name = "disciplina_dia_estudo")
 public class DisciplinaDiaEstudo implements Entidade {
@@ -56,11 +58,7 @@ public class DisciplinaDiaEstudo implements Entidade {
 	private String observacao;
 
 	public String getPorcentagemAcertoQuestoes() {
-		if(quantidadeQuestoesResolvidas != null && quantidadeQuestoesResolvidas > 0 && quantidadeQuestoesResolvidasCorretas != null && quantidadeQuestoesResolvidasCorretas > 0) {
-			return ((double)quantidadeQuestoesResolvidasCorretas/quantidadeQuestoesResolvidas)*100 + "%";
-		}
-		
-		return "--";
+		return PorcentagemUtil.getPorcentagem(quantidadeQuestoesResolvidasCorretas, quantidadeQuestoesResolvidas);
 	}
 	
 	public boolean isEstudoIniciado() {
