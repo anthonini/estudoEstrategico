@@ -1,5 +1,7 @@
 package br.com.anthonini.estudoEstrategico.dto;
 
+import br.com.anthonini.estudoEstrategico.util.PorcentagemUtil;
+
 public class RevisaoDTO {
 
 	private Long id;
@@ -11,6 +13,10 @@ public class RevisaoDTO {
 	private Integer quantidadeQuestoesResolvidasCorretas;
 	
 	private String observacao;
+	
+	public String getPorcentagemAcertoQuestoes() {
+		return PorcentagemUtil.getPorcentagem(quantidadeQuestoesResolvidasCorretas, quantidadeQuestoesResolvidas);
+	}
 
 	public Long getId() {
 		return id;

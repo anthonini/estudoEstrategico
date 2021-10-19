@@ -67,7 +67,7 @@ public class EstudosController  extends AbstractController {
 	public @ResponseBody ResponseEntity<?> atualizarDisciplina(DisciplinaDiaEstudoDTO dto, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
 		try {
 			this.service.atualizarEstudoDiaDisciplina(dto, usuarioSistema.getUsuario());
-			return ResponseEntity.ok().build();
+			return ResponseEntity.ok(dto);
 		} catch (UsuarioSemPermissaoParaRealizarEssaOperacao e) {
 			return ResponseEntity.badRequest().build();
 		}
@@ -77,7 +77,7 @@ public class EstudosController  extends AbstractController {
 	public @ResponseBody ResponseEntity<?> atualizarRevisao(RevisaoDTO dto, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
 		try {
 			this.service.atualizarRevisao(dto, usuarioSistema.getUsuario());
-			return ResponseEntity.ok().build();
+			return ResponseEntity.ok(dto);
 		} catch (UsuarioSemPermissaoParaRealizarEssaOperacao e) {
 			return ResponseEntity.badRequest().build();
 		}

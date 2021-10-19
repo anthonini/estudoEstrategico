@@ -15,24 +15,36 @@ EstudoEstrategico.Estudo = (function() {
 		var id = $(event.target).data('id');
 		var inputs = $('input[data-id="'+id+'"]');
 		
-		$.ajax({
+		var response = $.ajax({
 			url: 'atualizar-estudos-disciplina?id=' + id,
 			contentType: 'application/x-www-form-urlencoded',
 			method: 'PUT',
 			data : inputs.serialize()
 		});
+		
+		response.done(onEstudoDisciplinaAtualizadaResponse.bind(this, id));
+	}
+	
+	function onEstudoDisciplinaAtualizadaResponse(id, disciplinaDiaEstudo) {
+		$('#porcentagem_'+id).html(disciplinaDiaEstudo.porcentagemAcertoQuestoes);
 	}
 	
 	function onInputRevisaoBlur(event) {
 		var id = $(event.target).data('id');
 		var inputs = $('input[data-id="'+id+'"]');
 		
-		$.ajax({
+		var response = $.ajax({
 			url: 'atualizar-estudos-revisao?id=' + id,
 			contentType: 'application/x-www-form-urlencoded',
 			method: 'PUT',
 			data : inputs.serialize()
 		});
+		
+		response.done(onRevisaoAtualizadaResponse.bind(this, id));
+	}
+	
+	function onRevisaoAtualizadaResponse(id, revisao) {
+		$('#porcentagem-revisao_'+id).html(revisao.porcentagemAcertoQuestoes);
 	}
 	
 	return Estudo;

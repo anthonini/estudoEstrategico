@@ -54,7 +54,7 @@ public class Revisao implements Entidade {
 	}
 
 	public String getPorcentagemAcertoQuestoes() {
-		return PorcentagemUtil.getPorcentagem(quantidadeQuestoesResolvidas, quantidadeQuestoesResolvidasCorretas);
+		return PorcentagemUtil.getPorcentagem(quantidadeQuestoesResolvidasCorretas, quantidadeQuestoesResolvidas);
 	}
 	
 	public boolean isEstudoIniciado() {
