@@ -13,19 +13,19 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 @PropertySource(value = { "file:./.estudo_estrategico-mail.properties" }, ignoreResourceNotFound = true)
 public class MailConfig {
 	
-	@Value("${external.estudo_estrategico.mail.host:estudo_estrategico.mail.host}")
+	@Value("${external.estudo_estrategico.mail.host:${estudo_estrategico.mail.host}}")
 	private String host;
 	
-	@Value("${external.estudo_estrategico.mail.port:estudo_estrategico.mail.port}")
+	@Value("${external.estudo_estrategico.mail.port:${estudo_estrategico.mail.port}}")
 	private int port;
 	
-	@Value("${external.estudo_estrategico.mail.username:estudo_estrategico.mail.username}")
+	@Value("${external.estudo_estrategico.mail.username:${estudo_estrategico.mail.username}}")
 	private String username;
 	
-	@Value("${external.estudo_estrategico.mail.password:estudo_estrategico.mail.password}")
+	@Value("${external.estudo_estrategico.mail.password:${estudo_estrategico.mail.password}}")
 	private String password;
 	
-	@Value("${external.estudo_estrategico.from.mail:estudo_estrategico.from.mail}")
+	@Value("${external.estudo_estrategico.mail.from:${estudo_estrategico.mail.from}}")
 	private String fromEmail;
 
 	@Bean
