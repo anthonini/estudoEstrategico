@@ -172,7 +172,7 @@ public class PeriodoCicloEstudosController extends AbstractController {
 	public String disciplinasPeriodo(String uuid, DiaPeriodoCicloEstudos dia, ModelMap model) {
 		model.addAttribute("disciplinasPeriodo", dia.getDisciplinas(sessao.getPeriodoCicloEstudos(uuid)));
 		model.addAttribute("dia",dia);
-		return "/periodo-ciclo-estudos/fragments/disciplinas";
+		return "periodo-ciclo-estudos/fragments/disciplinas";
 	}
 	
 	@DeleteMapping("/remover/{index}")

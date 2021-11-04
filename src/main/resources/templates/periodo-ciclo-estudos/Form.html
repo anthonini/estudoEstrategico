@@ -63,7 +63,7 @@
 											<h5>Disciplinas do primeiro dia</h5>
 										</div>
 										<div class="card-block" id="disciplinas-primeiro-dia">
-											<th:block th:replace="/periodo-ciclo-estudos/fragments/disciplinas :: disciplinas(*{disciplinasPrimeiroDia})"></th:block>
+											<th:block th:replace="periodo-ciclo-estudos/fragments/disciplinas :: disciplinas(*{disciplinasPrimeiroDia})"></th:block>
 										</div>
 										<div class="card-footer text-center">
                                             <a class="btn btn-success shadow-2" href="#" data-toggle="modal" data-target="#disciplinaPeriodoModal" data:dia="${primeiroDia}">
@@ -78,7 +78,7 @@
 											<h5>Disciplinas do segundo dia</h5>
 										</div>
 										<div class="card-block" id="disciplinas-segundo-dia">
-											<th:block th:replace="/periodo-ciclo-estudos/fragments/disciplinas :: disciplinas(*{disciplinasSegundoDia})"></th:block>
+											<th:block th:replace="periodo-ciclo-estudos/fragments/disciplinas :: disciplinas(*{disciplinasSegundoDia})"></th:block>
 										</div>
 										<div class="card-footer text-center">
                                             <a class="btn btn-success shadow-2" href="#" data-toggle="modal" data-target="#disciplinaPeriodoModal" data:dia="${segundoDia}">
