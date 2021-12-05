@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:an="http://www.anthonini.com.br">
+
+<body>
+	<th:block layout:fragment="conteudo">
+		<div class="main-body">
+			<div class="page-wrapper">
+				<!-- [ Main Content ] start -->
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="card">
+							<div class="card-header">
+								<h5>Perfil</h5>
+							</div>
+					        <div class="card-block">
+					        	<form th:object="${perfilDTO}" th:action="@{/perfil}" method="POST">
+						        	<div class="row">
+						        		<div class="col-md-6">
+						        			<div class="form-group">
+												<label class="form-label">Nome</label>
+												<input type="text" class="form-control" placeholder="Nome" th:field="*{nome}" an:classforerror="nome">
+											</div>
+						        		</div>
+						        		<div class="col-md-6">
+						        			<div class="form-group">
+												<label class="form-label">CPF</label>
+												<input type="text" class="form-control js-cpf" placeholder="CPF" th:field="*{cpf}" disabled="disabled">
+											</div>
+						        		</div>
+						        	</div>
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label class="form-label">Email</label> 
+												<input type="email" class="form-control" placeholder="E-mail" th:field="*{email}" an:classforerror="email">
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label class="form-label">Para confirmar a alteração, digite sua senha</label>
+												<input type="password" class="form-control" placeholder="Senha" th:field="*{senha}" an:classforerror="senha">
+											</div>
+										</div>
+									</div>
+									<button class="btn btn-primary" type="submit">Salvar</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- [ Main Content ] end -->
+			</div>
+		</div>
+	</th:block>
+</body>
+</html>

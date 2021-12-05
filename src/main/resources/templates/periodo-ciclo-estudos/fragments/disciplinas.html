@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:data="http://www.thymeleaf.com/extras/data">
+
+<th:block th:fragment="disciplinas(disciplinasPeriodo)">
+	<div class="table-responsive">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th class="col-numero">#</th>
+					<th>Disciplina</th>
+					<th>Carga Horária</th>
+					<th class="table-col-acoes"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${#lists.isEmpty(disciplinasPeriodo)}">
+					<td colspan="4"><i>Nenhuma disciplina adicionada.</i></td>
+				</tr>
+				<tr th:each="disciplinaPeriodo, itr : ${disciplinasPeriodo}">
+					<td scope="row" class="text-center" th:text="${itr.index+1}">1</td>
+					<td th:text="${disciplinaPeriodo.disciplina.nome}">Disciplina</td>
+					<td th:text="${disciplinaPeriodo.descricaoCargaHoraria}">60 minutos</td>
+					<td>
+						<a class="badge label label-danger text-white f-12 shadow-1 js-remover-disciplina" title="Remover" href="#"
+							data:url="@{/disciplina-periodo/remover/{idx}(idx=${itr.index})}"
+							data:disciplina="${disciplinaPeriodo.disciplina.nome}"
+							data:dia="${disciplinaPeriodo.dia}">
+							<i class="feather icon-trash-2"></i>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</th:block>
+</html>

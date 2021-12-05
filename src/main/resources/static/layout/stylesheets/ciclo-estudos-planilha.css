@@ -1,0 +1,11 @@
+.card-planilha {
+	width: fit-content;
+}
+.table td, .table th { 
+	padding: 0.35em;
+}
+input {
+	border: none;
+	width: 100%;
+	min-width: 36px;
+}

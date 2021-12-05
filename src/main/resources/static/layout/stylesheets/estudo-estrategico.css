@@ -1,0 +1,20 @@
+.table-col-acoes
+ {
+	width: 75px;
+	min-width: 75px;
+}
+.col-numero {
+	width: 50px;
+}
+.card-header-right-fixed {
+	display: inline-block;
+	padding: 0;
+	position: relative;
+	margin-top: -10px;
+	margin-bottom: -20px;
+}
+.planilha.form-control {
+	background: none;
+	padding: 0;
+	border: none;
+}

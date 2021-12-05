@@ -5,10 +5,10 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <!-- [ navigation menu ] start -->
-<nav class="pcoded-navbar menu-light <!--/* navbar-dark brand-dark */-->" th:fragment="navigationMenu">
+<nav th:class="${#authentication.principal.usuario.tema.navbarClass}" th:fragment="navigationMenu">
     <div class="navbar-wrapper">
         <div class="navbar-brand header-logo">
-            <a href="index.html" class="b-brand">
+            <a th:href="@{/}" class="b-brand">
                 <div class="b-bg">
                     <i class="feather icon-trending-up"></i>
                 </div>
@@ -19,16 +19,50 @@
         <div class="navbar-content scroll-div">
             <ul class="nav pcoded-inner-navbar">
                 <li class="nav-item pcoded-menu-caption">
-                    <label>Navegação</label>
+                    <label>Acompanhamento</label>
                 </li>
                 <li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/dashboard')} ? active">
                     <a th:href="@{/dashboard}" class="nav-link ">
                     	<span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span>
                     </a>
                 </li>
-                <li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/ciclo-estudos')} ? active">
-                	<a th:href="@{/ciclo-estudos}" class="nav-link ">
-                		<span class="pcoded-micon"><i class="feather icon-check-circle"></i></span><span class="pcoded-mtext">Ciclo de Estudos</span>
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Cadastros</label>
+                </li>
+                <li class="nav-item pcoded-hasmenu" th:classappend="${#httpServletRequest.requestURI.contains('/disciplina')} ? 'active pcoded-trigger'">
+                    <a href="#!" class="nav-link">
+                    	<span class="pcoded-micon"><i class="feather icon-layers"></i></span>
+                    	<span class="pcoded-mtext">Disciplina</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li th:classappend="${#httpServletRequest.requestURI.equals('/disciplina')} ? active">
+                        	<a th:href="@{/disciplina}">Busca</a>
+                        </li>
+                    	<li th:classappend="${#httpServletRequest.requestURI.contains('/disciplina/')} ? active">
+                    		<a th:href="@{/disciplina/cadastro}" class="">Cadastro</a>
+                    	</li>
+                    </ul>
+                </li>
+                <li class="nav-item pcoded-hasmenu" th:classappend="${#httpServletRequest.requestURI.contains('/ciclo-estudos') || #httpServletRequest.requestURI.contains('/periodo-ciclo-estudos')} ? 'active pcoded-trigger'">
+                    <a href="#!" class="nav-link">
+                    	<span class="pcoded-micon"><i class="feather icon-check-circle"></i></span>
+                    	<span class="pcoded-mtext">Ciclo de Estudos</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li th:classappend="${#httpServletRequest.requestURI.equals('/ciclo-estudos')} ? active">
+                        	<a th:href="@{/ciclo-estudos}">Busca</a>
+                        </li>
+                    	<li th:classappend="${#httpServletRequest.requestURI.contains('/ciclo-estudos/') || #httpServletRequest.requestURI.contains('/periodo-ciclo-estudos')} ? active">
+                    		<a th:href="@{/ciclo-estudos/novo}" class="">Cadastro</a>
+                    	</li>
+                    </ul>
+                </li>
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Estudos</label>
+                </li>
+                <li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/estudo')} ? active">
+                	<a th:href="@{/estudos}" class="nav-link ">
+                		<span class="pcoded-micon"><i class="feather icon-book"></i></span><span class="pcoded-mtext">Iniciar Estudos</span>
                 	</a>
                 </li>
             </ul>

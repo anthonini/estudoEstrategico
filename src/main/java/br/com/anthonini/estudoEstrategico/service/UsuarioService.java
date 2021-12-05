@@ -10,7 +10,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import br.com.anthonini.estudoEstrategico.dto.PerfilDTO;
 import br.com.anthonini.estudoEstrategico.model.Pessoa;
+import br.com.anthonini.estudoEstrategico.model.Tema;
 import br.com.anthonini.estudoEstrategico.model.Usuario;
 import br.com.anthonini.estudoEstrategico.repository.UsuarioRepository;
 import br.com.anthonini.estudoEstrategico.service.event.usuario.AlteracaoSenhaUsuarioEvent;
@@ -19,6 +21,7 @@ import br.com.anthonini.estudoEstrategico.service.event.usuario.ReenvioEmailConf
 import br.com.anthonini.estudoEstrategico.service.event.usuario.ResetarSenhaUsuarioEvent;
 import br.com.anthonini.estudoEstrategico.service.exception.CPFJaCadastradoException;
 import br.com.anthonini.estudoEstrategico.service.exception.EmailUsuarioJaCadastradoException;
+import br.com.anthonini.estudoEstrategico.service.exception.SenhaNaoConfirmadaException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioJaConfirmadoException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioNaoEncontradoException;
 
@@ -100,5 +103,32 @@ public class UsuarioService {
 		usuario.setConfirmacaoSenha(usuario.getSenha());
 		repository.save(usuario);
 		publisher.publishEvent(new AlteracaoSenhaUsuarioEvent(usuario));
+	}
+	
+	@Transactional
+	public void atualizarDados(Usuario usuario, PerfilDTO perfilDTO) {
+		if(!this.passwordEncoder.matches(perfilDTO.getSenha(), usuario.getSenha())) {
+			throw new SenhaNaoConfirmadaException();
+		}
+		Optional<Usuario> usuarioExistentePorEmail = repository.findByEmail(perfilDTO.getEmail());
+		
+		if(usuarioExistentePorEmail.isPresent() && !usuarioExistentePorEmail.get().equals(usuario)) {
+			throw new EmailUsuarioJaCadastradoException();
+		}
+		
+		usuario.getPessoa().setNome(perfilDTO.getNome());
+		usuario.setEmail(perfilDTO.getEmail());
+		repository.save(usuario);
+	}
+	
+	@Transactional
+	public void alterarTema(Usuario usuario, boolean modoEscuro) {
+		if(modoEscuro) {
+			usuario.setTema(Tema.ESCURO);
+		} else {
+			usuario.setTema(Tema.CLARO);
+		}
+			
+		repository.save(usuario);
 	}
 }

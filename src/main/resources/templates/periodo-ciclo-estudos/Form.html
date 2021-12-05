@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:an="http://www.anthonini.com.br"
+	xmlns:data="http://www.thymeleaf.com/extras/data">
+
+<body>
+	<th:block layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="page-block">
+				<div class="row align-items-center">
+					<div class="col-md-12">
+						<div class="page-header-title">
+							<h5 class="m-b-10">Período de Ciclo de Estudos</h5>
+						</div>
+						<ul class="breadcrumb">
+							<li class="breadcrumb-item"><a th:href="@{/}"><i class="feather icon-home"></i></a></li>
+							<li class="breadcrumb-item"><a th:href="@{/ciclo-estudos}">Ciclo de Estudos</a></li>
+							<li class="breadcrumb-item"><a th:href="@{/ciclo-estudos/cadastro?id={cicloId}(cicloId=${cicloEstudos.uuid})}" th:text="${cicloEstudos.novo} ? Cadastro : Edição">Cadastro</a></li>
+							<li class="breadcrumb-item"><a href="#" th:text="${alteracaoPeriodo} ? 'Alterar Período' : 'Adicionar Período'">Adicionar Período</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="main-body">
+			<div class="page-wrapper">
+				<!-- [ Main Content ] start -->
+				<div class="row">
+					<div class="col-12">
+						<form th:object="${periodoCicloEstudos}" th:action="${alteracaoPeriodo} ? @{/periodo-ciclo-estudos/alterar} : @{/periodo-ciclo-estudos/cadastro}" method="POST">
+							<div class="card">
+								<div class="card-header">
+									<h5>Período</h5>
+								</div>
+						        <div class="card-block">
+						        	<div class="row">
+							    		<div class="col-md-6">
+							    			<div class="form-group">
+												<label class="form-label">Duração</label>
+												<input type="text" class="form-control js-numero" th:field="*{duracao}">
+												<small class="text-muted">Em dias. Ex: 7, 15, 30, 60... dias.</small>
+											</div>
+							    		</div>
+							    	</div>
+							    	
+							    	<input type="hidden" name="cicloId" th:value="${cicloEstudos.uuid}">
+						        	<input type="hidden" th:field="*{uuid}">
+						        	<a class="btn btn-outline-secondary" th:href="@{/ciclo-estudos/cadastro?id={cicloId}(cicloId=${cicloEstudos.uuid})}">
+										<i class="feather icon-chevrons-left"></i> Voltar
+									</a>
+									<button class="btn btn-primary" type="submit" th:text="${alteracaoPeriodo} ? 'Alterar' : 'Adicionar'">Adicionar</button>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-md-6">
+									<div class="card">
+										<div class="card-header">
+											<h5>Disciplinas do primeiro dia</h5>
+										</div>
+										<div class="card-block" id="disciplinas-primeiro-dia">
+											<th:block th:replace="periodo-ciclo-estudos/fragments/disciplinas :: disciplinas(*{disciplinasPrimeiroDia})"></th:block>
+										</div>
+										<div class="card-footer text-center">
+                                            <a class="btn btn-success shadow-2" href="#" data-toggle="modal" data-target="#disciplinaPeriodoModal" data:dia="${primeiroDia}">
+                                            	<i class="fas fa-plus fa-sm"></i> Adicionar Disciplina
+                                            </a>
+                                        </div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="card">
+										<div class="card-header">
+											<h5>Disciplinas do segundo dia</h5>
+										</div>
+										<div class="card-block" id="disciplinas-segundo-dia">
+											<th:block th:replace="periodo-ciclo-estudos/fragments/disciplinas :: disciplinas(*{disciplinasSegundoDia})"></th:block>
+										</div>
+										<div class="card-footer text-center">
+                                            <a class="btn btn-success shadow-2" href="#" data-toggle="modal" data-target="#disciplinaPeriodoModal" data:dia="${segundoDia}">
+                                            	<i class="fas fa-plus fa-sm"></i> Adicionar Disciplina
+                                            </a>
+                                        </div>
+									</div>
+								</div>
+					    	</div>
+						</form>
+					</div>
+				</div>
+				<!-- [ Main Content ] end -->
+			</div>
+		</div>
+		
+		<div class="modal fade" id="disciplinaPeriodoModal" role="dialog" aria-hidden="true" data:url="@{/disciplina-periodo}">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-footer">
+						<button type="button" class="btn btn-light" data-dismiss="modal">Fechar</button>
+						<button type="submit" class="btn btn-primary">Salvar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+	<th:block layout:fragment="javascript-extra">
+		<script th:src="@{/javascript/periodo-ciclo-estudos/periodoCicloEstudos.js}"></script>
+		<script th:src="@{/javascript/periodo-ciclo-estudos/disciplinaPeriodo.js}"></script>
+	</th:block>
+</body>
+</html>

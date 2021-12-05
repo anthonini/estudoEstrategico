@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:data="http://www.thymeleaf.com/extras/data"
+	xmlns:an="http://www.anthonini.com.br">
+	
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+		<form method="POST" th:object="${disciplinaPeriodo}" th:action="@{/disciplina-periodo/adicionar}" name="form-disciplina-periodo">
+			<div class="modal-header">
+				<h5 class="modal-title">Adicionar Disciplina</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<an:message/>
+				<div class="row">
+					<div class="col-8">
+						<label class="form-label">Disciplina</label>
+						<select class="form-control" th:field="*{disciplina}">
+							<option value="">Selecione a disciplina</option>
+							<option th:value="${disciplina.id}" th:text="${disciplina.nome}" th:each="disciplina : ${disciplinasUsuario}">
+                        </select>
+					</div>
+					<div class="col-4">
+						<label class="form-label">Carga Horária</label>
+				 		<input class="form-control js-numero" type="text" placeholder="Minutos" th:field="*{cargaHoraria}">
+				 		<small class="text-muted">Em Minutos. Ex: 30, 60, 90, 120... minutos.</small>
+				 	</div>
+				</div>
+				<input type="hidden" name="dia" id="dia" th:value="${dia}">					
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-light" data-dismiss="modal">Fechar</button>
+				<button type="submit" class="btn btn-primary">Adicionar</button>
+			</div>
+		</form>
+	</div>
+</div>
+<script th:src="@{/javascript/periodo-ciclo-estudos/disciplinaPeriodoModal.js}"></script>
+<script th:inline="javascript">
+$(function() {
+	var disciplinaAdicionada = [[${disciplinaAdicionada}]];
+	var dia = [[${dia}]];
+	if(disciplinaAdicionada) {
+		$('#disciplinaPeriodoModal').trigger('disciplinas-atualizadas', dia);		
+	}
+});
+</script>
+</html>

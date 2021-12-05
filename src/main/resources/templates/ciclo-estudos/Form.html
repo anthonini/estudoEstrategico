@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:an="http://www.anthonini.com.br"
+	xmlns:data="http://www.thymeleaf.com/extras/data">
+
+<body>
+	<th:block layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="page-block">
+				<div class="row align-items-center">
+					<div class="col-md-12">
+						<div class="page-header-title">
+							<h5 class="m-b-10">Ciclo de Estudos</h5>
+						</div>
+						<ul class="breadcrumb">
+							<li class="breadcrumb-item"><a th:href="@{/}"><i class="feather icon-home"></i></a></li>
+							<li class="breadcrumb-item"><a th:href="@{/ciclo-estudos}">Ciclo de Estudos</a></li>
+							<li class="breadcrumb-item"><a href="#" th:text="${cicloEstudos.novo} ? Cadastro : Edição">Cadastro</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="main-body">
+			<div class="page-wrapper">
+				<!-- [ Main Content ] start -->
+				<div class="row">
+					<div class="col-12">
+						<form th:object="${cicloEstudos}" th:action="@{/ciclo-estudos/cadastro}" method="POST">
+							<div class="card User-Lists">
+								<div class="card-header">
+									<h5>Ciclo de Estudos</h5>
+								</div>
+						        <div class="card-block">
+						        	<div class="row">
+						        		<div class="col-md-6">
+						        			<div class="form-group">
+												<label class="form-label">Nome</label>
+												<input type="text" class="form-control" placeholder="Nome" th:field="*{nome}" an:classforerror="nome">
+											</div>
+						        		</div>
+						        	</div>
+						        					        	
+						        	<div class="card-header">
+						        		<div class="row">
+											<div class="col-6">
+												<h5>Períodos adicionados</h5>
+											</div>
+											<div class="col-6 card-header-right-fixed">
+								        		<a class="btn btn-sm shadow-2 btn-primary float-sm-right"
+									        		th:href="@{/periodo-ciclo-estudos/novo?cicloId={uuid}(uuid=${cicloEstudos.uuid})}">
+									        		<i class="feather icon-plus"></i>
+									        		Adicionar
+									        	</a>
+											</div>
+										</div>					        		
+						        	</div>
+						        	<div class="table-responsive">
+							        	<table class="table table-hover">
+							        		<thead th:unless="*{periodosCicloEstudos.empty}">
+							        			<tr>
+							        				<th>#</th>
+							        				<th>Duração</th>
+							        				<th>Primeiro Dia</th>
+							        				<th>Segundo Dia</th>
+							        				<th class="table-col-acoes"></th>
+							        			</tr>
+							        		</thead>
+										  <tbody>
+										  	<tr th:if="*{periodosCicloEstudos.empty}">
+				                             	<td colspan="5"><i>Nenhum período adicionado.</i></td>
+				                            </tr>
+										    <tr th:each="periodo, itr : *{periodosCicloEstudos}">
+										      <td scope="row" class="text-center col-numero" th:text="${itr.index+1}">1</td>
+										      <td th:text="${periodo.descricaoDuracao}">30 dias</td>
+										      <td th:text="${periodo.descricaoPrimeiroDia}">Disciplina</td>
+										      <td th:text="${periodo.descricaoSegundoDia}">30 dias</td>
+										      <td>
+													<a class="label theme-bg text-white f-12" th:href="@{/periodo-ciclo-estudos/alterar/{index}?cicloId={uuid}(uuid=${cicloEstudos.uuid}, index=${itr.index})}" title="Alterar">
+														Alterar <i class="feather icon-edit"></i>
+													</a>
+													<a class="label theme-bg3 text-white f-12 js-exclusao-btn" title="Remover" href="#"
+														data:url="@{/periodo-ciclo-estudos/remover/{idx}?cicloId={uuid}(idx=${itr.index}, uuid=${cicloEstudos.uuid})}"
+														data:objeto="|${itr.index+1}º período|">
+														Remover <i class="feather icon-trash-2"></i>
+													</a>
+											  </td>
+										    </tr>
+										  </tbody>
+										</table>
+									</div>
+						        	
+						        	<input type="hidden" th:field="*{uuid}">
+									<button class="btn btn-primary mt-3" type="submit">Salvar</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!-- [ Main Content ] end -->
+			</div>
+		</div>
+	</th:block>
+	<th:block layout:fragment="javascript-extra">
+		<script th:src="@{/javascript/ciclo-estudos/cicloEstudos.js}"></script>
+		<script th:src="@{/javascript/estudo-estrategico.dialogo-exclusao.js}"></script>
+	</th:block>
+</body>
+</html>

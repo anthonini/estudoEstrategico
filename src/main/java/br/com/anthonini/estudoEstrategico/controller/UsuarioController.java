@@ -108,7 +108,7 @@ public class UsuarioController extends AbstractController {
 	@PostMapping("/reenviar-email-confirmacao")
 	public String reenviarEmailConfirmacao(String email, ModelMap model, RedirectAttributes redirectAttributes) {
 		if(email == null || email.isEmpty()) {
-			addMensagemErro(model, "E-mail é obrigatório");
+			addMensagemErro(model, getMessage("email.mensagem.obrigatorio"));
 			return reenviarEmailConfirmacao(null, model);
 		}
 		
@@ -140,7 +140,7 @@ public class UsuarioController extends AbstractController {
 	@PostMapping("/recuperar-senha")
 	public ModelAndView recuperarSenha(String email, ModelMap model, RedirectAttributes redirectAttributes) {	    
 		if(email == null || email.isEmpty()) {
-			addMensagemErro(model, "E-mail é obrigatório");
+			addMensagemErro(model, getMessage("email.mensagem.obrigatorio"));
 			return recuperarSenha(email, model);
 		}
 		

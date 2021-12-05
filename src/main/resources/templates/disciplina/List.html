@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:an="http://www.anthonini.com.br"
+	xmlns:data="http://www.thymeleaf.com/extras/data">
+
+<body>
+	<th:block layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="page-block">
+				<div class="row align-items-center">
+					<div class="col-md-12">
+						<div class="page-header-title">
+							<h5 class="m-b-10">Disciplina</h5>
+						</div>
+						<ul class="breadcrumb">
+							<li class="breadcrumb-item"><a th:href="@{/}"><i class="feather icon-home"></i></a></li>
+							<li class="breadcrumb-item"><a href="#!">Disciplina</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="main-body">
+			<div class="page-wrapper">
+				<!-- [ Main Content ] start -->
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="card">
+							<div class="card-header ">
+								<div class="row">
+									<div class="col-7">
+										<h5>Disciplina</h5>
+									</div>
+								</div>
+							</div>
+					        <div class="card-block">
+					        	<h5>Busca</h5>
+					        	<form method="GET">
+									<div class="row">
+						        		<div class="col-md-6">
+						        			<div class="form-group">
+												<label class="form-label">Nome</label>
+												<input type="text" class="form-control" placeholder="Nome" id="nome" name="nome">
+											</div>
+						        		</div>
+						        	</div>
+						        	<button class="btn btn-outline-primary" type="submit">Pesquisar</button>
+								</form>
+							</div>
+						</div>
+						
+						<div class="card User-Lists">
+							<div class="card-header ">
+								<h5>Disciplinas encontradas</h5>
+							</div>
+					        <div class="card-block px-0 py-3">
+					        	<div class="table-responsive">
+						        	<div class="table-responsive">
+							        	<table class="table table-hover">
+										  <tbody>
+										  	<tr th:if="${pagina.vazia}">
+				                             	<td colspan="3"><i>Nenhuma disciplina encontrada.</i></td>
+				                             </tr>
+										    <tr th:each="disciplina, itr : ${pagina.conteudo}">
+										      <td scope="row" class="text-center col-numero" th:text="${pagina.numeroPrimeiroItemPagina + itr.index}">1</td>
+										      <td th:text="${disciplina.nome}">Direito Administrativo</td>
+										      <td class="table-col-acoes">
+													<a class="label theme-bg text-white f-12" th:href="@{/disciplina/{id}(id=${disciplina.id})}" title="Alterar">
+														Alterar <i class="feather icon-edit"></i>
+													</a>
+													<a class="label theme-bg3 text-white f-12 js-exclusao-btn" title="Remover" href="#"
+														data:url="@{/disciplina/{id}(id=${disciplina.id})}"
+														data:objeto="${disciplina.nome}">
+														Remover <i class="feather icon-trash-2"></i>
+													</a>
+												</td>
+										    </tr>
+										  </tbody>
+										</table>
+									</div>
+								</div>
+								
+								<an:paginacao pagina="${pagina}"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- [ Main Content ] end -->
+			</div>
+		</div>
+	</th:block>
+	<th:block layout:fragment="javascript-extra">
+		<script th:src="@{/javascript/estudo-estrategico.dialogo-exclusao.js}"></script>
+	</th:block>
+</body>
+</html>

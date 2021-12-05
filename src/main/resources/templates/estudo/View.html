@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:an="http://www.anthonini.com.br"
+	xmlns:data="http://www.thymeleaf.com/extras/data">
+
+<head>
+	<link rel="stylesheet" th:href="@{/layout/stylesheets/ciclo-estudos-planilha.css}">
+</head>
+<body>
+	<th:block layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="page-block">
+				<div class="row align-items-center">
+					<div class="col-md-12">
+						<div class="page-header-title">
+							<h5 class="m-b-10">Iniciar Estudos</h5>
+						</div>
+						<ul class="breadcrumb">
+							<li class="breadcrumb-item"><a th:href="@{/}"><i class="feather icon-home"></i></a></li>
+							<li class="breadcrumb-item"><a href="#!">Iniciar Estudos</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="main-body">
+			<div class="page-wrapper">
+				<!-- [ Main Content ] start -->
+				<div class="row">
+					<div class="col-sm-12">
+						
+						<div class="card User-Lists card-planilha">
+							<div class="card-header ">
+								<h5>Ciclos de Estudos</h5>
+							</div>
+					        <div class="card-block px-0 py-3">
+					        	<table class="table table-bordered">
+					        		<th:block th:each="diaEstudo, itr : ${diasEstudo}">
+						        		<thead class="table-active">
+						        			<tr>
+						        				<th title="Dia">Dia</th>
+						        				<th title="Disciplina">Disciplina</th>
+						        				<th title="Carga Horária">CH</th>
+						        				<th title="Carga Horária Líquida">CHL</th>
+						        				<th title="Aula">Aula</th>
+						        				<th title="Páginas Estudadas">Págs. Estudadas</th>
+						        				<th title="Página Inicial">Pág. Inicial</th>
+						        				<th title="Página Final">Pág. Final</th>
+						        				<th title="Quantidade de Questões Resolvidas">Qtde. Questões</th>
+						        				<th title="Quantidade de Questões Certas">Qtde. Quest. Certas</th>
+						        				<th title="% Acertos">% Acertos</th>
+						        				<th title="Observação">Observação</th>
+						        			</tr>
+						        		</thead>
+									  	<tbody>
+										  	<tr th:if="${#lists.isEmpty(diasEstudo)}">
+				                             	<td colspan="3"><i>Nenhuma disciplina cadastrada.</i></td>
+				                            </tr>
+				                            <tr class="table-active">
+				                            	<td scope="row" th:rowspan="${diaEstudo.quantidadeItens+1}" class="text-center col-numero">
+				                            		<h6 class="m-b-0" th:text="${diaEstudo.diaFormatado}">001</h6>
+				                            	</td>
+				                            </tr>
+										    <tr th:each="disciplinaDia : ${diaEstudo.disciplinas}">
+												<td><h6 class="m-b-0" th:text="${disciplinaDia.disciplina.nome}">Nome da Disciplina</h6></td>
+												<td><h6 class="m-b-0" th:text="${disciplinaDia.cargaHoraria}">60</h6></td>
+												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.cargaHorariaLiquida}" name="cargaHorariaLiquida"></td>
+												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.aula}" name="aula"></td>
+												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.paginasEstudadas}" name="paginasEstudadas"></td>
+												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.paginaInicial}" name="paginaInicial"></td>
+												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.paginaFinal}" name="paginaFinal"></td>
+												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.quantidadeQuestoesResolvidas}" name="quantidadeQuestoesResolvidas" ></td>
+												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.quantidadeQuestoesResolvidasCorretas}" name="quantidadeQuestoesResolvidasCorretas"></td>
+												<td class="text-center" th:text="${disciplinaDia.porcentagemAcertoQuestoes}" th:id="|porcentagem_${disciplinaDia.id}|" >86%</td>
+												<td><input type="text" class="js-disciplina-dia-estudo planilha form-control" style="width: 500px" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.observacao}" name="observacao"></td>
+										    </tr>
+										    <tr th:each="revisao : ${diaEstudo.revisoes}">
+										    	<td class="table-active"><h6 class="m-b-0" th:text="${revisao.descricao}">Revisão 001</h6></td>
+										    	<td><h6 class="m-b-0" th:text="${revisao.cargaHoraria}">60</h6></td>
+										    	<td><input type="text" class="js-numero js-revisao text-right planilha form-control" maxlength="4" data:id="${revisao.id}" th:value="*{revisao.cargaHorariaLiquida}" name="cargaHorariaLiquida"></td>
+										    	<td colspan="4"></td>
+										    	<td><input type="text" class="js-numero js-revisao text-right planilha form-control" maxlength="4" data:id="${revisao.id}" th:value="*{revisao.quantidadeQuestoesResolvidas}" name="quantidadeQuestoesResolvidas"></td>
+										    	<td><input type="text" class="js-numero js-revisao text-right planilha form-control" maxlength="4" data:id="${revisao.id}" th:value="*{revisao.quantidadeQuestoesResolvidasCorretas}" name="quantidadeQuestoesResolvidasCorretas"></td>
+										    	<td class="text-center" th:text="${revisao.porcentagemAcertoQuestoes}" th:id="|porcentagem-revisao_${revisao.id}|">86%</td>
+										    	<td><input type="text" class="js-revisao planilha form-control" style="width: 500px" data:id="${revisao.id}" th:value="*{revisao.observacao}" name="observacao"></td>										    	
+										    </tr>
+									  </tbody>
+								  </th:block>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- [ Main Content ] end -->
+			</div>
+		</div>
+	</th:block>
+	<th:block layout:fragment="javascript-extra">
+		<script th:src="@{/javascript/estudo-estrategico.dialogo-exclusao.js}"></script>
+		<script th:src="@{/javascript/estudo/estudo.js}"></script>
+	</th:block>
+</body>
+</html>

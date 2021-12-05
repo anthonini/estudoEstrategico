@@ -13,20 +13,26 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 @PropertySource(value = { "file:./.estudo_estrategico-mail.properties" }, ignoreResourceNotFound = true)
 public class MailConfig {
 	
-	@Value("${external.estudo_estrategico.mail.username:estudo_estrategico.mail.username}")
+	@Value("${estudo_estrategico.mail.host}")
+	private String host;
+	
+	@Value("${estudo_estrategico.mail.port}")
+	private int port;
+	
+	@Value("${estudo_estrategico.mail.username}")
 	private String username;
 	
-	@Value("${external.estudo_estrategico.mail.password:estudo_estrategico.mail.password}")
+	@Value("${estudo_estrategico.mail.password}")
 	private String password;
 	
-	@Value("${external.estudo_estrategico.from.mail:estudo_estrategico.from.mail}")
+	@Value("${estudo_estrategico.mail.from}")
 	private String fromEmail;
 
 	@Bean
 	public JavaMailSender mailSender() {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-		mailSender.setHost("smtp.sendgrid.net");
-		mailSender.setPort(587);
+		mailSender.setHost(host);
+		mailSender.setPort(port);
 		mailSender.setUsername(username);
 		mailSender.setPassword(password);
 		
@@ -34,7 +40,7 @@ public class MailConfig {
 		props.put("mail.transport.protocol", "smtp");
 		props.put("mail.smtp.auth", true);
 		props.put("mail.smtp.starttls.enable", true);
-		props.put("mail.debug", false);
+		props.put("mail.debug", true);
 		props.put("mail.smtp.connectiontimeout", 10000); // miliseconds
 
 		mailSender.setJavaMailProperties(props);
