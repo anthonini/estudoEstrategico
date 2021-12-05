@@ -13,7 +13,7 @@ EstudoEstrategico.Estudo = (function() {
 	
 	function onInputDadoEstudoBlur(event) {
 		var id = $(event.target).data('id');
-		var inputs = $('input[data-id="'+id+'"]');
+		var inputs = $('input[data-id="'+id+'"].js-disciplina-dia-estudo');
 		
 		var response = $.ajax({
 			url: 'atualizar-estudos-disciplina?id=' + id,
@@ -31,7 +31,7 @@ EstudoEstrategico.Estudo = (function() {
 	
 	function onInputRevisaoBlur(event) {
 		var id = $(event.target).data('id');
-		var inputs = $('input[data-id="'+id+'"]');
+		var inputs = $('input[data-id="'+id+'"].js-revisao');
 		
 		var response = $.ajax({
 			url: 'atualizar-estudos-revisao?id=' + id,
