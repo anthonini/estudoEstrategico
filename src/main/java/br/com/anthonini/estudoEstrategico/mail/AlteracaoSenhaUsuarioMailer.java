@@ -48,7 +48,7 @@ public class AlteracaoSenhaUsuarioMailer {
 			
 			MimeMessage mimeMessage = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-			helper.setFrom(mailConfig.getFromEmail());
+			helper.setFrom(mailConfig.from());
 			helper.setTo(usuario.getEmail());
 			helper.setSubject("Confirmação de alteração de senha");
 			helper.setText(email, true);
