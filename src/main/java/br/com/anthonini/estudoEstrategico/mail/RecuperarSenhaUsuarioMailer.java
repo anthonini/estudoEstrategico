@@ -51,7 +51,7 @@ public class RecuperarSenhaUsuarioMailer {
 			
 			MimeMessage mimeMessage = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-			helper.setFrom(mailConfig.getFromEmail());
+			helper.setFrom(mailConfig.from());
 			helper.setTo(usuario.getEmail());
 			helper.setSubject(String.format("Recuperação de senha do usuário do %s", messageSource.getMessage("nome", null, locale)));
 			helper.setText(email, true);

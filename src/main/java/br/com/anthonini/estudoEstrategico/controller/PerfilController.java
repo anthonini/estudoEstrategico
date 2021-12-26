@@ -56,7 +56,7 @@ public class PerfilController extends AbstractController {
 		
 		addMensagemSucesso(redirect, getMessage("perfil.atualizacao.mensagem.sucesso"));
 		
-		return new ModelAndView("redirect:/perfil");
+		return new ModelAndView("redirect:/Perfil");
 	}
 	
 	@PutMapping("/alterar-tema")
@@ -71,6 +71,6 @@ public class PerfilController extends AbstractController {
 	
 	private ModelAndView cadastro(PerfilDTO perfilDTO, ModelMap model) {
 		model.addAttribute("perfilDTO", perfilDTO);
-		return new ModelAndView("usuario/perfil");
+		return new ModelAndView("usuario/Perfil");
 	}
 }
