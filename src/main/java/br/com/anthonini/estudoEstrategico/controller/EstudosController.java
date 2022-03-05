@@ -56,7 +56,7 @@ public class EstudosController  extends AbstractController {
 		CicloEstudos cicloEstudos = cicloEstudosService.findCicloEstudos(id);
 		if (cicloEstudos == null || !usuarioSistema.getUsuario().equals(cicloEstudos.getUsuario())) {
             addMensagemErro(redirect, getMessage("ciclo-estudos.mensagem.naoEncontrado"));
-            return new ModelAndView("redirect:/estudo");
+            return new ModelAndView("redirect:/estudos");
         }
 
 		model.addAttribute("diasEstudo", cicloEstudos.getDiasEstudo());
