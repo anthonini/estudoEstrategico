@@ -79,6 +79,14 @@
 					        	<div class="table-responsive">
 						        	<div class="table-responsive">
 							        	<table class="table table-hover">
+							        	  <thead>
+							        	  	<tr>
+							        	  		<th>#</th>
+							        	  		<th>Nome</th>
+							        	  		<th>E-mail</th>
+							        	  		<th></th>
+							        	  	</tr>
+							        	  </thead>
 										  <tbody>
 										  	<tr th:if="${pagina.vazia}">
 				                             	<td colspan="3"><i>Nenhum usuário encontrado.</i></td>
@@ -86,6 +94,7 @@
 										    <tr th:each="usuario, itr : ${pagina.conteudo}">
 										      <td scope="row" class="text-center col-numero" th:text="${pagina.numeroPrimeiroItemPagina + itr.index}">1</td>
 										      <td th:text="${usuario.pessoa.nome}">Usuário</td>
+										      <td th:text="${usuario.email}">usuario@email.com</td>
 										      <td class="table-col-acoes">
 												<a class="label theme-bg text-white f-12" th:href="@{/permissao-usuario/{id}(id=${usuario.id})}" title="Alterar">
 													Alterar <i class="feather icon-edit"></i>
@@ -97,7 +106,8 @@
 									</div>
 								</div>
 								
-								<an:paginacao pagina="${pagina}"/></div>
+								<an:paginacao pagina="${pagina}"/>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import br.com.anthonini.estudoEstrategico.service.PermissaoService;
 import br.com.anthonini.estudoEstrategico.service.PermissaoUsuarioService;
 
 @Controller
+@PreAuthorize("hasRole('ROLE_CADASTRAR_PERMISSOES')")
 @RequestMapping("/permissao-usuario")
 public class PermissaoUsuarioController extends AbstractController {
 	

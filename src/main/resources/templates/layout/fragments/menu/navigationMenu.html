@@ -18,10 +18,10 @@
         </div>
         <div class="navbar-content scroll-div">
             <ul class="nav pcoded-inner-navbar">
-            	<li class="nav-item pcoded-menu-caption">
+            	<li class="nav-item pcoded-menu-caption" sec:authorize="hasAnyRole('ROLE_CADASTRAR_PERMISSOES', 'ROLE_CADASTRAR_GRUPO_USUARIO')">
                     <label>Administração</label>
                 </li>
-                <li class="nav-item pcoded-hasmenu" th:classappend="${#httpServletRequest.requestURI.contains('/grupo-usuario')} ? 'active pcoded-trigger'">
+                <li class="nav-item pcoded-hasmenu" th:classappend="${#httpServletRequest.requestURI.contains('/grupo-usuario')} ? 'active pcoded-trigger'" sec:authorize="hasRole('ROLE_CADASTRAR_GRUPO_USUARIO')">
                     <a href="#!" class="nav-link">
                     	<span class="pcoded-micon"><i class="feather icon-users"></i></span>
                     	<span class="pcoded-mtext">Grupo de Usuário</span>
@@ -35,7 +35,7 @@
                     	</li>
                     </ul>
                 </li>
-                <li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/permissao-usuario')} ? active">
+                <li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/permissao-usuario')} ? active" sec:authorize="hasRole('ROLE_CADASTRAR_PERMISSOES')">
                 	<a th:href="@{/permissao-usuario}" class="nav-link ">
                 		<span class="pcoded-micon"><i class="feather icon-unlock"></i></span><span class="pcoded-mtext">Permissões</span>
                 	</a>
