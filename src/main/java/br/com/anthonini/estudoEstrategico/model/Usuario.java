@@ -1,5 +1,7 @@
 package br.com.anthonini.estudoEstrategico.model;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -16,6 +20,7 @@ import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -54,6 +59,12 @@ public class Usuario implements Entidade {
 	
 	@Enumerated(EnumType.STRING)
 	private Tema tema = Tema.CLARO;
+	
+	@Size(min = 1, message = "Selecione pelo menos um grupo")
+	@ManyToMany
+	@JoinTable(name = "usuario_grupo_usuario", joinColumns = @JoinColumn(name = "id_usuario")
+				,inverseJoinColumns = @JoinColumn(name = "id_grupo_usuario"))
+	private List<GrupoUsuario> grupos;
 	
 	public String getStatus() {
 		return ativo ? "Ativo" : "Inativo";

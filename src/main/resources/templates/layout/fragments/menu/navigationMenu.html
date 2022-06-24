@@ -18,6 +18,23 @@
         </div>
         <div class="navbar-content scroll-div">
             <ul class="nav pcoded-inner-navbar">
+            	<li class="nav-item pcoded-menu-caption">
+                    <label>Administração</label>
+                </li>
+                <li class="nav-item pcoded-hasmenu" th:classappend="${#httpServletRequest.requestURI.contains('/grupo-usuario')} ? 'active pcoded-trigger'">
+                    <a href="#!" class="nav-link">
+                    	<span class="pcoded-micon"><i class="feather icon-users"></i></span>
+                    	<span class="pcoded-mtext">Grupo de Usuário</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li th:classappend="${#httpServletRequest.requestURI.equals('/grupo-usuario')} ? active">
+                        	<a th:href="@{/grupo-usuario}">Busca</a>
+                        </li>
+                    	<li th:classappend="${#httpServletRequest.requestURI.contains('/grupo-usuario/')} ? active">
+                    		<a th:href="@{/grupo-usuario/cadastro}" class="">Cadastro</a>
+                    	</li>
+                    </ul>
+                </li>
                 <li class="nav-item pcoded-menu-caption">
                     <label>Acompanhamento</label>
                 </li>
