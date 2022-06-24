@@ -35,6 +35,11 @@
                     	</li>
                     </ul>
                 </li>
+                <li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/permissao-usuario')} ? active">
+                	<a th:href="@{/permissao-usuario}" class="nav-link ">
+                		<span class="pcoded-micon"><i class="feather icon-unlock"></i></span><span class="pcoded-mtext">Permissões</span>
+                	</a>
+                </li>
                 <li class="nav-item pcoded-menu-caption">
                     <label>Acompanhamento</label>
                 </li>

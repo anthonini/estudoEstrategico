@@ -48,9 +48,9 @@ public class GrupoUsuarioRepositoryImpl implements GrupoUsuarioRepositoryQueries
 	private Long total(GrupoUsuarioFilter filter) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
-		Root<GrupoUsuario> feira = criteriaQuery.from(GrupoUsuario.class);
+		Root<GrupoUsuario> grupoUsuario = criteriaQuery.from(GrupoUsuario.class);
 		
-		criteriaQuery.select(builder.count(feira)).where(getWhere(filter, builder, feira));
+		criteriaQuery.select(builder.count(grupoUsuario)).where(getWhere(filter, builder, grupoUsuario));
 		
 		return manager.createQuery(criteriaQuery).getSingleResult();
 	}

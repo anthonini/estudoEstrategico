@@ -20,7 +20,6 @@ import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -60,7 +59,6 @@ public class Usuario implements Entidade {
 	@Enumerated(EnumType.STRING)
 	private Tema tema = Tema.CLARO;
 	
-	@Size(min = 1, message = "Selecione pelo menos um grupo")
 	@ManyToMany
 	@JoinTable(name = "usuario_grupo_usuario", joinColumns = @JoinColumn(name = "id_usuario")
 				,inverseJoinColumns = @JoinColumn(name = "id_grupo_usuario"))
@@ -141,6 +139,14 @@ public class Usuario implements Entidade {
 
 	public void setTema(Tema tema) {
 		this.tema = tema;
+	}
+
+	public List<GrupoUsuario> getGrupos() {
+		return grupos;
+	}
+
+	public void setGrupos(List<GrupoUsuario> grupos) {
+		this.grupos = grupos;
 	}
 
 	@Override
