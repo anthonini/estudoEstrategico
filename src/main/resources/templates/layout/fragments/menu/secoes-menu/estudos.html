@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment='estudos'>	
+	<li class="nav-item pcoded-menu-caption">
+	    <label>Estudos</label>
+	</li>
+	<li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/estudo')} ? active">
+		<a th:href="@{/estudos}" class="nav-link ">
+			<span class="pcoded-micon"><i class="feather icon-book"></i></span><span class="pcoded-mtext">Iniciar Estudos</span>
+		</a>
+	</li>
+</th:block>
+</html>

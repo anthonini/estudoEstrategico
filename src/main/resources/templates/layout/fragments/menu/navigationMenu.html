@@ -18,75 +18,10 @@
         </div>
         <div class="navbar-content scroll-div">
             <ul class="nav pcoded-inner-navbar">
-            	<li class="nav-item pcoded-menu-caption" sec:authorize="hasAnyRole('ROLE_CADASTRAR_PERMISSOES', 'ROLE_CADASTRAR_GRUPO_USUARIO')">
-                    <label>Administração</label>
-                </li>
-                <li class="nav-item pcoded-hasmenu" th:classappend="${#httpServletRequest.requestURI.contains('/grupo-usuario')} ? 'active pcoded-trigger'" sec:authorize="hasRole('ROLE_CADASTRAR_GRUPO_USUARIO')">
-                    <a href="#!" class="nav-link">
-                    	<span class="pcoded-micon"><i class="feather icon-users"></i></span>
-                    	<span class="pcoded-mtext">Grupo de Usuário</span>
-                    </a>
-                    <ul class="pcoded-submenu">
-                        <li th:classappend="${#httpServletRequest.requestURI.equals('/grupo-usuario')} ? active">
-                        	<a th:href="@{/grupo-usuario}">Busca</a>
-                        </li>
-                    	<li th:classappend="${#httpServletRequest.requestURI.contains('/grupo-usuario/')} ? active">
-                    		<a th:href="@{/grupo-usuario/cadastro}" class="">Cadastro</a>
-                    	</li>
-                    </ul>
-                </li>
-                <li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/permissao-usuario')} ? active" sec:authorize="hasRole('ROLE_CADASTRAR_PERMISSOES')">
-                	<a th:href="@{/permissao-usuario}" class="nav-link ">
-                		<span class="pcoded-micon"><i class="feather icon-unlock"></i></span><span class="pcoded-mtext">Permissões</span>
-                	</a>
-                </li>
-                <li class="nav-item pcoded-menu-caption">
-                    <label>Acompanhamento</label>
-                </li>
-                <li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/dashboard')} ? active">
-                    <a th:href="@{/dashboard}" class="nav-link ">
-                    	<span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item pcoded-menu-caption">
-                    <label>Cadastros</label>
-                </li>
-                <li class="nav-item pcoded-hasmenu" th:classappend="${#httpServletRequest.requestURI.contains('/disciplina')} ? 'active pcoded-trigger'">
-                    <a href="#!" class="nav-link">
-                    	<span class="pcoded-micon"><i class="feather icon-layers"></i></span>
-                    	<span class="pcoded-mtext">Disciplina</span>
-                    </a>
-                    <ul class="pcoded-submenu">
-                        <li th:classappend="${#httpServletRequest.requestURI.equals('/disciplina')} ? active">
-                        	<a th:href="@{/disciplina}">Busca</a>
-                        </li>
-                    	<li th:classappend="${#httpServletRequest.requestURI.contains('/disciplina/')} ? active">
-                    		<a th:href="@{/disciplina/cadastro}" class="">Cadastro</a>
-                    	</li>
-                    </ul>
-                </li>
-                <li class="nav-item pcoded-hasmenu" th:classappend="${#httpServletRequest.requestURI.contains('/ciclo-estudos') || #httpServletRequest.requestURI.contains('/periodo-ciclo-estudos')} ? 'active pcoded-trigger'">
-                    <a href="#!" class="nav-link">
-                    	<span class="pcoded-micon"><i class="feather icon-check-circle"></i></span>
-                    	<span class="pcoded-mtext">Ciclo de Estudos</span>
-                    </a>
-                    <ul class="pcoded-submenu">
-                        <li th:classappend="${#httpServletRequest.requestURI.equals('/ciclo-estudos')} ? active">
-                        	<a th:href="@{/ciclo-estudos}">Busca</a>
-                        </li>
-                    	<li th:classappend="${#httpServletRequest.requestURI.contains('/ciclo-estudos/') || #httpServletRequest.requestURI.contains('/periodo-ciclo-estudos')} ? active">
-                    		<a th:href="@{/ciclo-estudos/novo}" class="">Cadastro</a>
-                    	</li>
-                    </ul>
-                </li>
-                <li class="nav-item pcoded-menu-caption">
-                    <label>Estudos</label>
-                </li>
-                <li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/estudo')} ? active">
-                	<a th:href="@{/estudos}" class="nav-link ">
-                		<span class="pcoded-micon"><i class="feather icon-book"></i></span><span class="pcoded-mtext">Iniciar Estudos</span>
-                	</a>
-                </li>
+            	<th:block th:replace="~{layout/fragments/menu/secoes-menu/administracao :: administracao}"/>            	
+                <th:block th:replace="~{layout/fragments/menu/secoes-menu/acompanhamento :: acompanhamento}"/>                
+                <th:block th:replace="~{layout/fragments/menu/secoes-menu/cadastros :: cadastros}"/>                
+                <th:block th:replace="~{layout/fragments/menu/secoes-menu/estudos :: estudos}"/>                
             </ul>
         </div>
     </div>

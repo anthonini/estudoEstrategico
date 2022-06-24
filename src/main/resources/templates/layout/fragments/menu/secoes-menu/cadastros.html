@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment='cadastros'>
+	<li class="nav-item pcoded-menu-caption">
+	    <label>Cadastros</label>
+	</li>
+	<li class="nav-item pcoded-hasmenu" th:classappend="${#httpServletRequest.requestURI.contains('/disciplina')} ? 'active pcoded-trigger'">
+	    <a href="#!" class="nav-link">
+	    	<span class="pcoded-micon"><i class="feather icon-layers"></i></span>
+	    	<span class="pcoded-mtext">Disciplina</span>
+	    </a>
+	    <ul class="pcoded-submenu">
+	        <li th:classappend="${#httpServletRequest.requestURI.equals('/disciplina')} ? active">
+	        	<a th:href="@{/disciplina}">Busca</a>
+	        </li>
+	    	<li th:classappend="${#httpServletRequest.requestURI.contains('/disciplina/')} ? active">
+	    		<a th:href="@{/disciplina/cadastro}" class="">Cadastro</a>
+	    	</li>
+	    </ul>
+	</li>
+	<li class="nav-item pcoded-hasmenu" th:classappend="${#httpServletRequest.requestURI.contains('/ciclo-estudos') || #httpServletRequest.requestURI.contains('/periodo-ciclo-estudos')} ? 'active pcoded-trigger'">
+	    <a href="#!" class="nav-link">
+	    	<span class="pcoded-micon"><i class="feather icon-check-circle"></i></span>
+	    	<span class="pcoded-mtext">Ciclo de Estudos</span>
+	    </a>
+	    <ul class="pcoded-submenu">
+	        <li th:classappend="${#httpServletRequest.requestURI.equals('/ciclo-estudos')} ? active">
+	        	<a th:href="@{/ciclo-estudos}">Busca</a>
+	        </li>
+	    	<li th:classappend="${#httpServletRequest.requestURI.contains('/ciclo-estudos/') || #httpServletRequest.requestURI.contains('/periodo-ciclo-estudos')} ? active">
+	    		<a th:href="@{/ciclo-estudos/novo}" class="">Cadastro</a>
+	    	</li>
+	    </ul>
+	</li>
+</th:block>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment='administracao'>
+	<li class="nav-item pcoded-menu-caption" sec:authorize="hasAnyRole('ROLE_CADASTRAR_PERMISSOES', 'ROLE_CADASTRAR_GRUPO_USUARIO')">
+	    <label>Administração</label>
+	</li>
+	<li class="nav-item pcoded-hasmenu" th:classappend="${#httpServletRequest.requestURI.contains('/grupo-usuario')} ? 'active pcoded-trigger'" sec:authorize="hasRole('ROLE_CADASTRAR_GRUPO_USUARIO')">
+	    <a href="#!" class="nav-link">
+	    	<span class="pcoded-micon"><i class="feather icon-users"></i></span>
+	    	<span class="pcoded-mtext">Grupo de Usuário</span>
+	    </a>
+	    <ul class="pcoded-submenu">
+	        <li th:classappend="${#httpServletRequest.requestURI.equals('/grupo-usuario')} ? active">
+	        	<a th:href="@{/grupo-usuario}">Busca</a>
+	        </li>
+	    	<li th:classappend="${#httpServletRequest.requestURI.contains('/grupo-usuario/')} ? active">
+	    		<a th:href="@{/grupo-usuario/cadastro}" class="">Cadastro</a>
+	    	</li>
+	    </ul>
+	</li>
+	<li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/permissao-usuario')} ? active" sec:authorize="hasRole('ROLE_CADASTRAR_PERMISSOES')">
+		<a th:href="@{/permissao-usuario}" class="nav-link ">
+			<span class="pcoded-micon"><i class="feather icon-unlock"></i></span><span class="pcoded-mtext">Permissões</span>
+		</a>
+	</li>
+</th:block>
+
+</html>
