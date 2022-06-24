@@ -89,7 +89,7 @@
 							        	  </thead>
 										  <tbody>
 										  	<tr th:if="${pagina.vazia}">
-				                             	<td colspan="3"><i>Nenhum usuário encontrado.</i></td>
+				                             	<td colspan="4"><i>Nenhum usuário encontrado.</i></td>
 				                             </tr>
 										    <tr th:each="usuario, itr : ${pagina.conteudo}">
 										      <td scope="row" class="text-center col-numero" th:text="${pagina.numeroPrimeiroItemPagina + itr.index}">1</td>

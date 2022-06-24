@@ -6,6 +6,8 @@ public class CicloEstudosFilter {
 
 	private String nome;
 	private Usuario usuario;
+	private String nomeUsuario;
+	private Usuario usuarioProfessor;
 	
 	public String getNome() {
 		return nome;
@@ -21,5 +23,21 @@ public class CicloEstudosFilter {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public String getNomeUsuario() {
+		return nomeUsuario;
+	}
+
+	public void setNomeUsuario(String nomeUsuario) {
+		this.nomeUsuario = nomeUsuario;
+	}
+
+	public Usuario getUsuarioProfessor() {
+		return usuarioProfessor;
+	}
+
+	public void setUsuarioProfessor(Usuario usuarioProfessor) {
+		this.usuarioProfessor = usuarioProfessor;
 	}
 }

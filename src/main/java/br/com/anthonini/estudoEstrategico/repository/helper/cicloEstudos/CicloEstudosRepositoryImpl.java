@@ -33,7 +33,8 @@ public class CicloEstudosRepositoryImpl implements CicloEstudosRepositoryQueries
 	public Page<CicloEstudos> filtrar(CicloEstudosFilter filter, Pageable pageable) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<CicloEstudos> criteriaQuery = builder.createQuery(CicloEstudos.class);
-		Root<CicloEstudos> cicloEstudos = criteriaQuery.from(CicloEstudos.class);		
+		Root<CicloEstudos> cicloEstudos = criteriaQuery.from(CicloEstudos.class);
+		cicloEstudos.fetch("usuario").fetch("pessoa");
 		
 		criteriaQuery.where(getWhere(filter, builder, cicloEstudos)).distinct(true);
 		
@@ -45,9 +46,9 @@ public class CicloEstudosRepositoryImpl implements CicloEstudosRepositoryQueries
 	private Long total(CicloEstudosFilter filter) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
-		Root<CicloEstudos> feira = criteriaQuery.from(CicloEstudos.class);
+		Root<CicloEstudos> cicloEstudos = criteriaQuery.from(CicloEstudos.class);
 		
-		criteriaQuery.select(builder.count(feira)).where(getWhere(filter, builder, feira));
+		criteriaQuery.select(builder.count(cicloEstudos)).where(getWhere(filter, builder, cicloEstudos));
 		
 		return manager.createQuery(criteriaQuery).getSingleResult();
 	}
@@ -63,6 +64,14 @@ public class CicloEstudosRepositoryImpl implements CicloEstudosRepositoryQueries
 			
 			if(filter.getUsuario() != null) {
 				where.add(builder.equal(cicloEstudos.get("usuario"), filter.getUsuario()));
+			}
+			
+			if(filter.getNomeUsuario() != null) {
+				where.add(builder.like(builder.upper(cicloEstudos.get("usuario").get("pessoa").get("nome")), "%"+filter.getNome().toUpperCase()+"%"));
+			}
+			
+			if(filter.getUsuarioProfessor() != null) {
+				where.add(builder.notEqual(cicloEstudos.get("usuario"), filter.getUsuarioProfessor()));
 			}
 		}
 		

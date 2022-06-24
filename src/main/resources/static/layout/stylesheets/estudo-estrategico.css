@@ -13,7 +13,7 @@
 	margin-top: -10px;
 	margin-bottom: -20px;
 }
-.planilha.form-control {
+.planilha.form-control, .planilha.form-control-plaintext {
 	background: none;
 	padding: 0;
 	border: none;
