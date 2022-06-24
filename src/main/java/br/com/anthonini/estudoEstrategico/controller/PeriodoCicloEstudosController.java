@@ -65,7 +65,7 @@ public class PeriodoCicloEstudosController extends AbstractController {
 		
 		PeriodoCicloEstudos periodoCicloEstudos = sessao.getPeriodoCicloEstudos(uuid);
 		if (periodoCicloEstudos == null) {
-        	addMensagemErro(redirect, getMessage("periodo-ciclo-estudos.mensagem.sucesso"));
+        	addMensagemErro(redirect, getMessage("periodo-ciclo-estudos.mensagem.naoEncontrado"));
             return new ModelAndView("/ciclo-estudos/cadastro?id="+cicloId);
         }
 		
@@ -150,7 +150,7 @@ public class PeriodoCicloEstudosController extends AbstractController {
 		try {
 			service.alterar(cicloEstudos, periodoCicloEstudos, bindingResult);
 			sessao.remover(uuid);
-			addMensagemSucesso(redirect, getMessage("periodo-ciclo-estudos.mensagem.sucesso"));
+			addMensagemSucesso(redirect, getMessage("periodo-ciclo-estudos.mensagem.alteracao.sucesso"));
 			
 			return new ModelAndView("redirect:/ciclo-estudos/cadastro?id="+cicloId);
 		} catch (ErrosValidacaoException e) {
