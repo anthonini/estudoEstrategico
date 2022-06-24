@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout-simples}"
+	xmlns:an="http://www.anthonini.com.br">
+
+<body>	
+	<th:block layout:fragment="conteudo">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="text-center">
+					
+					<h1 th:text="${status}" style="color: #7d77b8; font-size: 10em; font-weight: bold;"/>
+					<h3 class="text-muted my-4">Estamos constrangidos em te ver por aqui</h3>
+					
+					<h5 class="text-muted my-4"> Mas, podemos ajudá-lo a encontrar o que está procurando de outra forma.</h5>
+					
+					<h5 class="text-muted my-4">Talvez você tenha se equivocado ao digitar o endereço URL ou quem sabe nós tenhamos cometido uma falha por aqui. Se possível, relate o erro para
+                que possamos sempre estar melhorando.</h5>
+					
+					<a th:href="@{/}" class="btn  btn-primary mb-4">
+						<i class="feather icon-home me-2"></i>Página inicial
+					</a>
+					
+				</div>
+			</div>
+		</div>
+	</th:block>
+</body>
+</html>
