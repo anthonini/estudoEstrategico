@@ -66,6 +66,8 @@ public class EstudosController  extends AbstractController {
 	@PutMapping("/atualizar-estudos-disciplina")
 	public @ResponseBody ResponseEntity<?> atualizarDisciplina(DisciplinaDiaEstudoDTO dto, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
 		try {
+			if(dto.getObservacao() != null && dto.getObservacao().trim().isEmpty())
+				dto.setObservacao(null);
 			this.service.atualizarEstudoDiaDisciplina(dto, usuarioSistema.getUsuario());
 			return ResponseEntity.ok(dto);
 		} catch (UsuarioSemPermissaoParaRealizarEssaOperacao e) {
@@ -76,6 +78,8 @@ public class EstudosController  extends AbstractController {
 	@PutMapping("/atualizar-estudos-revisao")
 	public @ResponseBody ResponseEntity<?> atualizarRevisao(RevisaoDTO dto, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
 		try {
+			if(dto.getObservacao() != null && dto.getObservacao().trim().isEmpty())
+				dto.setObservacao(null);
 			this.service.atualizarRevisao(dto, usuarioSistema.getUsuario());
 			return ResponseEntity.ok(dto);
 		} catch (UsuarioSemPermissaoParaRealizarEssaOperacao e) {
