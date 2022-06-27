@@ -4,7 +4,7 @@ import java.time.Duration;
 
 public class CargaHorariaUtil {
 
-	public static final double TEMPO_REVISAO_POR_HORA_ESTUDADA_EM_MINUTOS = 10;
+	public static final double TEMPO_REVISAO_POR_HORA_ESTUDADA_EM_MINUTOS = 15;
 	
 	public static Integer getCargaHorariaDisciplina(Integer cargaHorariaDisciplina, Integer cargaHorariaRevisaoPorDisicplina) {
 		return ajustarCargaHorariaMultiploCinco(cargaHorariaDisciplina - cargaHorariaRevisaoPorDisicplina);
