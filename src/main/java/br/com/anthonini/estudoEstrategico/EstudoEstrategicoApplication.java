@@ -40,7 +40,7 @@ public class EstudoEstrategicoApplication {
 
 		@Override
 		public void addViewControllers(ViewControllerRegistry registry) {
-			registry.addRedirectViewController("/", "/dashboard");
+			registry.addRedirectViewController("/", "/estudos");
 		}
 	}
 }
