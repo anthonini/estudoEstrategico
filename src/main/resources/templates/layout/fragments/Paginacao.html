@@ -4,10 +4,10 @@
 	
 <th:block th:fragment="paginacao (pagina)">
 	<div class="row" th:if="${not pagina.vazia}">
-		<div class="col-lg-5 mb-3">
+		<div class="col-lg-4 ml-4 mb-3">
 			<div class="dataTables_info" th:text="|Mostrando de ${pagina.numeroPrimeiroItemPagina} a ${pagina.numeroUltimoItemPagina} de ${pagina.totalItens} itens|">Mostrando de 1 a 20 de 50 itens</div>
 		</div>
-		<div class="col-lg-7">
+		<div class="col-lg-7 ml-4">
 			<div class="dataTables_paginate paging_simple_numbers">
 				<ul class="pagination">
 					<li class="paginate_button page-item previous " th:classappend="${pagina.primeira} ? disabled">
