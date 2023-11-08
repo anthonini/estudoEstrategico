@@ -63,7 +63,7 @@
 										      <td th:text="${migracao.script}">V1_0_0_0000__criar_tabelas.sql</td>
 										      <td th:text="${migracao.checksum}">764162846</td>
 										      <td th:text="${migracao.installedBy}">Usuário</td>
-										      <td th:text="${{migracao.installedOn}}">08/11/2023 18:15:32</td>
+										      <td th:text="${#dates.format(migracao.installedOn, 'dd/MM/yyyy HH:mm:ss')}">08/11/2023 18:15:32</td>
 										      <td th:text="${migracao.executionTime}">35</td>
 										      <td th:text="${migracao.state}">Sim</td>
 										    </tr>
