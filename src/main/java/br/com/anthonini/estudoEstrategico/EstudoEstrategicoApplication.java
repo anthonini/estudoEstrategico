@@ -9,7 +9,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.FixedLocaleResolver;
 
@@ -37,10 +36,5 @@ public class EstudoEstrategicoApplication {
 	@Configuration
 	@ComponentScan(basePackageClasses = { SairController.class })
 	public static class MvcConfig implements WebMvcConfigurer {
-
-		@Override
-		public void addViewControllers(ViewControllerRegistry registry) {
-			registry.addRedirectViewController("/", "/estudos");
-		}
 	}
 }

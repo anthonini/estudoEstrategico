@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import br.com.anthonini.estudoEstrategico.config.AdminConfig;
 import br.com.anthonini.estudoEstrategico.model.Usuario;
 import br.com.anthonini.estudoEstrategico.repository.UsuarioRepository;
 
@@ -24,14 +25,23 @@ public class AppUserDetailsService implements UserDetailsService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
-	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Optional<Usuario> userOptional = usuarioRepository.buscarAtivoPorEmail(email);
-		Usuario usuario = userOptional.orElseThrow(() -> new UsernameNotFoundException("Usuário e/ou senha incorretos"));
-		
-		return new UsuarioSistema(usuario, getPermissoes(usuario));
-	}
+	@Autowired
+	private AdminConfig adminConfig;
 	
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {		
+		if(email.equals(adminConfig.getAdminEmail())) {
+			return adminConfig.usuarioAdmin();
+		} else {
+			Optional<Usuario> userOptional = usuarioRepository.buscarAtivoPorEmail(email);
+			Usuario usuario = userOptional.orElseThrow(() -> new UsernameNotFoundException("Usuário e/ou senha incorretos"));
+			
+			return new UsuarioSistema(usuario, getPermissoes(usuario));
+		}
+		
+		
+	}
+
 	private Collection<? extends GrantedAuthority> getPermissoes(Usuario usuario) {
 		Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 		
