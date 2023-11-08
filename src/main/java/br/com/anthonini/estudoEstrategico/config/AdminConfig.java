@@ -1,6 +1,6 @@
 package br.com.anthonini.estudoEstrategico.config;
 
-import java.util.List;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -20,17 +20,17 @@ public class AdminConfig {
 	private String adminPassword;
 	
 	public UsuarioSistema usuarioAdmin() {
-		if(adminEmail != null && !adminEmail.isBlank() && adminPassword != null && !adminPassword.isBlank()) {
+		if(adminEmail != null && !adminEmail.trim().isEmpty() && adminPassword != null && !adminPassword.trim().isEmpty()) {
 			Usuario usuario = new Usuario(-1L);
 			usuario.setEmail(adminEmail);
 			usuario.setSenha(adminPassword);
 			usuario.setPessoa(new Pessoa());
 			usuario.getPessoa().setNome("Administrador");
 			
-			return new UsuarioSistema(usuario, 
-					List.of(new SimpleGrantedAuthority("ROLE_CADASTRAR_PERMISSOES"),
-							new SimpleGrantedAuthority("ROLE_CADASTRAR_GRUPO_USUARIO"),
-							new SimpleGrantedAuthority("ROLE_REALIZAR_MIGRACOES")));
+			return new UsuarioSistema(usuario, Arrays.asList(
+					new SimpleGrantedAuthority("ROLE_CADASTRAR_PERMISSOES"),
+					new SimpleGrantedAuthority("ROLE_CADASTRAR_GRUPO_USUARIO"),
+					new SimpleGrantedAuthority("ROLE_REALIZAR_MIGRACOES")));
 		}
 		
 		return null;
