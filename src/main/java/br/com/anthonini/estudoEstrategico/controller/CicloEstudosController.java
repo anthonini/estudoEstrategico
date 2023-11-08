@@ -69,12 +69,15 @@ public class CicloEstudosController extends AbstractController {
 	@PostMapping("/cadastro")
 	public ModelAndView cadastro(@Valid CicloEstudos cicloEstudos, BindingResult bindingResult, @AuthenticationPrincipal UsuarioSistema usuarioSistema, ModelMap modelMap, RedirectAttributes redirect) {
 		String nome = cicloEstudos.getNome();
+		boolean utilizarRevisoes = cicloEstudos.isUtilizarRevisoes();
+		
 		cicloEstudos = sessao.getCicloEstudos(cicloEstudos.getUuid());
 		if (cicloEstudos == null) {
         	addMensagemErro(redirect, getMessage("ciclo-estudos.mensagem.naoEncontrado"));
             return new ModelAndView("redirect:/ciclo-estudos");
         }
 		cicloEstudos.setNome(nome);
+		cicloEstudos.setUtilizarRevisoes(utilizarRevisoes);
 		
 		validador.validate(cicloEstudos, bindingResult);
 		if(bindingResult.hasErrors()) {

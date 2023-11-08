@@ -43,6 +43,9 @@ public class CicloEstudos implements Entidade {
 	@OrderBy("dia")
 	private List<DiaEstudo> diasEstudo = new ArrayList<>();
 	
+	@Column(name = "utilizar_revisoes")
+	private boolean utilizarRevisoes = true;
+	
 	@Transient
 	private String uuid;
 	
@@ -103,6 +106,14 @@ public class CicloEstudos implements Entidade {
 
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
+	}
+
+	public boolean isUtilizarRevisoes() {
+		return utilizarRevisoes;
+	}
+
+	public void setUtilizarRevisoes(boolean utilizarRevisoes) {
+		this.utilizarRevisoes = utilizarRevisoes;
 	}
 
 	@Override

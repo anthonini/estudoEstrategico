@@ -77,14 +77,23 @@ public class CicloEstudosService {
 		List<DiaEstudo> diasEstudo = cicloEstudos.getDiasEstudo();
 		int diaAtual = diasEstudo.size();
 		
-		while(diaAtual > 0 && !diasEstudo.get(diaAtual-1).isEstudoIniciado()) {
+		while(diaAtual > 0) {
+			if(diasEstudo.get(diaAtual-1).isEstudoIniciado()) {
+				break;
+			}
 			diaAtual--;
 		}
 		
 		diasEstudo.retainAll(diasEstudo.subList(0, diaAtual));
 		
+		int duracaoTotal = 0;
 		for(PeriodoCicloEstudos periodo : cicloEstudos.getPeriodosCicloEstudos()) {
 			for(int dia = 1; dia <= periodo.getDuracao(); dia++) {
+				duracaoTotal++;
+				if(duracaoTotal <= diaAtual) {
+					continue;
+				}
+				
 				diaAtual++;
 				DiaPeriodoCicloEstudos diaPeriodo = DiaPeriodoCicloEstudos.getDiaPeriodo(diaAtual);
 				List<DisciplinaPeriodo> disciplinasPeriodo = diaPeriodo.getDisciplinas(periodo);
@@ -93,14 +102,19 @@ public class CicloEstudosService {
 				diaEstudo.setDia(diaAtual);
 				diaEstudo.setCicloEstudos(cicloEstudos);
 				
-				for(TipoRevisao tipoRevisao : TipoRevisao.values()) {
-					Revisao revisao = tipoRevisao.getRevisao(diasEstudo, diaEstudo);
-					if(revisao != null) {
-						diaEstudo.getRevisoes().add(revisao);
+				Integer cargaHorariaRevisaoPorDisciplina = 0;
+				if(cicloEstudos.isUtilizarRevisoes()) {
+					for(TipoRevisao tipoRevisao : TipoRevisao.values()) {
+						Revisao revisao = tipoRevisao.getRevisao(diasEstudo, diaEstudo);
+						if(revisao != null) {
+							diaEstudo.getRevisoes().add(revisao);
+						}
 					}
+					
+					cargaHorariaRevisaoPorDisciplina = diaEstudo.getCargaHorariaRevisao()/disciplinasPeriodo.size();
+				} else {
+					diaEstudo.getRevisoes().clear();
 				}
-				
-				Integer cargaHorariaRevisaoPorDisciplina = diaEstudo.getCargaHorariaRevisao()/disciplinasPeriodo.size();
 				
 				for(DisciplinaPeriodo disciplinaPeriodo : disciplinasPeriodo) {
 					DisciplinaDiaEstudo disciplinaDia = new DisciplinaDiaEstudo();
