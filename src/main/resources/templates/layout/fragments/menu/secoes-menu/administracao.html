@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:fragment='administracao'>
-	<li class="nav-item pcoded-menu-caption" sec:authorize="hasAnyRole('ROLE_CADASTRAR_PERMISSOES', 'ROLE_CADASTRAR_GRUPO_USUARIO', 'ROLE_REALIZAR_MIGRACOES')">
+	<li class="nav-item pcoded-menu-caption" sec:authorize="hasAnyRole('ROLE_CADASTRAR_PERMISSOES', 'ROLE_CADASTRAR_GRUPO_USUARIO', 'ROLE_IMPLANTAR_MIGRACOES')">
 	    <label>Administração</label>
 	</li>
 	<li class="nav-item pcoded-hasmenu" th:classappend="${#httpServletRequest.requestURI.contains('/grupo-usuario')} ? 'active pcoded-trigger'" sec:authorize="hasRole('ROLE_CADASTRAR_GRUPO_USUARIO')">
@@ -25,7 +25,7 @@
 			<span class="pcoded-micon"><i class="feather icon-unlock"></i></span><span class="pcoded-mtext">Permissões</span>
 		</a>
 	</li>
-	<li class="nav-item pcoded-hasmenu" th:classappend="${#httpServletRequest.requestURI.contains('/migracao-banco')} ? 'active pcoded-trigger'" sec:authorize="hasRole('ROLE_REALIZAR_MIGRACOES')">
+	<li class="nav-item pcoded-hasmenu" th:classappend="${#httpServletRequest.requestURI.contains('/migracao-banco')} ? 'active pcoded-trigger'" sec:authorize="hasRole('ROLE_IMPLANTAR_MIGRACOES')">
 	    <a href="#!" class="nav-link">
 	    	<span class="pcoded-micon"><i class="feather icon-server"></i></span>
 	    	<span class="pcoded-mtext">Migração de banco</span>
