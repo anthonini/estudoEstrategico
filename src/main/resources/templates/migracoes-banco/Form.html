@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:an="http://www.anthonini.com.br">
+
+<body>
+	<th:block layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="page-block">
+				<div class="row align-items-center">
+					<div class="col-md-12">
+						<div class="page-header-title">
+							<h5 class="m-b-10">Disciplina</h5>
+						</div>
+						<ul class="breadcrumb">
+							<li class="breadcrumb-item"><a th:href="@{/}"><i class="feather icon-home"></i></a></li>
+							<li class="breadcrumb-item"><a href="#">Migração de Banco</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="main-body">
+			<div class="page-wrapper">
+				<!-- [ Main Content ] start -->
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="card">
+							<div class="card-header">
+								<h5>Migração de banco</h5>
+							</div>
+					        <div class="card-block">
+								<div class="row" th:if="${stackTrace}">
+					        		<div class="col">
+					        			<h6>
+											<th:block th:each="e : ${stackTrace}">
+												[[${e}]]
+											</th:block>											
+										</h6>
+					        		</div>
+					        	</div>
+					        	<form th:action="@{/migracao-banco/migrar}" method="POST" th:unless="${stackTrace}">
+						        	<div class="row">
+						        		<div class="col">
+						        			<h6>Através desse caso de uso é possível realizar as migrações de banco. Ao realizar a operação todas as migrações pendentes serão efetuadas no banco de dados.</h6>
+						        		</div>
+						        	</div>
+									<button class="btn btn-primary" type="submit">Migrar</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- [ Main Content ] end -->
+			</div>
+		</div>
+	</th:block>
+</body>
+</html>

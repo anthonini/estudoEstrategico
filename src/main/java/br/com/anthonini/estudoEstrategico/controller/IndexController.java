@@ -17,7 +17,7 @@ public class IndexController {
 	@GetMapping("/")
 	public String index(@AuthenticationPrincipal UsuarioSistema usuarioSistema) {
 		if(usuarioSistema.equals(adminConfig.usuarioAdmin())) {
-			return "redirect:/migracoes-banco";
+			return "redirect:/migracao-banco";
 		}
 		return "redirect:/estudos";
 	}

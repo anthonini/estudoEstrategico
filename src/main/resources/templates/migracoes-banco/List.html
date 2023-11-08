@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}"
+	xmlns:an="http://www.anthonini.com.br"
+	xmlns:data="http://www.thymeleaf.com/extras/data">
+
+<body>
+	<th:block layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="page-block">
+				<div class="row align-items-center">
+					<div class="col-md-12">
+						<div class="page-header-title">
+							<h5 class="m-b-10">Migração de banco</h5>
+						</div>
+						<ul class="breadcrumb">
+							<li class="breadcrumb-item"><a th:href="@{/}"><i class="feather icon-home"></i></a></li>
+							<li class="breadcrumb-item"><a href="#!">Migração de banco</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="main-body">
+			<div class="page-wrapper">
+				<!-- [ Main Content ] start -->
+				<div class="row">
+					<div class="col-sm-12">						
+						<div class="card User-Lists">
+							<div class="card-header ">
+								<h5>Migrações de banco encontradas</h5>
+							</div>
+					        <div class="card-block px-0 py-3">
+					        	<div class="table-responsive">
+						        	<div class="table-responsive">
+							        	<table class="table table-hover">
+											<thead>
+						        			<tr>
+						        				<th>Rank</th>
+						        				<th>Versão</th>
+						        				<th>Descrição</th>
+						        				<th>Tipo</th>
+						        				<th>Script</th>
+						        				<th>Checksum</th>
+						        				<th>Instalada por</th>
+						        				<th>Instalada em</th>
+						        				<th>Tempo de execução</th>
+						        				<th>Estado</th>
+						        			</tr>
+						        		</thead>
+										  <tbody>
+										  	<tr th:if="${#lists.isEmpty(migracoes)}">
+				                             	<td colspan="10"><i>Nenhuma migração de banco encontrada.</i></td>
+				                             </tr>
+										    <tr th:each="migracao, itr : ${migracoes}">
+										      <td scope="row" class="text-center col-numero" th:text="${migracao.installedRank}">1</td>
+										      <td th:text="${migracao.version}">1.0.0.0000</td>
+										      <td th:text="${migracao.description}">Descrição da migração</td>
+										      <td th:text="${migracao.type}">SQL</td>
+										      <td th:text="${migracao.script}">V1_0_0_0000__criar_tabelas.sql</td>
+										      <td th:text="${migracao.checksum}">764162846</td>
+										      <td th:text="${migracao.installedBy}">Usuário</td>
+										      <td th:text="${{migracao.installedOn}}">08/11/2023 18:15:32</td>
+										      <td th:text="${migracao.executionTime}">35</td>
+										      <td th:text="${migracao.state}">Sim</td>
+										    </tr>
+										  </tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- [ Main Content ] end -->
+			</div>
+		</div>
+	</th:block>
+</body>
+</html>
