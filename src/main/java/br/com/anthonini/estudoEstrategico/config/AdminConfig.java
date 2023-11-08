@@ -27,7 +27,10 @@ public class AdminConfig {
 			usuario.setPessoa(new Pessoa());
 			usuario.getPessoa().setNome("Administrador");
 			
-			return new UsuarioSistema(usuario, List.of(new SimpleGrantedAuthority("ROLE_REALIZAR_MIGRACOES")));
+			return new UsuarioSistema(usuario, 
+					List.of(new SimpleGrantedAuthority("ROLE_CADASTRAR_PERMISSOES"),
+							new SimpleGrantedAuthority("ROLE_CADASTRAR_GRUPO_USUARIO"),
+							new SimpleGrantedAuthority("ROLE_REALIZAR_MIGRACOES")));
 		}
 		
 		return null;
