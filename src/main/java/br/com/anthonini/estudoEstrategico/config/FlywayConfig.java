@@ -24,8 +24,7 @@ public class FlywayConfig {
                 .sqlMigrationSeparator("__")
                 .sqlMigrationSuffixes(".sql")
                 .locations("classpath:db/migration")
-                .schemas("migration")
-                .table("schema_version_conversor_migration")
+                .table("schema_version_estudo_estrategico_migration")
                 .load();
         
         return flyway;
