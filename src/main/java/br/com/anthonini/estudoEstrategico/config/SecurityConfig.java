@@ -39,19 +39,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
-			.authorizeRequests()
-				.anyRequest().authenticated()
-				.and()
-			.formLogin()
-				.loginPage("/login")
-				.permitAll()
-				.and()
-			.logout()
-				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.and()
-			.sessionManagement()
-				.invalidSessionUrl("/login");
+        http
+            .authorizeRequests(requests -> requests
+                    .antMatchers("/grupo-usuario/**").hasRole("CADASTRAR_GRUPO_USUARIO")
+                    .antMatchers("/permissao-usuario/**").hasRole("CADASTRAR_PERMISSOES")
+                    .antMatchers("/professor/**").hasRole("PROFESSOR")
+                    .antMatchers("/migracao-banco/**").hasRole("IMPLANTAR_MIGRACOES")
+                    .anyRequest().authenticated())
+            .formLogin(login -> login
+                    .loginPage("/login")
+                    .permitAll())
+            .logout(logout -> logout
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout")))
+            .sessionManagement(management -> management
+                    .invalidSessionUrl("/login"));
 	}
 	
 	@Bean
