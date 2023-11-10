@@ -20,6 +20,7 @@ import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -56,6 +57,7 @@ public class Usuario implements Entidade {
 	
 	private boolean ativo = false;
 	
+	@NotNull(message = "Tema é obrigatório")
 	@Enumerated(EnumType.STRING)
 	private Tema tema = Tema.CLARO;
 	

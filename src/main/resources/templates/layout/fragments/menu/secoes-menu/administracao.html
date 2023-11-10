@@ -6,6 +6,16 @@
 	<li class="nav-item pcoded-menu-caption" sec:authorize="hasAnyRole('ROLE_CADASTRAR_PERMISSOES', 'ROLE_CADASTRAR_GRUPO_USUARIO', 'ROLE_IMPLANTAR_MIGRACOES')">
 	    <label>Administração</label>
 	</li>
+	<li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/usuario')} ? active" sec:authorize="hasRole('ROLE_GERENCIAR_USUARIOS')">
+		<a th:href="@{/usuario}" class="nav-link ">
+			<span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">Usuários</span>
+		</a>
+	</li>
+	<li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/permissao-usuario')} ? active" sec:authorize="hasRole('ROLE_CADASTRAR_PERMISSOES')">
+		<a th:href="@{/permissao-usuario}" class="nav-link ">
+			<span class="pcoded-micon"><i class="feather icon-unlock"></i></span><span class="pcoded-mtext">Permissões</span>
+		</a>
+	</li>
 	<li class="nav-item pcoded-hasmenu" th:classappend="${#httpServletRequest.requestURI.contains('/grupo-usuario')} ? 'active pcoded-trigger'" sec:authorize="hasRole('ROLE_CADASTRAR_GRUPO_USUARIO')">
 	    <a href="#!" class="nav-link">
 	    	<span class="pcoded-micon"><i class="feather icon-users"></i></span>
@@ -19,11 +29,6 @@
 	    		<a th:href="@{/grupo-usuario/cadastro}" class="">Cadastro</a>
 	    	</li>
 	    </ul>
-	</li>
-	<li class="nav-item" th:classappend="${#httpServletRequest.requestURI.contains('/permissao-usuario')} ? active" sec:authorize="hasRole('ROLE_CADASTRAR_PERMISSOES')">
-		<a th:href="@{/permissao-usuario}" class="nav-link ">
-			<span class="pcoded-micon"><i class="feather icon-unlock"></i></span><span class="pcoded-mtext">Permissões</span>
-		</a>
 	</li>
 	<li class="nav-item pcoded-hasmenu" th:classappend="${#httpServletRequest.requestURI.contains('/migracao-banco')} ? 'active pcoded-trigger'" sec:authorize="hasRole('ROLE_IMPLANTAR_MIGRACOES')">
 	    <a href="#!" class="nav-link">

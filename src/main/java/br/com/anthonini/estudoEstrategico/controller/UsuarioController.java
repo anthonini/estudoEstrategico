@@ -1,8 +1,12 @@
 package br.com.anthonini.estudoEstrategico.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Controller;
@@ -17,15 +21,21 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.anthonini.arquitetura.controller.AbstractController;
+import br.com.anthonini.arquitetura.controller.page.PageWrapper;
 import br.com.anthonini.estudoEstrategico.dto.PasswordDTO;
+import br.com.anthonini.estudoEstrategico.model.Tema;
 import br.com.anthonini.estudoEstrategico.model.TokenConfirmacaoUsuario;
 import br.com.anthonini.estudoEstrategico.model.TokenResetarSenhaUsuario;
 import br.com.anthonini.estudoEstrategico.model.Usuario;
+import br.com.anthonini.estudoEstrategico.repository.helper.usuario.filter.UsuarioFilter;
+import br.com.anthonini.estudoEstrategico.service.PermissaoUsuarioService;
 import br.com.anthonini.estudoEstrategico.service.TokenConfirmacaoUsuarioService;
 import br.com.anthonini.estudoEstrategico.service.TokenResetarSenhaUsuarioService;
 import br.com.anthonini.estudoEstrategico.service.UsuarioService;
 import br.com.anthonini.estudoEstrategico.service.exception.CPFJaCadastradoException;
 import br.com.anthonini.estudoEstrategico.service.exception.EmailUsuarioJaCadastradoException;
+import br.com.anthonini.estudoEstrategico.service.exception.ErrosValidacaoException;
+import br.com.anthonini.estudoEstrategico.service.exception.OperacaoDeveSerReiniciada;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioJaConfirmadoException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioNaoEncontradoException;
 
@@ -42,7 +52,8 @@ public class UsuarioController extends AbstractController {
 	@Autowired
 	private TokenResetarSenhaUsuarioService tokenResetarSenhaUsuarioService;
 	
-	
+	@Autowired
+	private PermissaoUsuarioService permissaoUsuarioService;
 	
 	@GetMapping("/cadastro")
 	public ModelAndView cadastro(Usuario usuario, ModelMap model) {
@@ -195,5 +206,47 @@ public class UsuarioController extends AbstractController {
 			addMensagemErro(model, getMessage("resetar.senha.usuario.mensagem.tokenInvalido"));
 			return recuperarSenha(null, model);
 		}
+	}
+	
+	@GetMapping
+	public ModelAndView listar(UsuarioFilter filter, HttpServletRequest httpServletRequest, @PageableDefault(size = 10) @SortDefault(value="pessoa.nome") Pageable pageable) {
+		ModelAndView mv = new ModelAndView("usuario/List");
+		PageWrapper<Usuario> paginaWrapper = new PageWrapper<>(service.filtrar(filter,pageable),httpServletRequest);
+        mv.addObject("pagina", paginaWrapper);
+        mv.addObject("temas", Tema.values());
+		
+		return mv;
+	}
+	
+	@GetMapping("/{id}")
+	public ModelAndView alterar(@PathVariable("id") Usuario usuario, ModelMap model) {
+		model.addAttribute("usuario", usuario);
+		model.addAttribute("temas", Tema.values());
+		model.addAttribute("grupos", permissaoUsuarioService.buscarTodosGruposUsuario());
+		
+		return new ModelAndView("usuario/FormAlteracao");
+	}
+	
+	@PostMapping("/{id}")
+	public ModelAndView alterar(Usuario usuario, BindingResult bindingResult, ModelMap modelMap, RedirectAttributes redirect) {		
+		try {
+			service.alterar(usuario, bindingResult);
+			addMensagemSucesso(redirect, getMessage("cadastro.usuario.mensagem.alteracao.sucesso"));
+		} catch (ErrosValidacaoException e) {
+			addMensagensErroValidacao(modelMap, bindingResult);
+			return alterar(usuario, modelMap);
+		} catch (EmailUsuarioJaCadastradoException e) {
+			bindingResult.rejectValue("email", e.getMessage(), e.getMessage());
+			addMensagensErroValidacao(modelMap, bindingResult);
+			return alterar(usuario, modelMap);
+		} catch (CPFJaCadastradoException e) {
+			bindingResult.rejectValue("pessoa.cpf", e.getMessage(), e.getMessage());
+			addMensagensErroValidacao(modelMap, bindingResult);
+			return alterar(usuario, modelMap);
+		} catch (OperacaoDeveSerReiniciada e) {
+			addMensagemErro(redirect, e.getMessage());
+		}
+		
+		return new ModelAndView("redirect:/usuario");
 	}
 }

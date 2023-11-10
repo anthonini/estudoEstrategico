@@ -34,7 +34,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring()
 			.antMatchers("/layout/**")
 			.antMatchers("/h2-console/**")
-			.antMatchers("/usuario/**");
+			.antMatchers("/usuario/cadastro")
+			.antMatchers("/usuario/reenviar-email-confirmacao")
+			.antMatchers("/usuario/confirmacao")
+			.antMatchers("/usuario/recuperar-senha")
+			.antMatchers("/usuario/alterar-senha/**")
+			;
 	}
 	
 	@Override
@@ -45,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/permissao-usuario/**").hasRole("CADASTRAR_PERMISSOES")
                     .antMatchers("/professor/**").hasRole("PROFESSOR")
                     .antMatchers("/migracao-banco/**").hasRole("IMPLANTAR_MIGRACOES")
+                    .antMatchers("/usuario/**").hasRole("GERENCIAR_USUARIOS")
                     .anyRequest().authenticated())
             .formLogin(login -> login
                     .loginPage("/login")

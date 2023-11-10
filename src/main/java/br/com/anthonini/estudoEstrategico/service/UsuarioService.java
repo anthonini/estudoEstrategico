@@ -6,21 +6,28 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 
+import br.com.anthonini.estudoEstrategico.controller.validador.UsuarioValidador;
 import br.com.anthonini.estudoEstrategico.dto.PerfilDTO;
 import br.com.anthonini.estudoEstrategico.model.Pessoa;
 import br.com.anthonini.estudoEstrategico.model.Tema;
 import br.com.anthonini.estudoEstrategico.model.Usuario;
 import br.com.anthonini.estudoEstrategico.repository.UsuarioRepository;
+import br.com.anthonini.estudoEstrategico.repository.helper.usuario.filter.UsuarioFilter;
 import br.com.anthonini.estudoEstrategico.service.event.usuario.AlteracaoSenhaUsuarioEvent;
 import br.com.anthonini.estudoEstrategico.service.event.usuario.CadastroUsuarioEvent;
 import br.com.anthonini.estudoEstrategico.service.event.usuario.ReenvioEmailConfirmacaoEvent;
 import br.com.anthonini.estudoEstrategico.service.event.usuario.ResetarSenhaUsuarioEvent;
 import br.com.anthonini.estudoEstrategico.service.exception.CPFJaCadastradoException;
 import br.com.anthonini.estudoEstrategico.service.exception.EmailUsuarioJaCadastradoException;
+import br.com.anthonini.estudoEstrategico.service.exception.ErrosValidacaoException;
+import br.com.anthonini.estudoEstrategico.service.exception.OperacaoDeveSerReiniciada;
 import br.com.anthonini.estudoEstrategico.service.exception.SenhaNaoConfirmadaException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioJaConfirmadoException;
 import br.com.anthonini.estudoEstrategico.service.exception.UsuarioNaoEncontradoException;
@@ -36,6 +43,9 @@ public class UsuarioService {
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
+	
+	@Autowired
+	private UsuarioValidador usuarioValidador;
 	
 	@Transactional
 	public void cadastrar(Usuario usuario) {
@@ -129,6 +139,56 @@ public class UsuarioService {
 			usuario.setTema(Tema.CLARO);
 		}
 			
+		repository.save(usuario);
+	}
+	
+	public Page<Usuario> filtrar(UsuarioFilter filter, Pageable pageable) {
+		return repository.filtrar(filter, pageable);
+	}
+
+	@Transactional
+	public void alterar(Usuario usuario, BindingResult bindingResult) {
+		if(usuario.isNovo()) {
+			throw new OperacaoDeveSerReiniciada();
+		}
+		
+		Optional<Usuario> usuarioBancoOptional = repository.findById(usuario.getId());
+		if(!usuarioBancoOptional.isPresent()) {
+			throw new OperacaoDeveSerReiniciada();
+		}
+		
+		Usuario usuarioBanco = usuarioBancoOptional.get();
+		
+		//Se não houver alteração de senha utiliza a que já está cadastrada no banco
+		if(StringUtils.isEmpty(usuario.getSenha())) {
+			usuario.setSenha(usuarioBanco.getSenha());
+			usuario.setConfirmacaoSenha(usuario.getSenha());
+		}
+		
+		usuarioValidador.validate(usuario, bindingResult);
+		if(bindingResult.hasErrors()) {
+			throw new ErrosValidacaoException();
+		}
+		
+		usuario.getPessoa().setId(usuarioBanco.getPessoa().getId());
+		
+		//Alteração de senha
+		if(!StringUtils.isEmpty(usuario.getSenha()) && !usuario.getSenha().equals(usuarioBanco.getSenha())) {
+			usuario.setSenha(this.passwordEncoder.encode(usuario.getSenha()));
+			usuario.setConfirmacaoSenha(usuario.getSenha());
+		}
+		
+		//Correção de CPF
+		if(!Pessoa.removerFormatoCPF(usuario.getPessoa().getCpf()).equals(usuarioBanco.getPessoa().getCpf()) && repository.existsByPessoaCpf(Pessoa.removerFormatoCPF(usuario.getPessoa().getCpf()))) {
+			throw new CPFJaCadastradoException();
+		}
+		
+		//Alteração/correção de E-mail
+		Optional<Usuario> usuarioExistentePorEmail = repository.findByEmail(usuario.getEmail());
+		if(usuarioExistentePorEmail.isPresent() && !usuarioExistentePorEmail.get().equals(usuario)) {
+			throw new EmailUsuarioJaCadastradoException();
+		}
+		
 		repository.save(usuario);
 	}
 }
