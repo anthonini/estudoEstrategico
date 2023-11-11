@@ -30,7 +30,9 @@ public class AdminConfig {
 			return new UsuarioSistema(usuario, Arrays.asList(
 					new SimpleGrantedAuthority("ROLE_CADASTRAR_PERMISSOES"),
 					new SimpleGrantedAuthority("ROLE_CADASTRAR_GRUPO_USUARIO"),
-					new SimpleGrantedAuthority("ROLE_IMPLANTAR_MIGRACOES")));
+					new SimpleGrantedAuthority("ROLE_IMPLANTAR_MIGRACOES"),
+					new SimpleGrantedAuthority("ROLE_GERENCIAR_USUARIOS")
+					));
 		}
 		
 		return null;
