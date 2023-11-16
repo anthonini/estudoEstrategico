@@ -4,11 +4,14 @@ EstudoEstrategico.Estudo = (function() {
 	function Estudo() {
 		this.inputDisciplinaDiaEstudo = $('.js-disciplina-dia-estudo');
 		this.inputRevisao = $('.js-revisao');
+		this.cargaHoraria = $('input:text[value=""][name="cargaHorariaLiquida"]').first().parent().parent().find('.js-ch-aula').text()*60*1000 + 5*60*1000 - 30*60*1000;
+		this.horaAcesso = (new Date()).getTime();
 	}
 	
 	Estudo.prototype.iniciar = function() {
 		this.inputDisciplinaDiaEstudo.on('blur', onInputDadoEstudoBlur.bind(this));
 		this.inputRevisao.on('blur', onInputRevisaoBlur.bind(this));
+		keepAliveTimer.call(this);
 	}
 	
 	function onInputDadoEstudoBlur(event) {
@@ -45,6 +48,21 @@ EstudoEstrategico.Estudo = (function() {
 	
 	function onRevisaoAtualizadaResponse(id, revisao) {
 		$('#porcentagem-revisao_'+id).html(revisao.porcentagemAcertoQuestoes);
+	}
+	
+	function keepAliveTimer() {
+		this.keepAliveInterval = setInterval(keepAlive.bind(this), 5*60*1000);
+	}
+	
+	function keepAlive() {
+		$.ajax({
+			url: 'keep-alive',
+			method: 'GET'
+		});
+		
+		if((new Date()).getTime() - this.horaAcesso >= this.cargaHoraria) {
+			clearInterval(this.keepAliveInterval);
+		}
 	}
 	
 	return Estudo;

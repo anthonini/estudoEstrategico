@@ -86,5 +86,10 @@ public class EstudosController  extends AbstractController {
 			return ResponseEntity.badRequest().build();
 		}
 	}
+	
+	@GetMapping("/keep-alive")
+	public @ResponseBody ResponseEntity<?> keepAlive() {
+		return ResponseEntity.ok().build();
+	}
 }
 

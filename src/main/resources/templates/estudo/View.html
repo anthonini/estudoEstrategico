@@ -67,7 +67,7 @@
 				                            </tr>
 										    <tr th:each="disciplinaDia : ${diaEstudo.disciplinas}">
 												<td><h6 class="m-b-0" th:text="${disciplinaDia.disciplina.nome}">Nome da Disciplina</h6></td>
-												<td><h6 class="m-b-0" th:text="${disciplinaDia.cargaHoraria}">60</h6></td>
+												<td><h6 class="m-b-0 js-ch-aula" th:text="${disciplinaDia.cargaHoraria}">60</h6></td>
 												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.cargaHorariaLiquida}" name="cargaHorariaLiquida"></td>
 												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.aula}" name="aula"></td>
 												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.paginasEstudadas}" name="paginasEstudadas"></td>
@@ -80,7 +80,7 @@
 										    </tr>
 										    <tr th:each="revisao : ${diaEstudo.revisoes}">
 										    	<td class="table-active"><h6 class="m-b-0" th:text="${revisao.descricao}">Revisão 001</h6></td>
-										    	<td><h6 class="m-b-0" th:text="${revisao.cargaHoraria}">60</h6></td>
+										    	<td><h6 class="m-b-0 js-ch-aula" th:text="${revisao.cargaHoraria}">60</h6></td>
 										    	<td><input type="text" class="js-numero js-revisao text-right planilha form-control" maxlength="4" data:id="${revisao.id}" th:value="*{revisao.cargaHorariaLiquida}" name="cargaHorariaLiquida"></td>
 										    	<td colspan="4"></td>
 										    	<td><input type="text" class="js-numero js-revisao text-right planilha form-control" maxlength="4" data:id="${revisao.id}" th:value="*{revisao.quantidadeQuestoesResolvidas}" name="quantidadeQuestoesResolvidas"></td>
