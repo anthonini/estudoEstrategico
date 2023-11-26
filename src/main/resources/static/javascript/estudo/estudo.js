@@ -4,7 +4,7 @@ EstudoEstrategico.Estudo = (function() {
 	function Estudo() {
 		this.inputDisciplinaDiaEstudo = $('.js-disciplina-dia-estudo');
 		this.inputRevisao = $('.js-revisao');
-		this.cargaHoraria = $('input:text[value=""][name="cargaHorariaLiquida"]').first().parent().parent().find('.js-ch-aula').text()*60*1000 + 5*60*1000 - 30*60*1000;
+		this.cargaHoraria = $('input:text[value=""][name="cargaHorariaLiquida"]').first().parent().parent().find('.js-ch-aula').text()*60*1000 + 5*60*1000 - 15*60*1000;
 		this.horaAcesso = (new Date()).getTime();
 	}
 	
