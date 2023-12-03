@@ -6,12 +6,14 @@ EstudoEstrategico.Estudo = (function() {
 		this.inputRevisao = $('.js-revisao');
 		this.cargaHoraria = $('input:text[value=""][name="cargaHorariaLiquida"]').first().parent().parent().find('.js-ch-aula').text()*60*1000 + 5*60*1000 - 15*60*1000;
 		this.horaAcesso = (new Date()).getTime();
+		this.navBar = $('nav.pcoded-navbar');
 	}
 	
 	Estudo.prototype.iniciar = function() {
 		this.inputDisciplinaDiaEstudo.on('blur', onInputDadoEstudoBlur.bind(this));
 		this.inputRevisao.on('blur', onInputRevisaoBlur.bind(this));
 		keepAliveTimer.call(this);
+		this.navBar.addClass('navbar-collapsed');
 	}
 	
 	function onInputDadoEstudoBlur(event) {
