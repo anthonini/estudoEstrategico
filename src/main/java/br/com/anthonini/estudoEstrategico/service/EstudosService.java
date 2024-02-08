@@ -36,6 +36,10 @@ public class EstudosService {
 			if(!usuario.equals(disciplinaDiaEstudo.getDiaEstudo().getCicloEstudos().getUsuario())) {
 				throw new UsuarioSemPermissaoParaRealizarEssaOperacao();
 			}
+			
+			if(dto.getPaginaFinal() != null && dto.getPaginaInicial() != null && dto.getPaginasEstudadas() == null ) {
+				dto.setPaginasEstudadas(dto.getPaginaFinal()-dto.getPaginaInicial()+1);
+			}
 		
 			try {
 				BeanUtils.copyProperties(disciplinaDiaEstudo, dto);

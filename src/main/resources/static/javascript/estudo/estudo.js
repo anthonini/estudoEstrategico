@@ -32,6 +32,7 @@ EstudoEstrategico.Estudo = (function() {
 	
 	function onEstudoDisciplinaAtualizadaResponse(id, disciplinaDiaEstudo) {
 		$('#porcentagem_'+id).html(disciplinaDiaEstudo.porcentagemAcertoQuestoes);
+		$('#paginasEstudadas_'+id).val(disciplinaDiaEstudo.paginasEstudadas);
 	}
 	
 	function onInputRevisaoBlur(event) {

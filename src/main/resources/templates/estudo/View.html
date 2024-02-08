@@ -47,9 +47,9 @@
 						        				<th title="Carga Horária">CH</th>
 						        				<th title="Carga Horária Líquida">CHL</th>
 						        				<th title="Aula">Aula</th>
-						        				<th title="Páginas Estudadas">Págs. Estudadas</th>
 						        				<th title="Página Inicial">Pág. Inicial</th>
 						        				<th title="Página Final">Pág. Final</th>
+						        				<th title="Páginas Estudadas">Págs. Estudadas</th>
 						        				<th title="Quantidade de Questões Resolvidas">Qtde. Questões</th>
 						        				<th title="Quantidade de Questões Certas">Qtde. Quest. Certas</th>
 						        				<th title="% Acertos">% Acertos</th>
@@ -70,9 +70,9 @@
 												<td><h6 class="m-b-0 js-ch-aula" th:text="${disciplinaDia.cargaHoraria}">60</h6></td>
 												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.cargaHorariaLiquida}" name="cargaHorariaLiquida"></td>
 												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.aula}" name="aula"></td>
-												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.paginasEstudadas}" name="paginasEstudadas"></td>
 												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.paginaInicial}" name="paginaInicial"></td>
 												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.paginaFinal}" name="paginaFinal"></td>
+												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.paginasEstudadas}" name="paginasEstudadas" th:id="|paginasEstudadas_${disciplinaDia.id}|"></td>
 												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.quantidadeQuestoesResolvidas}" name="quantidadeQuestoesResolvidas" ></td>
 												<td><input type="text" class="js-numero js-disciplina-dia-estudo text-right planilha form-control" maxlength="4" data:id="${disciplinaDia.id}" th:value="*{disciplinaDia.quantidadeQuestoesResolvidasCorretas}" name="quantidadeQuestoesResolvidasCorretas"></td>
 												<td class="text-center" th:text="${disciplinaDia.porcentagemAcertoQuestoes}" th:id="|porcentagem_${disciplinaDia.id}|" >86%</td>
